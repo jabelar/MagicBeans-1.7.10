@@ -1,0 +1,114 @@
+package com.blogspot.jabelarminecraft.magicbeans.renderers;
+
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemPotion;
+import net.minecraft.potion.PotionHelper;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class RenderGoldenEggThrown extends Render
+{
+    private final Item itemBasisForEntity;
+    private final int iconIndex;
+
+    public RenderGoldenEggThrown(Item par1Item, int parIconIndex)
+    {
+        itemBasisForEntity = par1Item;
+        iconIndex = parIconIndex;
+    }
+
+    public RenderGoldenEggThrown(Item par1Item)
+    {
+        this(par1Item, 0);
+    }
+
+    /**
+     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
+     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
+     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
+     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+     */
+    @Override
+	public void doRender(Entity parEntity, double parX, double parY, double parZ, float parIgnored1, float parIgnored2)
+    {
+        IIcon iicon = itemBasisForEntity.getIconFromDamage(iconIndex);
+        
+        if (iicon != null)
+        {
+            GL11.glPushMatrix();
+            GL11.glTranslatef((float)parX, (float)parY, (float)parZ);
+            // DEBUG
+            System.out.println("Rendering on client side ="+parEntity.worldObj.isRemote);
+            System.out.println("Thrown egg entity position ="+parEntity.posX+", "+parEntity.posY+", "+parEntity.posZ);
+            System.out.println("Thrown egg entity server position ="+parEntity.serverPosX/32.0D+", "+parEntity.serverPosY/32.0D+", "+parEntity.serverPosZ/32.0D);
+            System.out.println("Thrown egg entity motion ="+parEntity.motionX+", "+parEntity.motionY+", "+parEntity.motionZ);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glScalef(0.5F, 0.5F, 0.5F);
+            int l = 0xF5E16F;
+            float f5 = (l >> 16 & 255) / 255.0F;
+            float f6 = (l >> 8 & 255) / 255.0F;
+            float f7 = (l & 255) / 255.0F;
+            GL11.glColor4f(f5, f6, f7, 1.0F);
+            bindEntityTexture(parEntity);
+            Tessellator tessellator = Tessellator.instance;
+
+            if (iicon == ItemPotion.func_94589_d("bottle_splash"))
+            {
+                int i = PotionHelper.func_77915_a(((EntityPotion)parEntity).getPotionDamage(), false);
+                float f2 = (i >> 16 & 255) / 255.0F;
+                float f3 = (i >> 8 & 255) / 255.0F;
+                float f4 = (i & 255) / 255.0F;
+                GL11.glColor3f(f2, f3, f4);
+                GL11.glPushMatrix();
+                invokeTesselator(tessellator, ItemPotion.func_94589_d("overlay"));
+                GL11.glPopMatrix();
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+            }
+
+            invokeTesselator(tessellator, iicon);
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GL11.glPopMatrix();
+        }
+    }
+
+    /**
+     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+     */
+    @Override
+	protected ResourceLocation getEntityTexture(Entity par1Entity)
+    {
+        return TextureMap.locationItemsTexture;
+    }
+
+    private void invokeTesselator(Tessellator par1Tessellator, IIcon par2Icon)
+    {
+        float minU = par2Icon.getMinU();
+        float maxU = par2Icon.getMaxU();
+        float minV = par2Icon.getMinV();
+        float maxV = par2Icon.getMaxV();
+        float f4 = 1.0F;
+        float f5 = 0.5F;
+        float f6 = 0.25F;
+        GL11.glRotatef(180.0F - renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(-renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+        par1Tessellator.startDrawingQuads();
+        par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        par1Tessellator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, minU, maxV);
+        par1Tessellator.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, maxU, maxV);
+        par1Tessellator.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, maxU, minV);
+        par1Tessellator.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, minU, minV);
+        par1Tessellator.draw();
+    }
+}
