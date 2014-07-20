@@ -79,6 +79,8 @@ public class CommandStructure implements ICommand
 		    {
 			    MagicBeans.structureCastle.generateStructure(world, ForgeDirection.EAST, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    		    	
 		    }
+			default:
+				break;
 		    }
 		    MagicBeans.structureCastle.generateStructure(world, ForgeDirection.EAST, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    
 		}
