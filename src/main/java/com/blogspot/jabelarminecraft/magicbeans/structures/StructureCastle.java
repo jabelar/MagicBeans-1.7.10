@@ -46,9 +46,34 @@ public class StructureCastle extends Structure
 	        { WOOD, WOOD, WOOD, WOOD, WOOD}
 	    }
 	};
-	
+
+	public static final int[][][] metaDataArray =
+	{
+	    { // y = 1
+	        {MNONE,MNONE,MDRBN,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,    2,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE},
+	        {MNONE,MBDHW,MBDFW,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE}
+	    },
+	    { // y = 2
+	        {MNONE,MNONE,MDRTR,MNONE,MNONE},
+	        {MNONE,MTRCH,MNONE,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE}
+	    },
+	    { // y = 3
+	        {MNONE,MNONE,MNONE,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE},
+	        {MNONE,MNONE,MNONE,MNONE,MNONE}
+	    }
+	};
+
 	public StructureCastle()
 	{
-		super(blockArray);
+		super(blockArray, metaDataArray);
 	}
 }

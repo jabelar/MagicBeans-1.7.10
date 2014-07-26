@@ -19,23 +19,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.structures;
 
-/**
-Copyright (C) <2013> <coolAlias>
-
-This file is part of coolAlias' Structure Generation Tool; as such,
-you can redistribute it and/or modify it under the terms of the GNU
-General Public License as published by the Free Software Foundation,
-either version 3 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -45,6 +28,8 @@ public class Structure
 {
 	/** The block array map of the structure */
 	private int[][][] blockArray;
+	/** The associated metadata for the blocks in the structure */
+	private int[][][] metaDataArray;
 	
 	/** Stores the direction this structure faces. Default is EAST.*/
 	private ForgeDirection facing = ForgeDirection.EAST;
@@ -65,16 +50,63 @@ public class Structure
 	protected final static int BED = b(Blocks.bed);
 	protected final static int GLASS = b(Blocks.glass);
 	protected final static int TORCH = b(Blocks.torch);
+	
+	/** create constants for easier referencing of metadata values in the array */
+	/** see http://minecraft.gamepedia.com/Data_values#Data for metadata values for blocks */
+	/** some can be added together bitwise */
+	// No metadata
+	protected final static int MNONE = 0;
+	// Torches and Redstone Torches
+	protected final static int MTCHE = 1; // Torch East
+	protected final static int MTCHW = 2; // Torch West
+	protected final static int MTCHN = 3; // Torch North
+	protected final static int MTCHS = 4; // Torch South
+	protected final static int MTRCH = 5; // free standing
+	// Slabs
+	protected final static int MSLBN = 0; // Slab normal
+	protected final static int MSLBU = 8; // Slab upside-down
+    // Beds, foot
+	protected final static int MBDFS = 0; // Bed foot to South
+	protected final static int MBDFW = 1; // Bed foot to West
+	protected final static int MBDFN = 2; // Bed foot to North
+	protected final static int MBDFE = 3; // Bed foot to East
+    // Beds, head
+	protected final static int MBDHS = 8; // Bed head to South
+	protected final static int MBDHW = 9; // Bed head to West
+	protected final static int MBDHN = 10; // Bed head to North
+	protected final static int MBDHE = 11; // Bed head to East
+    // Stairs
+	protected final static int MSTAE = 0; // Stairs ascending to East
+	protected final static int MSTAW = 1; // Stairs ascending to West
+	protected final static int MSTAS = 2; // Stairs ascending to South
+	protected final static int MSTAN = 3; // Stairs ascending to North
+	// Door, top
+	protected final static int MDRTR = 8; // Door top, hinge right
+	protected final static int MDRTL = 9; // Door top, hinge left
+	// Door, bottom
+	protected final static int MDRBW = 0; // Door bottom, facing West
+	protected final static int MDRBN = 1; // Door bottom, facing North
+	protected final static int MDRBE = 2; // Door bottom, facing East
+	protected final static int MDRBS = 3; // Door bottom, facing South	
 
 	public Structure() 
 	{
 	}
 	
-	public Structure(int[][][] parBlockArray)
+	public Structure(int[][][] parBlockArray, int[][][] parMetaDataArray)
 	{
 		setBlockArray(parBlockArray);
+		setMetaDataArray(parMetaDataArray);
 	}
 	
+	/**
+	 * @param parMetaDataArray
+	 */
+	protected void setMetaDataArray(int[][][] parMetaDataArray) 
+	{
+		metaDataArray = parMetaDataArray;		
+	}
+
 	public void generateStructure(World parWorld, ForgeDirection parFacing, int parOriginX, 
 			int parOriginY, int parOriginZ, int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
@@ -94,7 +126,8 @@ public class Structure
 			{
 				for (int x=0; x < getArrayWidth(); x++)
 				{
-					parWorld.setBlock(getOriginX()-getOffsetX()+x, getOriginY()-getOffsetY()+y, getOriginZ()-getOffsetZ()+z, Block.getBlockById(blockArray[y][z][x]));
+					parWorld.setBlock(getOriginX()-getOffsetX()+x, getOriginY()-getOffsetY()+y, getOriginZ()-getOffsetZ()+z, 
+							Block.getBlockById(blockArray[y][z][x]), metaDataArray[y][z][x], 2);
 				}
 			}
 		}		
