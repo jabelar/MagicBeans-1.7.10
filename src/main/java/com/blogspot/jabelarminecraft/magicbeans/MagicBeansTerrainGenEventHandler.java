@@ -44,145 +44,127 @@ public class MagicBeansTerrainGenEventHandler
 	 * Terrain events 
 	 */
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(BiomeEvent event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(BiomeColor event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(CreateDecorator event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(GetGrassColor event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(GetFoliageColor event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(GetVillageBlockID event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(GetVillageBlockMeta event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(GetWaterColor event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(ChunkProviderEvent event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(InitNoiseField event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(ReplaceBiomeBlocks event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(DecorateBiomeEvent event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(DecorateBiomeEvent.Decorate event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(DecorateBiomeEvent.Post event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(DecorateBiomeEvent.Pre event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(InitMapGenEvent event)
 	{
 		
 	}
-
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
-	public void onEvent(PopulateChunkEvent event)
-	{
-		
-	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
-	public void onEvent(PopulateChunkEvent.Populate event)
-	{
-		
-	}
-	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
-	public void onEvent(PopulateChunkEvent.Post event)
-	{ 
-		
-	}
-	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(PopulateChunkEvent.Pre event)
 	{
-		
+
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(SaplingGrowTreeEvent event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(WorldTypeEvent event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(WorldTypeEvent.BiomeSize event)
 	{
 		
 	}
 	
-	@SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(WorldTypeEvent.InitBiomeGens event)
 	{
 		

@@ -26,25 +26,25 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class MagicBeansOreGenEventHandler 
 {
-    @SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(OreGenEvent event)
     {
         
     }
     
-    @SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(GenerateMinable event)
     {
         
     }
     
-    @SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(OreGenEvent.Post event)
     {
         
     }
     
-    @SubscribeEvent(priority=EventPriority.HIGHEST, receiveCanceled=true)
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(OreGenEvent.Pre event)
     {
         
