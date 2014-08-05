@@ -22,7 +22,6 @@ package com.blogspot.jabelarminecraft.magicbeans.structures;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class Structure
 {
@@ -31,8 +30,12 @@ public class Structure
 	/** The associated metadata for the blocks in the structure */
 	private int[][][] metaDataArray;
 	
-	/** Stores the direction this structure faces. Default is EAST.*/
-	private ForgeDirection facing = ForgeDirection.EAST;
+	/** Stores the direction this structure faces. Default is NORTH.*/
+	public final static int DIR_NORTH = 0;
+	public final static int DIR_EAST = 1;
+	public final static int DIR_SOUTH = 2;
+	public final static int DIR_WEST = 4;
+	private int facing = DIR_NORTH;
 	
 	/** Origin representing location in chunk of the 0, 0, 0 block	 */
 	private int originX = 0, originY = 0, originZ = 0;
@@ -107,7 +110,7 @@ public class Structure
 		metaDataArray = parMetaDataArray;		
 	}
 
-	public void generateStructure(World parWorld, ForgeDirection parFacing, int parOriginX, 
+	public void generateStructure(World parWorld, int parFacing, int parOriginX, 
 			int parOriginY, int parOriginZ, int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
 		if (parWorld.isRemote)
@@ -118,7 +121,45 @@ public class Structure
 		setFacing(parFacing);
 		setOrigin(parOriginX, parOriginY, parOriginZ);
 		setOffset(parOffsetX, parOffsetY, parOffsetZ);
-		
+
+		switch (getFacing())
+		{
+		case DIR_NORTH:
+		{
+			//DEBUG
+			System.out.println("Structure facing North");
+			generateFacingNorth(parWorld);
+			break;
+		}
+		case DIR_EAST:
+		{
+			//DEBUG
+			System.out.println("Structure facing East");
+			generateFacingEast(parWorld);
+			break;
+		}
+		case DIR_SOUTH:
+		{
+			//DEBUG
+			System.out.println("Structure facing South");
+			generateFacingSouth(parWorld);
+			break;
+		}
+		case DIR_WEST:
+		{
+			//DEBUG
+			System.out.println("Structure facing West");
+			generateFacingWest(parWorld);
+			break;
+		}
+		default:
+			break;
+			
+		}
+	}
+	
+	protected void generateFacingNorth(World parWorld)
+	{
 		// create blocks
 		for (int y=0; y < getArrayHeight(); y++)
 		{
@@ -130,9 +171,66 @@ public class Structure
 							Block.getBlockById(blockArray[y][z][x]), metaDataArray[y][z][x], 2);
 				}
 			}
-		}		
+		}				
+	}
+
+	/** East is 90 degrees clockwise, means swap X and Z and use -Z */
+	protected void generateFacingEast(World parWorld)
+	{
+		// create blocks
+		for (int y=0; y < getArrayHeight(); y++)
+		{
+			for (int z=0; z < getArrayDepth(); z++)
+			{
+				for (int x=0; x < getArrayWidth(); x++)
+				{
+					parWorld.setBlock(getOriginX()+getOffsetZ()-z, getOriginY()-getOffsetY()+y, getOriginZ()-getOffsetX()+x, 
+							Block.getBlockById(blockArray[y][z][x]), metaDataArray[y][z][x], 2);
+				}
+			}
+		}				
+	}
+
+	/** West is 90 degrees anticlockwise, means swap X and Z and use -X */
+	protected void generateFacingWest(World parWorld)
+	{
+		// create blocks
+		for (int y=0; y < getArrayHeight(); y++)
+		{
+			for (int z=0; z < getArrayDepth(); z++)
+			{
+				for (int x=0; x < getArrayWidth(); x++)
+				{
+					parWorld.setBlock(getOriginX()-getOffsetZ()+z, getOriginY()-getOffsetY()+y, getOriginZ()+getOffsetX()-x, 
+							Block.getBlockById(blockArray[y][z][x]), metaDataArray[y][z][x], 2);
+				}
+			}
+		}				
 	}
 	
+	protected void generateFacingSouth(World parWorld)
+	{
+		// create blocks
+		for (int y=0; y < getArrayHeight(); y++)
+		{
+			for (int z=0; z < getArrayDepth(); z++)
+			{
+				for (int x=0; x < getArrayWidth(); x++)
+				{
+					parWorld.setBlock(getOriginX()+getOffsetX()-x, getOriginY()-getOffsetY()+y, getOriginZ()-getOffsetZ()+z, 
+							Block.getBlockById(blockArray[y][z][x]), metaDataArray[y][z][x], 2);
+				}
+			}
+		}				
+	}
+
+
+
+	private int getFacing() 
+	{
+		return facing;
+	}
+
 	public final void setOrigin(int parOriginX, int parOriginY,int parOriginZ) 
 	{
 		originX = parOriginX;
@@ -145,7 +243,7 @@ public class Structure
 		blockArray = parBlockArray;
 	}
 
-	public final void setFacing(ForgeDirection parFacing) 
+	public final void setFacing(int parFacing) 
 	{
 		facing = parFacing;
 	}

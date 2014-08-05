@@ -24,13 +24,11 @@ import java.util.List;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.structures.Structure;
 
 public class CommandStructure implements ICommand
 {
@@ -90,18 +88,19 @@ public class CommandStructure implements ICommand
 //		    }
 			
 		    sender.addChatMessage(new ChatComponentText("Generating Structure"));
-		    Entity entityPlayer = sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName());
-		    int playerDirection = MathHelper.floor_double((entityPlayer.rotationYaw * 4F) / 360f + 0.5D) &3;
-		    switch (playerDirection)
-		    {
-		    case 0:
-		    {
-			    MagicBeans.structureCastle.generateStructure(world, ForgeDirection.EAST, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    		    	
-		    }
-			default:
-				break;
-		    }
-		    MagicBeans.structureCastle.generateStructure(world, ForgeDirection.EAST, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    
+//		    Entity entityPlayer = sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName());
+//		    int playerDirection = MathHelper.floor_double((entityPlayer.rotationYaw * 4F) / 360f + 0.5D) &3;
+//		    switch (playerDirection)
+//		    {
+//		    case 0:
+//		    {
+//			    MagicBeans.structureCastle.generateStructure(world, ForgeDirection.NORTH, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    		    	
+//				break;
+//		    }
+//			default:
+//				break;
+//		    }
+		    MagicBeans.structureCastle.generateStructure(world, Structure.DIR_SOUTH, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    
 		}
 	}
 
