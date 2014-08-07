@@ -30,6 +30,7 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeansFMLEventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansOreGenEventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansTerrainGenEventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructure;
+import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructureCapture;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
@@ -263,6 +264,7 @@ public class CommonProxy
 	{
 		// // register server commands
         event.registerServerCommand(new CommandStructure());
+        event.registerServerCommand(new CommandStructureCapture());
 	}
 
 	public void fmlLifeCycleEvent(FMLServerAboutToStartEvent event) {
