@@ -37,20 +37,20 @@ public class CommandStructureCapture implements ICommand
 	World theWorld;
 	Entity thePlayer;
 	public int[][][] blockIdArray ;
-	public String[][][] blockNameArray ;
-    public int[][][] blockMetaArray ;
+	public static String[][][] blockNameArray ;
+    public static int[][][] blockMetaArray ;
     int startX ;
     int startY ;
     int startZ ;
     int endX ;
     int endY ;
     int endZ ;
-    int dimX ;
-    int dimY ;
-    int dimZ ;
-    int signX ;
-    int signY ;
-    int signZ ;
+    static int dimX ;
+    static int dimY ;
+    static int dimZ ;
+    static int signX ;
+    static int signY ;
+    static int signZ ;
     
     
 	// TODO

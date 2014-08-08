@@ -18,11 +18,11 @@ buildscript {
 apply plugin: 'forge'
 
 version = "1.7.10-0.0.1"
-group= "com.blogspot.jabelarminecraft.examplemod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "com.blogspot.jabelarminecraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "examplemod"
 
 minecraft {
-    version = "1.7.10-10.13.0.1191"
+    version = "1.7.10-10.13.0.1190"
     runDir = "../run/assets"
 }
 

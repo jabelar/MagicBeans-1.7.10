@@ -22,8 +22,10 @@ package com.blogspot.jabelarminecraft.magicbeans.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
@@ -33,6 +35,8 @@ import com.blogspot.jabelarminecraft.magicbeans.structures.Structure;
 public class CommandStructure implements ICommand
 {
 	private final List aliases;
+	World theWorld;
+	Entity thePlayer;
 	
 	// TODO
 	// ultimately need to pass structures by name to make more generic
@@ -71,9 +75,11 @@ public class CommandStructure implements ICommand
 	@Override
 	public void processCommand(ICommandSender sender, String[] argString) 
 	{
-		World world = sender.getEntityWorld();
+		theWorld = sender.getEntityWorld();
+	    thePlayer = sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName());
+
 		
-		if (world.isRemote)
+		if (theWorld.isRemote)
 		{
 			System.out.println("Not processing on Client side");
 		}
@@ -81,14 +87,11 @@ public class CommandStructure implements ICommand
 		{
 			System.out.println("Processing on Server side");
 
-//			if(argString.length == 0)
-//		    {
-//		    	sender.addChatMessage(new ChatComponentText("Invalid argument"));
-//		    	return;
-//		    }
-			
-		    sender.addChatMessage(new ChatComponentText("Generating Structure"));
-//		    Entity entityPlayer = sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName());
+			if(argString.length == 0)
+			{
+			    sender.addChatMessage(new ChatComponentText("Generating Structure"));
+			    MagicBeans.structureCastle.generateStructure(theWorld, Structure.DIR_SOUTH, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    
+			}
 //		    int playerDirection = MathHelper.floor_double((entityPlayer.rotationYaw * 4F) / 360f + 0.5D) &3;
 //		    switch (playerDirection)
 //		    {
@@ -100,8 +103,34 @@ public class CommandStructure implements ICommand
 //			default:
 //				break;
 //		    }
-		    MagicBeans.structureCastle.generateStructure(world, Structure.DIR_SOUTH, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    
+			else
+			{
+				regenerate();
+			}
 		}
+	}
+
+	private void regenerate() 
+	{
+		int startX = (int) thePlayer.posX;
+		int startY = (int) thePlayer.posY;
+		int startZ = (int) thePlayer.posZ;
+	    for (int i = 0; i < CommandStructureCapture.dimY; i++) // Y first to organize in vertical layers
+	    {
+	    	for (int j = 0; j < CommandStructureCapture.dimX; j++)
+	    	{
+	    		for (int k = 0; k < CommandStructureCapture.dimZ; k++)
+	    		{
+//	    			blockIdArray[j][i][k] = Block.getIdFromBlock(theWorld.getBlock(startX+signX*j, startY+signY*i, 
+//	    					startZ+signZ*k));
+					theWorld.setBlock(startX+j, startY+i, startZ+k, 
+							Block.getBlockFromName(CommandStructureCapture.blockNameArray[j][i][k]), CommandStructureCapture.blockMetaArray[j][i][k], 2);
+	    			
+	    		}
+	    	}
+	    }
+		
+		
 	}
 
 	@Override
