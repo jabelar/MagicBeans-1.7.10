@@ -16,6 +16,10 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.commands;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +40,6 @@ public class CommandStructureCapture implements ICommand
 	
 	World theWorld;
 	Entity thePlayer;
-	public int[][][] blockIdArray ;
 	public static String[][][] blockNameArray ;
     public static int[][][] blockMetaArray ;
     int startX ;
@@ -52,9 +55,7 @@ public class CommandStructureCapture implements ICommand
     static int signY ;
     static int signZ ;
     
-    
-	// TODO
-	// ultimately need to pass structures by name to make more generic
+   		
 	
 	public CommandStructureCapture()
 	{
@@ -100,7 +101,7 @@ public class CommandStructureCapture implements ICommand
 		{
 			System.out.println("Processing on Server side");
 
-			if(argString.length != 6)
+			if(argString.length != 7)
 		    {
 		    	sender.addChatMessage(new ChatComponentText("Invalid argument"));
 		    	return;
@@ -116,9 +117,24 @@ public class CommandStructureCapture implements ICommand
 		    dimX = Math.abs(endX - startX);
 		    dimY = Math.abs(endY - startY);
 		    dimZ = Math.abs(endZ - startZ);
-		    signX = dimX / (endX - startX);
-		    signY = dimY / (endY - startY);
-		    signZ = dimZ / (endZ - startZ);
+		    if (endX < startX)
+		    {
+		    	int temp = startX;
+		    	startX = endX;
+		    	endX = temp;
+		    }
+		    if (endY < startY)
+		    {
+		    	int temp = startY;
+		    	startY = endY;
+		    	endY = temp;
+		    }
+		    if (endZ < startZ)
+		    {
+		    	int temp = startZ;
+		    	startZ = endZ;
+		    	endZ = temp;
+		    }
 			if(dimX*dimY*dimZ > 64*64*64)
 		    {
 		    	sender.addChatMessage(new ChatComponentText("Capture area too big"));
@@ -127,96 +143,51 @@ public class CommandStructureCapture implements ICommand
 		    
 		    sender.addChatMessage(new ChatComponentText("Capturing Structure from "+startX+", "+startY+", "+
 		         startZ+" to "+endX+", "+endY+", "+endZ));
-		    blockIdArray = new int[dimX][dimY][dimZ];
 		    blockNameArray = new String[dimX][dimY][dimZ];
 		    blockMetaArray = new int[dimX][dimY][dimZ];
 
-		    for (int i = 0; i < dimY; i++) // Y first to organize in vertical layers
+		    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
 		    {
-		    	for (int j = 0; j < dimX; j++)
+		    	for (int indX = 0; indX < dimX; indX++)
 		    	{
-		    		for (int k = 0; k < dimZ; k++)
+		    		for (int indZ = 0; indZ < dimZ; indZ++)
 		    		{
-//		    			blockIdArray[j][i][k] = Block.getIdFromBlock(theWorld.getBlock(startX+signX*j, startY+signY*i, 
-//		    					startZ+signZ*k));
-		    			blockNameArray[j][i][k] = Block.blockRegistry.getNameForObject(theWorld.getBlock(startX+signX*j, startY+signY*i, 
-		    					startZ+signZ*k));
-		    			blockMetaArray[j][i][k] = theWorld.getBlockMetadata(startX+signX*j, startY+signY*i, 
-		    					startZ+signZ*k);		    			
+		    			blockNameArray[indX][indY][indZ] = Block.blockRegistry.getNameForObject(theWorld.getBlock(startX+indX, startY+indY, 
+		    					startZ+indZ));
+		    			blockMetaArray[indX][indY][indZ] = theWorld.getBlockMetadata(startX+indX, startY+indY, 
+		    					startZ+indZ);		    			
 		    		}
 		    	}
 		    }
 
-//		    printIdArray();
 		    printNameArray();
 		    printMetaArray();
+		    writeFileNameArray(argString[6]);
 		}
-	}
-	
-	protected void printIdArray()
-	{
-		System.out.println("// Block ID Array");
-		System.out.println("{");
-	    for (int i = 0; i < dimY; i++) // Y first to organize in layers
-	    {
-	    	System.out.println("    {   // Layer ="+i);
-	    	for (int j = 0; j < dimX; j++)
-	    	{
-	    		String row = "";
-	    		for (int k = 0; k < dimZ; k++)
-	    		{
-	    			if (k < dimZ-1) // not last element in row
-	    			{
-		    			row = row+blockIdArray[j][i][k]+", ";	    				
-	    			}
-	    			else // last element in row
-	    			{
-		    			row = row+blockIdArray[j][i][k];	    				
-	    			}
-	    		}
-	    		if (j < dimX-1) // not last element in column
-	    		{
-		    		System.out.println("        { "+row+" },");
-	    		}
-	    		else // last element in column
-	    		{
-		    		System.out.println("        { "+row+" }");
-	    		}
-	    	}
-    		if (i < dimY-1) // not last layer
-    		{
-	    		System.out.println("    },");
-    		}
-    		else // last layer
-    		{
-	    		System.out.println("    }");
-    		}
-	    }	
-		System.out.println("};");
 	}
 
 	protected void printNameArray()
 	{
 		System.out.println("// Block Name Array");
 		System.out.println("{");
-	    for (int i = 0; i < dimY; i++) // Y first to organize in layers
+	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in layers
 	    {
-	    	System.out.println("    {   // Layer ="+i);
-	    	for (int j = 0; j < dimX; j++)
+	    	System.out.println("    {   // Layer ="+indY);
+	    	for (int indX = 0; indX < dimX; indX++)
 	    	{
 	    		String row = "";
-	    		for (int k = 0; k < dimZ; k++)
+	    		for (int indZ = 0; indZ < dimZ; indZ++)
 	    		{
-	    			if (k < dimZ-1) // not last element in row
+	    			if (indZ < dimZ-1) // not last element in row
 	    			{
-		    			row = row+blockNameArray[j][i][k]+", ";	    				
+		    			row = row+blockNameArray[indX][indY][indZ]+", ";	    				
 	    			}
 	    			else // last element in row
 	    			{
-		    			row = row+blockNameArray[j][i][k];	    				
+		    			row = row+blockNameArray[indX][indY][indZ];	    				
 	    			}
 	    		}
-	    		if (j < dimX-1) // not last element in column
+	    		if (indX < dimX-1) // not last element in column
 	    		{
 		    		System.out.println("        { "+row+" },");
 	    		}
@@ -225,7 +196,7 @@ public class CommandStructureCapture implements ICommand
 		    		System.out.println("        { "+row+" }");
 	    		}
 	    	}
-    		if (i < dimY-1) // not last layer
+    		if (indY < dimY-1) // not last layer
     		{
 	    		System.out.println("    },");
     		}
@@ -241,24 +212,24 @@ public class CommandStructureCapture implements ICommand
 	{
 		System.out.println("// Metadata Array");
 		System.out.println("{");
-	    for (int i = 0; i < dimY; i++) // Y first to organize in layers
+	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in layers
 	    {
-	    	System.out.println("    {   // Layer ="+i);
-	    	for (int j = 0; j < dimX; j++)
+	    	System.out.println("    {   // Layer ="+indY);
+	    	for (int indX = 0; indX < dimX; indX++)
 	    	{
 	    		String row = "";
-	    		for (int k = 0; k < dimZ; k++)
+	    		for (int indZ = 0; indZ < dimZ; indZ++)
 	    		{
-	    			if (k < dimZ-1) // not last element in row
+	    			if (indZ < dimZ-1) // not last element in row
 	    			{
-		    			row = row+blockMetaArray[j][i][k]+", ";	    				
+		    			row = row+blockMetaArray[indX][indY][indZ]+", ";	    				
 	    			}
 	    			else // last element in row
 	    			{
-		    			row = row+blockMetaArray[j][i][k];	    				
+		    			row = row+blockMetaArray[indX][indY][indZ];	    				
 	    			}
 	    		}
-	    		if (j < dimX-1) // not last element in column
+	    		if (indX < dimX-1) // not last element in column
 	    		{
 		    		System.out.println("        { "+row+" },");
 	    		}
@@ -267,7 +238,7 @@ public class CommandStructureCapture implements ICommand
 		    		System.out.println("        { "+row+" }");
 	    		}
 	    	}
-    		if (i < dimY-1) // not last layer
+    		if (indY < dimY-1) // not last layer
     		{
 	    		System.out.println("    },");
     		}
@@ -277,6 +248,38 @@ public class CommandStructureCapture implements ICommand
     		}
 	    }	
 		System.out.println("};");
+	}
+	
+	protected void writeFileNameArray(String fileName)
+	{
+		File file = new File(fileName+".txt");
+		PrintWriter printOut = null;
+		try 
+		{
+			printOut = new PrintWriter(new FileWriter(file));
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		// print dimensions to the file
+		printOut.println(dimX);
+		printOut.println(dimY);
+		printOut.println(dimZ);
+
+		// Write each string in the array on a separate line
+	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in layers
+	    {
+	    	for (int indX = 0; indX < dimX; indX++)
+	    	{
+	    		for (int indZ = 0; indZ < dimZ; indZ++)
+	    		{
+	    			printOut.println(blockNameArray[indX][indY][indZ]);
+	    			printOut.println(blockMetaArray[indX][indY][indZ]);
+	    		}
+	    	}
+	    }
+	    printOut.close();
 	}
 
 	@Override

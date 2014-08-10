@@ -19,6 +19,10 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.commands;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +33,20 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.structures.Structure;
-
 public class CommandStructure implements ICommand
 {
 	private final List aliases;
 	World theWorld;
 	Entity thePlayer;
+	
+	int dimX;
+	int dimY;
+	int dimZ;
+
+	String[][][] blockNameArray = null;
+	int[][][] blockMetaArray = null;
+
+	BufferedReader readIn;
 	
 	// TODO
 	// ultimately need to pass structures by name to make more generic
@@ -63,7 +73,7 @@ public class CommandStructure implements ICommand
 	@Override
 	public String getCommandUsage(ICommandSender var1) 
 	{
-		return "structure"; // use "structure <text>"; later when passing name of structure
+		return "structure <int> <int> <int>"; // use the ints if offset required
 	}
 
 	@Override
@@ -87,50 +97,127 @@ public class CommandStructure implements ICommand
 		{
 			System.out.println("Processing on Server side");
 
-			if(argString.length == 0)
+			if(argString.length == 1)
 			{
 			    sender.addChatMessage(new ChatComponentText("Generating Structure"));
-			    MagicBeans.structureCastle.generateStructure(theWorld, Structure.DIR_SOUTH, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    
+
+			    readArrays(argString[0]);
+			    regenerate(0, 0, 0);
 			}
-//		    int playerDirection = MathHelper.floor_double((entityPlayer.rotationYaw * 4F) / 360f + 0.5D) &3;
-//		    switch (playerDirection)
-//		    {
-//		    case 0:
-//		    {
-//			    MagicBeans.structureCastle.generateStructure(world, ForgeDirection.NORTH, sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ+2, MagicBeans.structureCastle.getArrayDepth()/2, 0, 0);		    		    	
-//				break;
-//		    }
-//			default:
-//				break;
-//		    }
-			else
+			if (argString.length == 4) // offsets provided
 			{
-				regenerate();
+			    readArrays(argString[0]);
+				regenerate(Integer.valueOf(argString[1]), Integer.valueOf(argString[2]), Integer.valueOf(argString[3]));
 			}
 		}
 	}
+	
+	protected void readArrays(String parName)
+	{
+	    try 
+	    {
+	    	System.out.println("trying to read file = "+parName+".txt");
+			readIn = new BufferedReader(new FileReader(parName+".txt"));
+		    dimX = Integer.valueOf(readIn.readLine());
+		    dimY = Integer.valueOf(readIn.readLine());
+		    dimZ = Integer.valueOf(readIn.readLine());
+		    blockNameArray = new String[dimX][dimY][dimZ];
+		    blockMetaArray = new int[dimX][dimY][dimZ];
+		    System.out.println("Dimensions of structure = "+dimX+", "+dimY+", "+dimZ);
+		    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+		    {
+		    	for (int indX = 0; indX < dimX; indX++)
+		    	{
+		    		for (int indZ = 0; indZ < dimZ; indZ++)
+		    		{
+		    			System.out.println("Reading block at: "+indX+", "+indY+", "+indZ);
+		    			String blockName = readIn.readLine();
+		    			int metaValue = Integer.valueOf(readIn.readLine());
+		    			System.out.println(blockName);
+		    			System.out.println(metaValue);
+	    				blockNameArray[indX][indY][indZ] = blockName;
+	    				blockMetaArray[indX][indY][indZ] = metaValue;
+		    		}
+		    	}
+		    }
+		} 
+	    catch (FileNotFoundException e) 
+	    {
+			e.printStackTrace();
+		} 
+	    catch (IOException e) 
+	    {
+			e.printStackTrace();
+		}
+	    
+	    try 
+	    {
+			readIn.close();
+		} 
+	    catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-	private void regenerate() 
+	protected void regenerate(int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
 		int startX = (int) thePlayer.posX;
 		int startY = (int) thePlayer.posY;
 		int startZ = (int) thePlayer.posZ;
-	    for (int i = 0; i < CommandStructureCapture.dimY; i++) // Y first to organize in vertical layers
+//		dimX = CommandStructureCapture.dimX;
+//		dimY = CommandStructureCapture.dimY;
+//		dimZ = CommandStructureCapture.dimZ;
+	    
+	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
 	    {
-	    	for (int j = 0; j < CommandStructureCapture.dimX; j++)
+	    	for (int indX = 0; indX < dimX; indX++)
 	    	{
-	    		for (int k = 0; k < CommandStructureCapture.dimZ; k++)
+	    		for (int indZ = 0; indZ < dimZ; indZ++)
 	    		{
-//	    			blockIdArray[j][i][k] = Block.getIdFromBlock(theWorld.getBlock(startX+signX*j, startY+signY*i, 
-//	    					startZ+signZ*k));
-					theWorld.setBlock(startX+j, startY+i, startZ+k, 
-							Block.getBlockFromName(CommandStructureCapture.blockNameArray[j][i][k]), CommandStructureCapture.blockMetaArray[j][i][k], 2);
-	    			
+	    			if (blockMetaArray[indX][indY][indZ]==0)
+	    			{
+	    				String blockName = blockNameArray[indX][indY][indZ];
+	    				if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+	    				{
+							theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+									Block.getBlockFromName(blockName), 0, 2);
+	    				}
+	    			}	    			
 	    		}
 	    	}
 	    }
-		
-		
+	    // best to place metadata blocks after non-metadata blocks as they need to attach, etc.
+	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+	    {
+	    	for (int indX = 0; indX < dimX; indX++)
+	    	{
+	    		for (int indZ = 0; indZ < dimZ; indZ++)
+	    		{
+	    			if (!(blockMetaArray[indX][indY][indZ]==0))
+	    			{
+						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+								Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
+	    			}	    			
+	    		}
+	    	}
+	    }
+	    // some blocks with 0 metadata, like string/tripwire, require other blocks to be placed already, so do them again as last pass.
+	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+	    {
+	    	for (int indX = 0; indX < dimX; indX++)
+	    	{
+	    		for (int indZ = 0; indZ < dimZ; indZ++)
+	    		{
+    				String blockName = blockNameArray[indX][indY][indZ];
+    				if (blockName.equals("minecraft:tripwire"))
+    				{
+						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+								Block.getBlockFromName(blockName), 0, 2);
+    				}	    			
+	    		}
+	    	}
+	    }		
 	}
 
 	@Override
