@@ -20,10 +20,10 @@ package com.blogspot.jabelarminecraft.magicbeans.structures;
  * @author jabelar
  *
  */
-public class StructureCastleTalia 
+public class StructureCastleTalia extends Structure
 {
-	public String[][][] blockNameArray;
-			
-	public String[][][] blockMetaArray;
-
+	public StructureCastleTalia()
+	{
+		super("taliaCastle");
+	}
 }

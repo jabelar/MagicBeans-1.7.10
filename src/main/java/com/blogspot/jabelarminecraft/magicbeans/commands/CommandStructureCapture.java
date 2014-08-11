@@ -99,14 +99,13 @@ public class CommandStructureCapture implements ICommand
 		}
 		else
 		{
-			System.out.println("Processing on Server side");
 
 			if(argString.length != 7)
 		    {
 		    	sender.addChatMessage(new ChatComponentText("Invalid argument"));
 		    	return;
 		    }
-			
+
 		    thePlayer = sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName());
 		    startX = Integer.parseInt(argString[0]);
 		    startY = Integer.parseInt(argString[1]);
@@ -160,8 +159,6 @@ public class CommandStructureCapture implements ICommand
 		    	}
 		    }
 
-		    printNameArray();
-		    printMetaArray();
 		    writeFileNameArray(argString[6]);
 		}
 	}

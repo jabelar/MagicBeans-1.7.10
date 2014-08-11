@@ -26,7 +26,7 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
 public class TileEntityMagicBeanStalk extends TileEntity
 {
-	public boolean isFullyGrown = false ;
+	public boolean hasSpawnedCastle = false;
 	protected int ticksExisted = 0 ;
 	
 	@Override
@@ -59,8 +59,15 @@ public class TileEntityMagicBeanStalk extends TileEntity
 	    	        worldObj.setBlock(xCoord, yCoord + 1, zCoord, MagicBeans.blockMagicBeanStalk);	    	        
 	    	    }   		
  			}
-			else
+			else // fully grown
 			{
+				if (!hasSpawnedCastle)
+				{
+					// DEBUG
+					System.out.println("Look up!");
+					MagicBeans.structureCastleTalia.generate(this, 0, -2, 0);
+					hasSpawnedCastle = true;
+				}
 			}
 			
    	        // add vines all around

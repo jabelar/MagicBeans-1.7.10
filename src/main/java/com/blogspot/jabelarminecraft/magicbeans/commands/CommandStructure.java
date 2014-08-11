@@ -33,6 +33,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.structures.Structure;
+
 public class CommandStructure implements ICommand
 {
 	private final List aliases;
@@ -97,6 +100,11 @@ public class CommandStructure implements ICommand
 		{
 			System.out.println("Processing on Server side");
 
+			if(argString.length==0)
+			{
+				Structure theStructure = MagicBeans.structureCastleTalia;
+				theStructure.generate(thePlayer, 0, -2, 0);
+			}
 			if(argString.length == 1)
 			{
 			    sender.addChatMessage(new ChatComponentText("Generating Structure"));
@@ -130,13 +138,8 @@ public class CommandStructure implements ICommand
 		    	{
 		    		for (int indZ = 0; indZ < dimZ; indZ++)
 		    		{
-		    			System.out.println("Reading block at: "+indX+", "+indY+", "+indZ);
-		    			String blockName = readIn.readLine();
-		    			int metaValue = Integer.valueOf(readIn.readLine());
-		    			System.out.println(blockName);
-		    			System.out.println(metaValue);
-	    				blockNameArray[indX][indY][indZ] = blockName;
-	    				blockMetaArray[indX][indY][indZ] = metaValue;
+		    			blockNameArray[indX][indY][indZ] = readIn.readLine();
+		    			blockMetaArray[indX][indY][indZ] = Integer.valueOf(readIn.readLine());
 		    		}
 		    	}
 		    }
