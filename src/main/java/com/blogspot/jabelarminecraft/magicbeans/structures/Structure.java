@@ -21,8 +21,8 @@ package com.blogspot.jabelarminecraft.magicbeans.structures;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -89,7 +89,9 @@ public class Structure
 	    try 
 	    {
 	    	System.out.println("Reading file = "+parName+".txt");
-			readIn = new BufferedReader(new FileReader(parName+".txt"));
+//			readIn = new BufferedReader(new FileReader(parName+".txt"));
+			readIn = new BufferedReader(new InputStreamReader(getClass().getClassLoader()
+					.getResourceAsStream("assets/magicbeans/structures/"+parName+".txt"), "UTF-8"));
 		    dimX = Integer.valueOf(readIn.readLine());
 		    dimY = Integer.valueOf(readIn.readLine());
 		    dimZ = Integer.valueOf(readIn.readLine());

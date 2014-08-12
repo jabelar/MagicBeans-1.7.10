@@ -19,14 +19,10 @@
 
 package com.blogspot.jabelarminecraft.magicbeans;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
@@ -900,32 +896,6 @@ public class MagicBeansEventHandler
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(PopulateChunkEvent.Pre event)
 	{
-		// replace all blocks of a type with another block type
-		// diesieben07 came up with this method (http://www.minecraftforge.net/forum/index.php/topic,21625.0.html)
-        
-		Chunk chunk = event.world.getChunkFromChunkCoords(event.chunkX, event.chunkZ);
-        Block fromBlock = Blocks.grass;
-        Block toBlock = Blocks.stone;
-		// DEBUG
-		System.out.println("Populate chunk event, replacing"+fromBlock.getLocalizedName()+" to "+toBlock.getLocalizedName());
-        for (ExtendedBlockStorage storage : chunk.getBlockStorageArray()) {
-            if (storage != null) 
-            {
-                for (int x = 0; x < 16; ++x) 
-                {
-                	for (int y = 0; y < 16; ++y) 
-                	{
-                		for (int z = 0; z < 16; ++z) 
-                		{
-                			if (storage.getBlockByExtId(x, y, z) == fromBlock) 
-                			{
-                				storage.func_150818_a(x, y, z, toBlock);
-                            }
-                         }
-                     }
-                 }
-            }
-        }		
 	}
 }
 

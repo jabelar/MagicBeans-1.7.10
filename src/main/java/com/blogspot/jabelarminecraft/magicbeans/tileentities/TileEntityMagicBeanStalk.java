@@ -49,10 +49,10 @@ public class TileEntityMagicBeanStalk extends TileEntity
 		if (ticksExisted >= 10 * 20) // 10 seconds
 		{
 			// check if higher than clouds
-			if (yCoord < 130)
+			if (yCoord < 10)
 			{
 	    		// check if can build next growing position
-	    	    if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord))
+	    	    if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord) && !worldObj.isRemote)
 	    	    {
 	    	    	// DEBUG
 	    	    	System.out.println("Space above so adding more bean stalk");
@@ -61,7 +61,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
  			}
 			else // fully grown
 			{
-				if (!hasSpawnedCastle)
+				if (!hasSpawnedCastle && worldObj.isRemote)
 				{
 					// DEBUG
 					System.out.println("Look up!");
