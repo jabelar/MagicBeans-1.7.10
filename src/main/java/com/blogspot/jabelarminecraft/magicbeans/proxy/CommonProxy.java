@@ -33,6 +33,7 @@ import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructure;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructureCapture;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
+import com.blogspot.jabelarminecraft.magicbeans.networking.ServerPacketHandler;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
@@ -79,6 +80,8 @@ public class CommonProxy
         // register networking channel 
         registerNetworkingChannel();
         
+        // register networking messages
+                
         // register server packet handler
         registerServerPacketHandler();
         
@@ -248,11 +251,6 @@ public class CommonProxy
     public void registerNetworkingChannel()
     {
         MagicBeans.channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MagicBeans.NETWORK_CHANNEL_NAME);
-        // when you want to send a packet elsewhere, use one of these methods (server or client):
-        //     MagicBeans.channel.sendToServer(FMLProxyPacket);
-        //     MagicBeans.channel.sendTo(FMLProxyPacket, EntityPlayerMP); for player-specific GUI interaction
-        //     MagicBeans.channel.sendToAll(FMLProxyPacket); for all player sync like entities
-        // and there are other sendToxxx methods to check out.
     }
     
     public void registerServerPacketHandler()

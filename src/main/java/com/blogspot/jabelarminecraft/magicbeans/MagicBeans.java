@@ -46,6 +46,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @Mod(modid = MagicBeans.MODID, name = MagicBeans.MODNAME, version = MagicBeans.MODVERSION)
 public class MagicBeans
@@ -64,6 +65,9 @@ public class MagicBeans
 	// use a named channel to identify packets related to this mod
     public static final String NETWORK_CHANNEL_NAME = "MagicBeans";
 	public static FMLEventChannel channel;
+	// networking
+	public static SimpleNetworkWrapper network;
+
 
     // set up configuration properties (will be read from config file in preInit)
     public static File configFile;
@@ -72,7 +76,6 @@ public class MagicBeans
     public static int configGoldForBeans = 100;
     public static int configGiantHealth = 10;
     public static int configGiantAttackDamage = 4;
-
     
     // instantiate blocks
     // need to instantiate beanstalk block before item as the item constructor associates with block

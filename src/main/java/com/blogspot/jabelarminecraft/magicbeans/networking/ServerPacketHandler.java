@@ -17,7 +17,7 @@
 	contact the author at julian_abelar@hotmail.com 
 */
 
-package com.blogspot.jabelarminecraft.magicbeans.proxy;
+package com.blogspot.jabelarminecraft.magicbeans.networking;
 
 public class ServerPacketHandler {
 
