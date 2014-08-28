@@ -131,6 +131,7 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
      * java.util.Random, int, int, int)
      */
     @Override
+    // basically an canBoneMealSpeedGrowth() method
     public boolean func_149852_a(World p_149852_1_, Random parRand, int parX, 
           int parY, int parZ)
     {
