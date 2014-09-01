@@ -125,6 +125,7 @@ public class CommonProxy
         //example: GameRegistry.registerBlock(blockTomato, "tomatoes");
     	GameRegistry.registerBlock(MagicBeans.blockMagicBeanStalk, "magicbeanstalk");
     	GameRegistry.registerBlock(MagicBeans.blockMagicBeansVine, "magicbeansvine");
+    	GameRegistry.registerBlock(MagicBeans.blockCloud, "magicbeanscloud");
     }
 
     // register fluids

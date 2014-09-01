@@ -26,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
+import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockCloud;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeanStalk;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeansVine;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemGoldenEgg;
@@ -81,6 +82,7 @@ public class MagicBeans
     // need to instantiate beanstalk block before item as the item constructor associates with block
     public final static Block blockMagicBeanStalk = new BlockMagicBeanStalk();
 	public final static Block blockMagicBeansVine = new BlockMagicBeansVine();
+	public final static Block blockCloud = new BlockCloud();
 
     // instantiate items
 	// important to do this after blocks where item is associate with custom block
