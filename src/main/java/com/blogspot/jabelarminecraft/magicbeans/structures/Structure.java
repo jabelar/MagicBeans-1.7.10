@@ -89,7 +89,6 @@ public class Structure
 	    try 
 	    {
 	    	System.out.println("Reading file = "+parName+".txt");
-//			readIn = new BufferedReader(new FileReader(parName+".txt"));
 			readIn = new BufferedReader(new InputStreamReader(getClass().getClassLoader()
 					.getResourceAsStream("assets/magicbeans/structures/"+parName+".txt"), "UTF-8"));
 		    dimX = Integer.valueOf(readIn.readLine());
