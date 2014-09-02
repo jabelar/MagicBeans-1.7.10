@@ -22,6 +22,9 @@ import net.minecraft.creativetab.CreativeTabs;
 
 import com.blogspot.jabelarminecraft.magicbeans.materials.MaterialCloud;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * @author jabelar
  *
@@ -489,15 +492,15 @@ public class BlockCloud extends Block
 //        return canPlaceBlockOnSide(p_149705_1_, p_149705_2_, p_149705_3_, p_149705_4_, p_149705_5_);
 //    }
 //
-//    /**
-//     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-//     */
-//    @Override
-//	@SideOnly(Side.CLIENT)
-//    public int getRenderBlockPass()
-//    {
-//        return 0;
-//    }
+    /**
+     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
+     */
+    @Override
+	@SideOnly(Side.CLIENT)
+    public int getRenderBlockPass()
+    {
+        return 1;
+    }
 //
 //    /**
 //     * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
