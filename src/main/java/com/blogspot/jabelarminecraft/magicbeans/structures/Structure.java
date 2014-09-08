@@ -29,6 +29,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+
 public class Structure
 {
 	protected String theName;
@@ -202,6 +204,9 @@ public class Structure
 		startX = theEntity.xCoord;
 		startY = theEntity.yCoord;
 		startZ = theEntity.zCoord;
+		
+		// generate the cloud
+		generateCloud(theWorld, startX, startY, startZ, 50);
 	    
 	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
 	    {
@@ -252,6 +257,17 @@ public class Structure
 	    		}
 	    	}
 	    }		
+	}
+	
+	public void generateCloud(World parWorld, int parX, int parY, int parZ, int parCloudSize) 
+	{	
+		for (int indX = parX-parCloudSize/2; indX < parX+parCloudSize/2; indX++)
+		{
+			for (int indZ = parZ-parCloudSize/2; indZ < parZ+parCloudSize/2; indZ++)
+			{
+				parWorld.setBlock(indX, parY-1, indZ, MagicBeans.blockCloud);
+			}
+		}
 	}
 
 }
