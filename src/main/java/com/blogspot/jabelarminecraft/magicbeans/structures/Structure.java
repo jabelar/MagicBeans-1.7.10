@@ -134,6 +134,10 @@ public class Structure
 	{
 		Entity theEntity = parEntity;
 		theWorld = theEntity.worldObj;
+		if (theWorld.isRemote)
+		{
+			return;
+		}
 
 		startX = (int) theEntity.posX;
 		startY = (int) theEntity.posY;
@@ -200,6 +204,10 @@ public class Structure
 	{
 		TileEntity theEntity = parEntity;
 		theWorld = theEntity.getWorldObj();
+		if (theWorld.isRemote)
+		{
+			return;
+		}
 
 		startX = theEntity.xCoord;
 		startY = theEntity.yCoord;
@@ -261,6 +269,11 @@ public class Structure
 	
 	public void generateCloud(World parWorld, int parX, int parY, int parZ, int parCloudSize) 
 	{	
+		if (parWorld.isRemote)
+		{
+			return;
+		}
+
 		for (int indX = parX-parCloudSize/2; indX < parX+parCloudSize/2; indX++)
 		{
 			for (int indZ = parZ-parCloudSize/2; indZ < parZ+parCloudSize/2; indZ++)

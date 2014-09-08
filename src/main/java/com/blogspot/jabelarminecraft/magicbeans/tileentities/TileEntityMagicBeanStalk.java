@@ -30,17 +30,20 @@ public class TileEntityMagicBeanStalk extends TileEntity
 	protected int ticksExisted = 0 ;
 	protected int maxStalkHeight = 70;
 	
-	@Override
-	public void writeToNBT(NBTTagCompound par1)
-	{
-		super.writeToNBT(par1);
-	}
 
-	@Override
-	public void readFromNBT(NBTTagCompound par1)
-	{
-		super.readFromNBT(par1);
-	}
+    @Override
+	public void readFromNBT(NBTTagCompound parTagCompound)
+    {
+    	super.readFromNBT(parTagCompound);
+        ticksExisted = parTagCompound.getInteger("ticksExisted");
+    }
+
+    @Override
+	public void writeToNBT(NBTTagCompound parTagCompound)
+    {
+    	super.writeToNBT(parTagCompound);
+        parTagCompound.setInteger("ticksExisted", ticksExisted);
+    }
 	
 	@Override
 	public void updateEntity()
@@ -51,6 +54,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
 		}
 		
 		++ticksExisted;
+		markDirty();
 		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Math.min(7,  ticksExisted / 21), 2);
 		if (ticksExisted >= 10 * 20) // 10 seconds
 		{
