@@ -22,6 +22,8 @@ package com.blogspot.jabelarminecraft.magicbeans;
 import java.io.File;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
@@ -77,6 +79,9 @@ public class MagicBeans
     public static int configGoldForBeans = 100;
     public static int configGiantHealth = 10;
     public static int configGiantAttackDamage = 4;
+    
+    // instantiate materials
+    public final static Material materialCloud = new Material(MapColor.snowColor);
     
     // instantiate blocks
     // need to instantiate beanstalk block before item as the item constructor associates with block
