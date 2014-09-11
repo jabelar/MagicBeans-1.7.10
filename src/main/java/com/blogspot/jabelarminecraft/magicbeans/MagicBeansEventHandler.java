@@ -108,6 +108,8 @@ import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.ExtendedPropertiesMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -230,7 +232,12 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(LivingJumpEvent event)
     {
-
+    	if (event.entityLiving instanceof EntityPlayer)
+    	{
+	    	MagicBeans.network.sendToServer(new MessageToServer("jump"));
+	    	MagicBeans.network.sendToAll(new MessageToClient("jump all"));
+	    	System.out.println("jump event");
+    	}
     }
 
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

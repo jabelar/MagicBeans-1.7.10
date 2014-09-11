@@ -19,6 +19,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,6 +34,8 @@ import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructure;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructureCapture;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
 import com.blogspot.jabelarminecraft.magicbeans.networking.ServerPacketHandler;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
 import com.google.common.base.Predicates;
@@ -48,8 +51,10 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy 
 {
@@ -70,20 +75,41 @@ public class CommonProxy
         registerModEntities();
         registerEntitySpawns();
         registerFuelHandlers();
+        registerSimpleNetworking();
     }
     
-    public void fmlLifeCycleEvent(FMLInitializationEvent event)
+    /**
+	 * 
+	 */
+	public void registerSimpleNetworking() 
+	{
+		// DEBUG
+		System.out.println("registering simple networking");
+		MagicBeans.network = NetworkRegistry.INSTANCE.newSimpleChannel(MagicBeans.NETWORK_CHANNEL_NAME);
+        MagicBeans.network.registerMessage(MessageToServer.Handler.class, MessageToServer.class, 0, Side.SERVER);
+        MagicBeans.network.registerMessage(MessageToClient.Handler.class, MessageToClient.class, 1, Side.CLIENT);
+	}
+	
+	/**
+	 * Returns a side-appropriate EntityPlayer for use during message handling
+	 */
+	public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) 
+	{
+		return ctx.getServerHandler().playerEntity;
+	}
+
+	public void fmlLifeCycleEvent(FMLInitializationEvent event)
     {
         // register custom event listeners
         registerEventListeners();
  
         // register networking channel 
-        registerNetworkingChannel();
+        // registerNetworkingChannel();
         
         // register networking messages
                 
         // register server packet handler
-        registerServerPacketHandler();
+        // registerServerPacketHandler();
         
         // register recipes here to allow use of items from other mods
         registerRecipes();
