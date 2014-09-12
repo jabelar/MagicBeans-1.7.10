@@ -20,7 +20,6 @@
 package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -36,7 +35,6 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
-import com.blogspot.jabelarminecraft.magicbeans.networking.ServerPacketHandler;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
@@ -77,26 +75,6 @@ public class CommonProxy
         registerFuelHandlers();
         registerSimpleNetworking();
     }
-    
-    /**
-	 * 
-	 */
-	public void registerSimpleNetworking() 
-	{
-		// DEBUG
-		System.out.println("registering simple networking");
-		MagicBeans.network = NetworkRegistry.INSTANCE.newSimpleChannel(MagicBeans.NETWORK_CHANNEL_NAME);
-        MagicBeans.network.registerMessage(MessageToServer.Handler.class, MessageToServer.class, 0, Side.SERVER);
-        MagicBeans.network.registerMessage(MessageToClient.Handler.class, MessageToClient.class, 1, Side.CLIENT);
-	}
-	
-	/**
-	 * Returns a side-appropriate EntityPlayer for use during message handling
-	 */
-	public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) 
-	{
-		return ctx.getServerHandler().playerEntity;
-	}
 
 	public void fmlLifeCycleEvent(FMLInitializationEvent event)
     {
@@ -119,7 +97,68 @@ public class CommonProxy
     {
         // can do some inter-mod stuff here
     }
+
+	public void fmlLifeCycleEvent(FMLServerAboutToStartEvent event) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void fmlLifeCycleEvent(FMLServerStartedEvent event) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void fmlLifeCycleEvent(FMLServerStoppingEvent event) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void fmlLifeCycleEvent(FMLServerStoppedEvent event) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void fmlLifeCycleEvent(FMLServerStartingEvent event) 
+	{
+		// // register server commands
+        event.registerServerCommand(new CommandStructure());
+        event.registerServerCommand(new CommandStructureCapture());
+	}
+		
+    /*
+	 * Thanks to diesieben07 tutorial for this code
+	 */
+	/**
+	 * Registers the simple networking channel and messages for both sides
+	 */
+	protected void registerSimpleNetworking() 
+	{
+		// DEBUG
+		System.out.println("registering simple networking");
+		MagicBeans.network = NetworkRegistry.INSTANCE.newSimpleChannel(MagicBeans.NETWORK_CHANNEL_NAME);
+        MagicBeans.network.registerMessage(MessageToServer.Handler.class, MessageToServer.class, 0, Side.SERVER);
+        MagicBeans.network.registerMessage(MessageToClient.Handler.class, MessageToClient.class, 1, Side.CLIENT);
+	}
+	
+	/*	 
+	 * Thanks to CoolAlias for this tip!
+	 */
+	/**
+	 * Returns a side-appropriate EntityPlayer for use during message handling
+	 */
+	public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) 
+	{
+		return ctx.getServerHandler().playerEntity;
+	}
     
+	/**
+	 * Process the configuration
+	 * @param event
+	 */
     protected void processConfig(FMLPreInitializationEvent event)
     {
         // might need to use suggestedConfigFile (event.getSuggestedConfigFile) location to publish
@@ -145,7 +184,9 @@ public class CommonProxy
         config.save();
     }
 
-    // register blocks
+    /**
+     * Registers blocks
+     */
     public void registerBlocks()
     {
         //example: GameRegistry.registerBlock(blockTomato, "tomatoes");
@@ -154,7 +195,9 @@ public class CommonProxy
     	GameRegistry.registerBlock(MagicBeans.blockCloud, "magicbeanscloud");
     }
 
-    // register fluids
+    /**
+     * Registers fluids
+     */
     public void registerFluids()
     {
         // see tutorial at http://www.minecraftforge.net/wiki/Create_a_Fluid
@@ -163,7 +206,9 @@ public class CommonProxy
         // testFluid.setLuminosity(0).setDensity(1000).setViscosity(1000).setGaseous(false) ;
      }
     
-    // register items
+    /**
+     * Registers items
+     */
     private void registerItems()
     {
         // DEBUG
@@ -177,7 +222,9 @@ public class CommonProxy
         // example: GameRegistry.registerCustomItemStack(name, itemStack);
     }
     
-    // register tileentities
+    /**
+     * Registers tile entities
+     */
     public void registerTileEntities()
     {
         // DEBUG
@@ -187,7 +234,9 @@ public class CommonProxy
         GameRegistry.registerTileEntity(TileEntityMagicBeanStalk.class, "tileEntityMagicBeanStalk");
     }
 
-    // register recipes
+    /**
+     * Registers recipes
+     */
     public void registerRecipes()
     {
         // DEBUG
@@ -200,11 +249,15 @@ public class CommonProxy
         //        GameRegistry.addSmelting(input, output, xp);
     }
 
-    // register entities
-    // lots of conflicting tutorials on this, currently following: nly register mod id http://www.minecraftforum.net/topic/1417041-mod-entity-problem/page__st__140#entry18822284
-    // another tut says to only register global id like http://www.minecraftforge.net/wiki/How_to_register_a_mob_entity#Registering_an_Entity
-    // another tut says to use both: http://www.minecraftforum.net/topic/2389683-172-forge-add-new-block-item-entity-ai-creative-tab-language-localization-block-textures-side-textures/
-     public void registerModEntities()
+    /*
+     *  lots of conflicting tutorials on this, currently following: nly register mod id http://www.minecraftforum.net/topic/1417041-mod-entity-problem/page__st__140#entry18822284
+     *  another tut says to only register global id like http://www.minecraftforge.net/wiki/How_to_register_a_mob_entity#Registering
+     *  another tut says to use both: http://www.minecraftforum.net/topic/2389683-172-forge-add-new-block-item-entity-ai-creative-tab-language-localization-block-textures-side-textures/
+     */
+    /**
+     * Registers entities as mod entities
+     */
+    protected void registerModEntities()
     {    
          // DEBUG
         System.out.println("Registering entities");
@@ -216,56 +269,79 @@ public class CommonProxy
         registerModEntity(EntityGoldenGoose.class, "Golden Goose");
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "Golden Egg");
     }
-     
-     public void registerModEntity(Class parEntityClass, String parEntityName)
+ 
+    /**
+     * Registers an entity as a mod entity with no tracking
+     * @param parEntityClass
+     * @param parEntityName
+     */
+     protected void registerModEntity(Class parEntityClass, String parEntityName)
      {
             EntityRegistry.registerModEntity(parEntityClass, parEntityName, ++modEntityID, MagicBeans.instance, 80, 3, false);
      }
-     
-     public void registerModEntityFastTracking(Class parEntityClass, String parEntityName)
+
+     /**
+      * Registers an entity as a mod entity with fast tracking.  Good for fast moving objects like throwables
+      * @param parEntityClass
+      * @param parEntityName
+      */
+     protected void registerModEntityFastTracking(Class parEntityClass, String parEntityName)
      {
             EntityRegistry.registerModEntity(parEntityClass, parEntityName, ++modEntityID, MagicBeans.instance, 80, 10, true);
      }
-          
-    public void registerEntitySpawns()
-    {
-        // register natural spawns for entities
-        // EntityRegistry.addSpawn(MyEntity.class, spawnProbability, minSpawn, maxSpawn, enumCreatureType, [spawnBiome]);
-        // See the constructor in BiomeGenBase.java to see the rarity of vanilla mobs; Sheep are probability 10 while Endermen are probability 1
-        // minSpawn and maxSpawn are about how groups of the entity spawn
-        // enumCreatureType represents the "rules" Minecraft uses to determine spawning, based on creature type. By default, you have three choices:
-        //    EnumCreatureType.creature uses rules for animals: spawn everywhere it is light out.
-        //    EnumCreatureType.monster uses rules for monsters: spawn everywhere it is dark out.
-        //    EnumCreatureType.waterCreature uses rules for water creatures: spawn only in water.
-        // [spawnBiome] is an optional parameter of type BiomeGenBase that limits the creature spawn to a single biome type. Without this parameter, it will spawn everywhere. 
+
+     /**
+      * Registers entity natural spawns
+      */
+     protected void registerEntitySpawns()
+     {
+        /*
+         *  register natural spawns for entities
+         * EntityRegistry.addSpawn(MyEntity.class, spawnProbability, minSpawn, maxSpawn, enumCreatureType, [spawnBiome]);
+         * See the constructor in BiomeGenBase.java to see the rarity of vanilla mobs; Sheep are probability 10 while Endermen are probability 1
+         * minSpawn and maxSpawn are about how groups of the entity spawn
+         * enumCreatureType represents the "rules" Minecraft uses to determine spawning, based on creature type. By default, you have three choices:
+         *    EnumCreatureType.creature uses rules for animals: spawn everywhere it is light out.
+         *    EnumCreatureType.monster uses rules for monsters: spawn everywhere it is dark out.
+         *    EnumCreatureType.waterCreature uses rules for water creatures: spawn only in water.
+         * [spawnBiome] is an optional parameter of type BiomeGenBase that limits the creature spawn to a single biome type. Without this parameter, it will spawn everywhere. 
+         */
 
          // DEBUG
         System.out.println("Registering natural spawns");
         
-        // For the biome type you can use an list, but unfortunately the built-in biomeList contains
-        // null entries and will crash, so you need to clean up that list.
-        // Diesieben07 suggested the following code to remove the nulls and create list of all biomes
+        /*
+         *  For the biome type you can use an list, but unfortunately the built-in biomeList contains
+         * null entries and will crash, so you need to clean up that list.
+         * diesieben07 suggested the following code to remove the nulls and create list of all biomes
+         */
         BiomeGenBase[] allBiomes = Iterators.toArray(Iterators.filter(Iterators.forArray(BiomeGenBase.getBiomeGenArray()), Predicates.notNull()), BiomeGenBase.class);
 
         // // savanna
         // EntityRegistry.addSpawn(EntityLion.class, 6, 1, 5, EnumCreatureType.creature, BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.              
         // EntityRegistry.addSpawn(EntityElephant.class, 10, 1, 5, EnumCreatureType.creature, BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.              
     }
-    
-    public void registerFuelHandlers()
-    {
+ 
+	/**
+     * Register fuel handlers
+     */
+     protected void registerFuelHandlers()
+     {
          // DEBUG
         System.out.println("Registering fuel handlers");
         
         // example: GameRegistry.registerFuelHandler(handler);
-    }
-    
-    public void registerEventListeners() 
-    {
-         // DEBUG
-        System.out.println("Registering event listeners");
+     }
+ 
+	/**
+     * Register event listeners
+     */
+	protected void registerEventListeners() 
+	{
+		// DEBUG
+		System.out.println("Registering event listeners");
 
-        MinecraftForge.EVENT_BUS.register(new MagicBeansEventHandler());
+		MinecraftForge.EVENT_BUS.register(new MagicBeansEventHandler());
         MinecraftForge.TERRAIN_GEN_BUS.register(new MagicBeansTerrainGenEventHandler());
         MinecraftForge.ORE_GEN_BUS.register(new MagicBeansOreGenEventHandler());        
 
@@ -273,42 +349,4 @@ public class CommonProxy
         FMLCommonHandler.instance().bus().register(new MagicBeansFMLEventHandler());
     }
 
-    public void sendMessageToPlayer(ChatComponentText msg) { }
-
-    public void registerNetworkingChannel()
-    {
-        MagicBeans.channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MagicBeans.NETWORK_CHANNEL_NAME);
-    }
-    
-    public void registerServerPacketHandler()
-    {
-        MagicBeans.channel.register(new ServerPacketHandler());
-    }
-
-	public void fmlLifeCycleEvent(FMLServerStartingEvent event) 
-	{
-		// // register server commands
-        event.registerServerCommand(new CommandStructure());
-        event.registerServerCommand(new CommandStructureCapture());
-	}
-
-	public void fmlLifeCycleEvent(FMLServerAboutToStartEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void fmlLifeCycleEvent(FMLServerStartedEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void fmlLifeCycleEvent(FMLServerStoppingEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void fmlLifeCycleEvent(FMLServerStoppedEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
 }

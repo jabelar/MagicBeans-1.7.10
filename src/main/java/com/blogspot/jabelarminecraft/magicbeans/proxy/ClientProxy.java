@@ -22,7 +22,6 @@ package com.blogspot.jabelarminecraft.magicbeans.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 
 import org.lwjgl.input.Keyboard;
 
@@ -76,7 +75,22 @@ public class ClientProxy extends CommonProxy
 		registerKeyBindings();
 	}
 	
-	private void registerKeyBindings() 
+	@Override
+	public void fmlLifeCycleEvent(FMLPostInitializationEvent event)
+	{
+		// DEBUG
+        System.out.println("on Client side");
+
+        // do common stuff
+		super.fmlLifeCycleEvent(event);
+
+		// do client-specific stuff
+	}
+
+	/*
+	 * Registers key bindings
+	 */
+	public void registerKeyBindings() 
 	{		
 		// declare an array of key bindings
 		keyBindings = new KeyBinding[2]; 
@@ -92,23 +106,9 @@ public class ClientProxy extends CommonProxy
 		}
 	}
 
-	private void registerClientPacketHandler() 
-	{
-		MagicBeans.channel.register(new ClientPacketHandler());	
-	}
-	
-	@Override
-	public void fmlLifeCycleEvent(FMLPostInitializationEvent event)
-	{
-		// DEBUG
-        System.out.println("on Client side");
-
-        // do common stuff
-		super.fmlLifeCycleEvent(event);
-
-		// do client-specific stuff
-	}
-
+	/**
+	 * Registers the entity renderers
+	 */
 	public void registerRenderers() 
     {
 		// the float parameter passed to the Render class is the shadow size for the entity
@@ -117,11 +117,12 @@ public class ClientProxy extends CommonProxy
 	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenEggThrown.class, new RenderGoldenEggThrown(MagicBeans.itemGoldenEgg)); // 0.5F is shadow size 
     }
 	
-    @Override
-    public void sendMessageToPlayer(ChatComponentText msg) {
-        Minecraft.getMinecraft().thePlayer.addChatMessage(msg);
-    }
-    
+	/*	 
+	 * Thanks to CoolAlias for this tip!
+	 */
+	/**
+	 * Returns a side-appropriate EntityPlayer for use during message handling
+	 */
     @Override
     public EntityPlayer getPlayerEntityFromContext(MessageContext ctx) 
     {
