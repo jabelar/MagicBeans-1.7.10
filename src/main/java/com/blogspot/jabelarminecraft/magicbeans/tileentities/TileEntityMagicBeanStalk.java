@@ -26,8 +26,7 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
 public class TileEntityMagicBeanStalk extends TileEntity
 {
-	public static boolean hasSpawnedCastleClientSide = false;
-	public static boolean hasSpawnedCastleServerSide = false;
+	public static boolean hasSpawnedCastle = false;
 	protected int ticksExisted = 0 ;
 	protected int maxStalkHeight = 70;
 	
@@ -37,6 +36,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
     {
     	super.readFromNBT(parTagCompound);
         ticksExisted = parTagCompound.getInteger("ticksExisted");
+        hasSpawnedCastle = parTagCompound.getBoolean("hasSpawnedCastle");
     }
 
     @Override
@@ -44,16 +44,13 @@ public class TileEntityMagicBeanStalk extends TileEntity
     {
     	super.writeToNBT(parTagCompound);
         parTagCompound.setInteger("ticksExisted", ticksExisted);
+        parTagCompound.setBoolean("hasSpawnedCastle", hasSpawnedCastle);
     }
 	
 	@Override
 	public void updateEntity()
 	{
-		if (worldObj.isRemote && hasSpawnedCastleClientSide)
-		{
-			return;
-		}
-		if (!worldObj.isRemote && hasSpawnedCastleServerSide)
+		if (worldObj.isRemote)
 		{
 			return;
 		}
@@ -63,35 +60,32 @@ public class TileEntityMagicBeanStalk extends TileEntity
 		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Math.min(7,  ticksExisted / 21), 2);
 		if (ticksExisted >= 10 * 20) // 10 seconds
 		{
-			// DEBUG
-			System.out.println("updateEntity() beanstalk tile entity, isRemote = "+worldObj.isRemote);
-			
 			// check if higher than clouds
 			if (yCoord < maxStalkHeight)
 			{
 	    		// check if can build next growing position
-	    	    if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord) && !worldObj.isRemote)
+	    	    if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord))
 	    	    {
 	    	    	// DEBUG
-	    	    	System.out.println("Space above so adding more bean stalk");
+	    	    	System.out.println("Beanstalk still growing, hasSpawnedCastle = "+hasSpawnedCastle);
 	    	        worldObj.setBlock(xCoord, yCoord + 1, zCoord, MagicBeans.blockMagicBeanStalk);	    	        
 	    	    }   		
  			}
 			else // fully grown
 			{
-				if (!hasSpawnedCastleClientSide && worldObj.isRemote)
+				// DEBUG
+				System.out.println("Beanstalk fully grown");
+				if (!hasSpawnedCastle)
 				{
 					// DEBUG
 					System.out.println("Look up!");
 					MagicBeans.structureCastleTalia.generate(this, 0, -2, 0);
-					hasSpawnedCastleClientSide = true;
+					hasSpawnedCastle = true;
 				}
-				if (!hasSpawnedCastleServerSide && !worldObj.isRemote)
+				else
 				{
 					// DEBUG
-					System.out.println("Look up!");
-					MagicBeans.structureCastleTalia.generate(this, 0, -2, 0);
-					hasSpawnedCastleServerSide = true;
+					System.out.println("Castle already generated");
 				}
 			}
 			
