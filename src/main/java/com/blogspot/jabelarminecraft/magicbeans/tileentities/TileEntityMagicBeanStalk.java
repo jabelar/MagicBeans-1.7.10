@@ -26,7 +26,8 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
 public class TileEntityMagicBeanStalk extends TileEntity
 {
-	public static boolean hasSpawnedCastle = false;
+	public static boolean hasSpawnedCastleClientSide = false;
+	public static boolean hasSpawnedCastleServerSide = false;
 	protected int ticksExisted = 0 ;
 	protected int maxStalkHeight = 70;
 	
@@ -48,7 +49,11 @@ public class TileEntityMagicBeanStalk extends TileEntity
 	@Override
 	public void updateEntity()
 	{
-		if (hasSpawnedCastle)
+		if (worldObj.isRemote && hasSpawnedCastleClientSide)
+		{
+			return;
+		}
+		if (!worldObj.isRemote && hasSpawnedCastleServerSide)
 		{
 			return;
 		}
@@ -58,6 +63,9 @@ public class TileEntityMagicBeanStalk extends TileEntity
 		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Math.min(7,  ticksExisted / 21), 2);
 		if (ticksExisted >= 10 * 20) // 10 seconds
 		{
+			// DEBUG
+			System.out.println("updateEntity() beanstalk tile entity, isRemote = "+worldObj.isRemote);
+			
 			// check if higher than clouds
 			if (yCoord < maxStalkHeight)
 			{
@@ -71,12 +79,19 @@ public class TileEntityMagicBeanStalk extends TileEntity
  			}
 			else // fully grown
 			{
-				if (!hasSpawnedCastle && worldObj.isRemote)
+				if (!hasSpawnedCastleClientSide && worldObj.isRemote)
 				{
 					// DEBUG
 					System.out.println("Look up!");
 					MagicBeans.structureCastleTalia.generate(this, 0, -2, 0);
-					hasSpawnedCastle = true;
+					hasSpawnedCastleClientSide = true;
+				}
+				if (!hasSpawnedCastleServerSide && !worldObj.isRemote)
+				{
+					// DEBUG
+					System.out.println("Look up!");
+					MagicBeans.structureCastleTalia.generate(this, 0, -2, 0);
+					hasSpawnedCastleServerSide = true;
 				}
 			}
 			

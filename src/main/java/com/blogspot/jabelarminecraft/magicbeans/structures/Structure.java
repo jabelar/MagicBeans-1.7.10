@@ -202,12 +202,13 @@ public class Structure
 	 */
 	public void generate(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
-		// DEBUG
-		System.out.println("Generating castle in the clouds");
-		
 		TileEntity theEntity = parEntity;
 		theWorld = theEntity.getWorldObj();
-//		if (theWorld.isRemote)
+
+		// DEBUG
+		System.out.println("Generating castle in the clouds. IsRemote = "+theWorld.isRemote);
+
+		//		if (theWorld.isRemote)
 //		{
 //			return;
 //		}
