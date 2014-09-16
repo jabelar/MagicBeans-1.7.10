@@ -36,6 +36,7 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
+import com.blogspot.jabelarminecraft.magicbeans.villagertrading.VillageTradeHandlerMagicBeans;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
 
@@ -52,6 +53,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy 
@@ -74,6 +76,10 @@ public class CommonProxy
         registerEntitySpawns();
         registerFuelHandlers();
         registerSimpleNetworking();
+        VillagerRegistry.instance().registerVillagerId(10);
+		VillagerRegistry.instance().registerVillageTradeHandler(10, new VillageTradeHandlerMagicBeans());
+		VillagerRegistry.getRegisteredVillagers();
+
     }
 
 	public void fmlLifeCycleEvent(FMLInitializationEvent event)

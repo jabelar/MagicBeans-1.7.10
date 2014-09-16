@@ -26,9 +26,9 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
 public class TileEntityMagicBeanStalk extends TileEntity
 {
-	public static boolean hasSpawnedCastle = false;
+	public boolean hasSpawnedCastle = false;
 	protected int ticksExisted = 0 ;
-	protected int maxStalkHeight = 70;
+	protected int maxStalkHeight = 132;
 	
 
     @Override
