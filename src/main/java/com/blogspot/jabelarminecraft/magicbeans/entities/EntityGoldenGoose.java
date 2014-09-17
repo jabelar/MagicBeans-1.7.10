@@ -54,9 +54,9 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     /** The time until the next egg is spawned. */
     public int timeUntilNextEgg;
 
-    public EntityGoldenGoose(World par1World)
+    public EntityGoldenGoose(World parWorld)
     {
-        super(par1World);
+        super(parWorld);
         setSize(0.3F, 0.7F);
         timeUntilNextEgg = rand.nextInt(600) + 600;
         tasks.addTask(0, new EntityAISwimming(this));
@@ -275,7 +275,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 	@Override
 	public float getScaleFactor() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1.0F;
 	}
 
 	@Override

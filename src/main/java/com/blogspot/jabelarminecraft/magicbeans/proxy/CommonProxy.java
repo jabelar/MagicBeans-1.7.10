@@ -19,7 +19,9 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -31,8 +33,10 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeansOreGenEventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansTerrainGenEventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructure;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructureCapture;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
+import com.blogspot.jabelarminecraft.magicbeans.items.MagicBeansMonsterPlacer;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
@@ -274,6 +278,7 @@ public class CommonProxy
 
         registerModEntity(EntityGoldenGoose.class, "Golden Goose");
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "Golden Egg");
+        registerModEntityWithEgg(EntityCowMagicBeans.class, "Family Cow", 0x3F5505, 0x4E6414);
     }
  
     /**
@@ -294,6 +299,21 @@ public class CommonProxy
      protected void registerModEntityFastTracking(Class parEntityClass, String parEntityName)
      {
             EntityRegistry.registerModEntity(parEntityClass, parEntityName, ++modEntityID, MagicBeans.instance, 80, 10, true);
+     }
+
+     public void registerModEntityWithEgg(Class parEntityClass, String parEntityName, 
+    	      int parEggColor, int parEggSpotsColor)
+	{
+	    registerModEntity(parEntityClass, parEntityName);
+	    registerSpawnEgg(parEntityName, parEggColor, parEggSpotsColor);
+	}
+
+     // can't use vanilla spawn eggs with entities registered with modEntityID, so use custom eggs.
+     // name passed must match entity name string
+     public void registerSpawnEgg(String parSpawnName, int parEggColor, int parEggSpotsColor)
+     {
+       Item itemSpawnEgg = new MagicBeansMonsterPlacer(parSpawnName, parEggColor, parEggSpotsColor).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(MagicBeans.MODID+":spawn_egg");
+       GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
      }
 
      /**
@@ -326,7 +346,9 @@ public class CommonProxy
         // // savanna
         // EntityRegistry.addSpawn(EntityLion.class, 6, 1, 5, EnumCreatureType.creature, BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.              
         // EntityRegistry.addSpawn(EntityElephant.class, 10, 1, 5, EnumCreatureType.creature, BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.              
-    }
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 6, 1, 5, EnumCreatureType.creature, 
+        	      BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.     
+        }
  
 	/**
      * Register fuel handlers
