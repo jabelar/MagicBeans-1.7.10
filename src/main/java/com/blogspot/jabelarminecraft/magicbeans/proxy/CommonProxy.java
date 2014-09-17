@@ -19,6 +19,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -278,7 +279,7 @@ public class CommonProxy
 
         registerModEntity(EntityGoldenGoose.class, "Golden Goose");
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "Golden Egg");
-        registerModEntityWithEgg(EntityCowMagicBeans.class, "Family Cow", 0x3F5505, 0x4E6414);
+        registerModEntityWithEgg(EntityCowMagicBeans.class, "Family Cow", 0x4EF56D, 0xFCFC03);
     }
  
     /**
@@ -335,22 +336,46 @@ public class CommonProxy
 
          // DEBUG
         System.out.println("Registering natural spawns");
-        
-        /*
-         *  For the biome type you can use an list, but unfortunately the built-in biomeList contains
-         * null entries and will crash, so you need to clean up that list.
-         * diesieben07 suggested the following code to remove the nulls and create list of all biomes
-         */
-        BiomeGenBase[] allBiomes = Iterators.toArray(Iterators.filter(Iterators.forArray(BiomeGenBase.getBiomeGenArray()), Predicates.notNull()), BiomeGenBase.class);
 
         // // savanna
         // EntityRegistry.addSpawn(EntityLion.class, 6, 1, 5, EnumCreatureType.creature, BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.              
         // EntityRegistry.addSpawn(EntityElephant.class, 10, 1, 5, EnumCreatureType.creature, BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.              
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 6, 1, 5, EnumCreatureType.creature, 
-        	      BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.     
-        }
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
+              BiomeGenBase.desert); //change the values to vary the spawn rarity, biome, etc.     
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
+                BiomeGenBase.plains); //change the values to vary the spawn rarity, biome, etc.     
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
+                BiomeGenBase.jungle); //change the values to vary the spawn rarity, biome, etc.     
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
+                BiomeGenBase.desertHills); //change the values to vary the spawn rarity, biome, etc.     
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
+                BiomeGenBase.jungleEdge); //change the values to vary the spawn rarity, biome, etc.     
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
+                BiomeGenBase.jungleHills); //change the values to vary the spawn rarity, biome, etc.     
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
+                BiomeGenBase.taiga); //change the values to vary the spawn rarity, biome, etc.     
+        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
+                BiomeGenBase.taigaHills); //change the values to vary the spawn rarity, biome, etc.     
+     }
  
-	/**
+     protected void addSpawnAllBiomes(EntityLiving parEntity, int parChance, int parMinGroup, int parMaxGroup)
+     {
+         
+         /*
+          *  For the biome type you can use an list, but unfortunately the built-in biomeList contains
+          * null entries and will crash, so you need to clean up that list.
+          * diesieben07 suggested the following code to remove the nulls and create list of all biomes
+          */
+         BiomeGenBase[] allBiomes = Iterators.toArray(Iterators.filter(Iterators.forArray(BiomeGenBase.getBiomeGenArray()), Predicates.notNull()), BiomeGenBase.class);
+         for (int i=0; i<allBiomes.length; i++)
+         {
+             EntityRegistry.addSpawn(parEntity.getClass(), parChance, parMinGroup, parMaxGroup, EnumCreatureType.creature, 
+           	      allBiomes[i]); //change the values to vary the spawn rarity, biome, etc.             	
+         }
+     }
+     
+     
+     /**
      * Register fuel handlers
      */
      protected void registerFuelHandlers()

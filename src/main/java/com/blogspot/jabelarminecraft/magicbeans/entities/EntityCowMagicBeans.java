@@ -103,6 +103,18 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
             return super.interact(parPlayer);
         }
     }
+    
+    @Override
+	public boolean canDespawn()
+    {
+    	return true;
+    }
+    
+    @Override
+	public int getMaxSpawnedInChunk()
+    {
+    	return 1;
+    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setupAI()
