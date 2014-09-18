@@ -20,9 +20,14 @@
 package com.blogspot.jabelarminecraft.magicbeans;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
@@ -106,6 +111,7 @@ import net.minecraftforge.fluids.FluidEvent.FluidSpilledEvent;
 import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.ExtendedPropertiesMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
 
@@ -169,6 +175,49 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(EnteringChunk event)
     {
+    	World world = event.entity.worldObj;
+        if ((event.entity instanceof EntityCow) && !(event.entity instanceof EntityCowMagicBeans))
+        {
+        	if (!world.isRemote && world.rand.nextFloat()<MagicBeans.configChanceCowIsMagic)
+        	{
+        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+                    * 360.0F), 0.0F);
+        		world.spawnEntityInWorld(entityToSpawn);
+        		// DEBUG
+        		System.out.println("Replacing EntityCow with EntityCowMagicBeans");
+        		event.entity.setDead();        		
+        	}
+        }
+        if ((event.entity instanceof EntityPig) && !(event.entity instanceof EntityCowMagicBeans))
+        {
+        	if (!world.isRemote && world.rand.nextFloat()<MagicBeans.configChanceCowIsMagic)
+        	{
+        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+                    * 360.0F), 0.0F);
+        		world.spawnEntityInWorld(entityToSpawn);
+        		// DEBUG
+        		System.out.println("Replacing EntityPig with EntityCowMagicBeans");
+        		event.entity.setDead();        		
+        	}
+        }
+        if ((event.entity instanceof EntitySheep) && !(event.entity instanceof EntityCowMagicBeans))
+        {
+        	if (!world.isRemote && world.rand.nextFloat()<MagicBeans.configChanceCowIsMagic)
+        	{
+        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+                    * 360.0F), 0.0F);
+        		world.spawnEntityInWorld(entityToSpawn);
+        		// DEBUG
+        		System.out.println("Replacing EntitySheep with EntityCowMagicBeans");
+        		event.entity.setDead();        		
+        	}
+        }
         
     }
 
@@ -183,16 +232,16 @@ public class MagicBeansEventHandler
             System.out.println("OnEntityConstructing registering IWildAnimalsEntity extended properties");
             event.entity.registerExtendedProperties("ExtendedPropertiesMagicBeans", new ExtendedPropertiesMagicBeans());
         }
+        if (event.entity instanceof EntityPig) 
+        {
+        	event.entity = new EntityCowMagicBeans(event.entity.worldObj);
+        }
     }
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(EntityJoinWorldEvent event)
     {
-        // DEBUG
-        if (EntityList.getStringFromID(event.entity.getEntityId()) != null)
-        {
-            System.out.println("Entity joined world = "+EntityList.getStringFromID(event.entity.getEntityId()));
-        }
+
     }
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

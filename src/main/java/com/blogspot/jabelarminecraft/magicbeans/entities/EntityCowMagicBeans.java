@@ -39,6 +39,8 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 	public EntityCowMagicBeans(World parWorld) 
 	{
 		super(parWorld);
+		// DEBUG
+		System.out.println("EntityCowMagicBeans constructor");
 	}
 	
     @Override
@@ -46,7 +48,16 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     {
         return Items.leather;
     }
-
+    
+//    @Override
+//	public void onUpdate()
+//    {
+//    	super.onUpdate();
+//		// DEBUG
+//		System.out.println("EntityCowMagicBeans position = "+posX+", "+posY+", "+posZ);
+//
+//    }
+//
     /**
      * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
      * par2 - Level of Looting used to kill this mob.

@@ -71,7 +71,6 @@ public class MagicBeans
 	// networking
 	public static SimpleNetworkWrapper network;
 
-
     // set up configuration properties (will be read from config file in preInit)
     public static File configFile;
     public static Configuration config;
@@ -79,6 +78,7 @@ public class MagicBeans
     public static int configGoldForBeans = 100;
     public static int configGiantHealth = 10;
     public static int configGiantAttackDamage = 4;
+    public static double configChanceCowIsMagic = 0.5D;
     
     // instantiate materials
     public final static Material materialCloud = new Material(MapColor.snowColor);

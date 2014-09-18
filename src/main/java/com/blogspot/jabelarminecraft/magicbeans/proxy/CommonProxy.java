@@ -190,6 +190,8 @@ public class CommonProxy
         System.out.println("Giant Attack Damage = "+MagicBeans.configGiantAttackDamage);
         MagicBeans.configGoldForBeans = config.get(Configuration.CATEGORY_GENERAL, "GoldForBeans", 100).getInt(100);
         System.out.println("Gold for beans = "+MagicBeans.configGoldForBeans);
+        MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.5D).getDouble(0.5D);
+        System.out.println("Chance cow is magic = "+MagicBeans.configChanceCowIsMagic);
         
         // save is useful for the first run where config might not exist
         config.save();
@@ -340,22 +342,6 @@ public class CommonProxy
         // // savanna
         // EntityRegistry.addSpawn(EntityLion.class, 6, 1, 5, EnumCreatureType.creature, BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.              
         // EntityRegistry.addSpawn(EntityElephant.class, 10, 1, 5, EnumCreatureType.creature, BiomeGenBase.savanna); //change the values to vary the spawn rarity, biome, etc.              
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
-              BiomeGenBase.desert); //change the values to vary the spawn rarity, biome, etc.     
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
-                BiomeGenBase.plains); //change the values to vary the spawn rarity, biome, etc.     
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
-                BiomeGenBase.jungle); //change the values to vary the spawn rarity, biome, etc.     
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
-                BiomeGenBase.desertHills); //change the values to vary the spawn rarity, biome, etc.     
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
-                BiomeGenBase.jungleEdge); //change the values to vary the spawn rarity, biome, etc.     
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
-                BiomeGenBase.jungleHills); //change the values to vary the spawn rarity, biome, etc.     
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
-                BiomeGenBase.taiga); //change the values to vary the spawn rarity, biome, etc.     
-        EntityRegistry.addSpawn(EntityCowMagicBeans.class, 3, 1, 1, EnumCreatureType.creature, 
-                BiomeGenBase.taigaHills); //change the values to vary the spawn rarity, biome, etc.     
      }
  
      protected void addSpawnAllBiomes(EntityLiving parEntity, int parChance, int parMinGroup, int parMaxGroup)
