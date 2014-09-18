@@ -47,7 +47,7 @@ public class RenderCowMagicBeans extends RenderLiving
     @Override
     protected void preRenderCallback(EntityLivingBase entity, float f)
     {
-        preRenderCallbackCowMagicBeans((EntityCowMagicBeans) entity, f);
+        // preRenderCallbackCowMagicBeans((EntityCowMagicBeans) entity, f);
     }
   
     protected void preRenderCallbackCowMagicBeans(EntityCowMagicBeans entity, float f)
