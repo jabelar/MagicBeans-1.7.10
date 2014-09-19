@@ -178,6 +178,15 @@ public class CommonProxy
         System.out.println(MagicBeans.MODNAME+" config path = "+MagicBeans.configFile.getAbsolutePath());
         System.out.println("Config file exists = "+MagicBeans.configFile.canRead());
         
+        syncConfig();
+    }
+    
+    /*
+     * sync the configuration
+     * want it public so you can handle case of changes made in-game
+     */
+    public void syncConfig()
+    {
         config = new Configuration(MagicBeans.configFile);
         MagicBeans.config = config;
         
@@ -190,7 +199,7 @@ public class CommonProxy
         System.out.println("Giant Attack Damage = "+MagicBeans.configGiantAttackDamage);
         MagicBeans.configGoldForBeans = config.get(Configuration.CATEGORY_GENERAL, "GoldForBeans", 100).getInt(100);
         System.out.println("Gold for beans = "+MagicBeans.configGoldForBeans);
-        MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.5D).getDouble(0.5D);
+        MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.1D).getDouble(0.1D);
         System.out.println("Chance cow is magic = "+MagicBeans.configChanceCowIsMagic);
         
         // save is useful for the first run where config might not exist

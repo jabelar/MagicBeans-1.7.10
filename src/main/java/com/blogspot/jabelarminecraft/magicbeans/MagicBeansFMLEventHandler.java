@@ -19,6 +19,8 @@
 
 package com.blogspot.jabelarminecraft.magicbeans;
 
+import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import cpw.mods.fml.client.event.ConfigChangedEvent.PostConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
@@ -161,4 +163,22 @@ public class MagicBeansFMLEventHandler
 		
 	}
 
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+	public void onEvent(OnConfigChangedEvent eventArgs) 
+	{
+		if(eventArgs.modID.equals(MagicBeans.MODID))
+		{
+			MagicBeans.proxy.syncConfig();
+	    }
+	}
+
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+	public void onEvent(PostConfigChangedEvent eventArgs) 
+	{
+		// useful for doing something if another mod's config has changed
+		// if(eventArgs.modID.equals(MagicBeans.MODID))
+		// {
+		//		// do whatever here
+		// }
+	}
 }

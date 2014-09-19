@@ -51,7 +51,11 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
-@Mod(modid = MagicBeans.MODID, name = MagicBeans.MODNAME, version = MagicBeans.MODVERSION)
+@Mod(modid = 
+      MagicBeans.MODID, 
+      name = MagicBeans.MODNAME, 
+      version = MagicBeans.MODVERSION,
+      guiFactory = "com.blogspot.jabelarminecraft."+MagicBeans.MODID+".gui.GuiFactoryMagicBeans")
 public class MagicBeans
 {
     public static final String MODID = "magicbeans";
@@ -78,7 +82,7 @@ public class MagicBeans
     public static int configGoldForBeans = 100;
     public static int configGiantHealth = 10;
     public static int configGiantAttackDamage = 4;
-    public static double configChanceCowIsMagic = 0.5D;
+    public static double configChanceCowIsMagic = 0.1D;
     
     // instantiate materials
     public final static Material materialCloud = new Material(MapColor.snowColor);
