@@ -49,15 +49,21 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
         return Items.leather;
     }
     
-//    @Override
-//	public void onUpdate()
-//    {
-//    	super.onUpdate();
-//		// DEBUG
-//		System.out.println("EntityCowMagicBeans position = "+posX+", "+posY+", "+posZ);
-//
-//    }
-//
+    @Override
+	public void onUpdate()
+    {
+    	super.onUpdate();
+    	if (getLeashed() && !worldObj.isRemote)
+    	{
+    		// chance mysterious stranger will appear
+    		if (rand.nextFloat() < (1.0F / (30 * 20)))
+    		{
+        		// DEBUG
+        		System.out.println("A mysterious stranger appears");
+    		}
+    	}
+    }
+
     /**
      * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
      * par2 - Level of Looting used to kill this mob.
