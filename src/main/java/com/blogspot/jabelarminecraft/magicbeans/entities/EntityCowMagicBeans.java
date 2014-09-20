@@ -118,7 +118,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     @Override
 	public boolean canDespawn()
     {
-    	return true;
+    	return false;
     }
     
     @Override
