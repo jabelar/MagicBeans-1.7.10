@@ -21,6 +21,7 @@ package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelCow;
+import net.minecraft.client.model.ModelVillager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -30,10 +31,12 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.models.ModelGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.renderers.RenderCowMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.renderers.RenderGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.renderers.RenderGoldenGoose;
+import com.blogspot.jabelarminecraft.magicbeans.renderers.RenderMysteriousStranger;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -119,7 +122,7 @@ public class ClientProxy extends CommonProxy
 	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenGoose.class, new RenderGoldenGoose(new ModelGoldenGoose(), 0.5F)); // 0.5F is shadow size 
 	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenEggThrown.class, new RenderGoldenEggThrown(MagicBeans.itemGoldenEgg)); 
 	    RenderingRegistry.registerEntityRenderingHandler(EntityCowMagicBeans.class, new RenderCowMagicBeans(new ModelCow(), 1.0F)); 
-    }
+	    RenderingRegistry.registerEntityRenderingHandler(EntityMysteriousStranger.class, new RenderMysteriousStranger(new ModelVillager(0.0F), 0.5F));    }
 	
 	/*	 
 	 * Thanks to CoolAlias for this tip!

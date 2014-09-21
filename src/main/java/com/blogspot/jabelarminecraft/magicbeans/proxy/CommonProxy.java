@@ -37,6 +37,7 @@ import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructureCapture
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.items.MagicBeansMonsterPlacer;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
@@ -291,6 +292,7 @@ public class CommonProxy
         registerModEntity(EntityGoldenGoose.class, "Golden Goose");
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "Golden Egg");
         registerModEntityWithEgg(EntityCowMagicBeans.class, "Family Cow", 0x4EF56D, 0xFCFC03);
+        registerModEntityWithEgg(EntityMysteriousStranger.class, "Mysterious Stranger", 0x4EF56D, 0xFCFC03);
     }
  
     /**

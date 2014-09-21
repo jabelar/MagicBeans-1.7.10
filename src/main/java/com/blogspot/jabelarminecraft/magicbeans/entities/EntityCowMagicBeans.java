@@ -18,13 +18,21 @@ package com.blogspot.jabelarminecraft.magicbeans.entities;
 
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
 /**
  * @author jabelar
@@ -60,6 +68,29 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     		{
         		// DEBUG
         		System.out.println("A mysterious stranger appears");
+        		Entity entityLeashedTo = getLeashedToEntity();
+        		if (entityLeashedTo instanceof EntityPlayer)
+        		{
+        			EntityPlayer playerLeashedTo = (EntityPlayer) entityLeashedTo;
+        			Vec3 playerLookVector = playerLeashedTo.getLookVec();
+        			playerLeashedTo.addChatMessage(new ChatComponentText("A mysterious stranger appears!"));
+		            String entityToSpawnNameFull = MagicBeans.MODID+".Mysterious Stranger";
+		            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
+		            {
+		                EntityLiving entityToSpawn = (EntityLiving) EntityList
+		                      .createEntityByName(entityToSpawnNameFull, worldObj);
+		                entityToSpawn.setLocationAndAngles(playerLeashedTo.posX+3*playerLookVector.xCoord, posY, playerLeashedTo.posZ+3*playerLookVector.zCoord, 
+		                      MathHelper.wrapAngleTo180_float(rand.nextFloat()
+		                      * 360.0F), 0.0F);
+		                worldObj.spawnEntityInWorld(entityToSpawn);
+		                entityToSpawn.playLivingSound();
+		            }
+		            else
+		            {
+		                //DEBUG
+		                System.out.println("Entity not found "+entityToSpawnNameFull);
+		            }
+        		}
     		}
     	}
     }
