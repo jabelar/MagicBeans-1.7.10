@@ -52,4 +52,26 @@ public class EntityMysteriousStranger extends EntityCreature
 //	   getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
 //	   getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
 	}
+	
+	@Override
+	public void onUpdate()
+	{
+//		if (worldObj.isRemote && ticksExisted%40==0)
+//		{
+//			for (int var3 = 0; var3 < 7; ++var3)
+//			{
+//			double var4 = rand.nextGaussian() * 0.02D;
+//			double var6 = rand.nextGaussian() * 0.02D;
+//			double var8 = rand.nextGaussian() * 0.02D;
+//			worldObj.spawnParticle("happyVillager", posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
+//			}
+//		}
+		if (worldObj.isRemote && rand.nextFloat()<0.3F)
+		{
+			double var4 = rand.nextGaussian() * 0.02D;
+			double var6 = rand.nextGaussian() * 0.02D;
+			double var8 = rand.nextGaussian() * 0.02D;
+			worldObj.spawnParticle("happyVillager", posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
+		}
+	}
 }
