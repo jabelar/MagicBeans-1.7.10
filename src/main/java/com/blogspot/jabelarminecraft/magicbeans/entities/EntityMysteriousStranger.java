@@ -16,19 +16,24 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 
 /**
  * @author jabelar
  *
  */
-public class EntityMysteriousStranger extends EntityCreature
+public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans
 {
 
 	/**
@@ -61,7 +66,7 @@ public class EntityMysteriousStranger extends EntityCreature
 	public void onUpdate()
 	{
 		super.onUpdate();
-//		if (worldObj.isRemote && ticksExisted%40==0)
+//		if (!worldObj.isRemote && ticksExisted%40==0)
 //		{
 //			for (int var3 = 0; var3 < 7; ++var3)
 //			{
@@ -71,14 +76,114 @@ public class EntityMysteriousStranger extends EntityCreature
 //			worldObj.spawnParticle("happyVillager", posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
 //			}
 //		}
-		if (worldObj.isRemote && rand.nextFloat()<0.1F)
+		if (!worldObj.isRemote && rand.nextFloat()<0.1F)
 		{
 			double var4 = rand.nextGaussian() * 0.02D;
 			double var6 = rand.nextGaussian() * 0.02D;
 			double var8 = rand.nextGaussian() * 0.02D;
-//			worldObj.spawnParticle("happyVillager", posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
 			EntityFX particleMysterious = new EntityParticleFXMysterious(worldObj, posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
 			Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
+		}
 	}
+	
+	@Override
+	public boolean interact(EntityPlayer parPlayer)
+	{
+		if (parPlayer.worldObj.isRemote)
+		{
+			Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger());
+		}
+		return false;
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setupAI()
+	 */
+	@Override
+	public void setupAI() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#clearAITasks()
+	 */
+	@Override
+	public void clearAITasks() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()
+	 */
+	@Override
+	public void initExtProps() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtProps()
+	 */
+	@Override
+	public NBTTagCompound getExtProps() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtProps(net.minecraft.nbt.NBTTagCompound)
+	 */
+	@Override
+	public void setExtProps(NBTTagCompound parCompound) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtPropsToBuffer(io.netty.buffer.ByteBufOutputStream)
+	 */
+	@Override
+	public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtPropsFromBuffer(io.netty.buffer.ByteBufInputStream)
+	 */
+	@Override
+	public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setScaleFactor(float)
+	 */
+	@Override
+	public void setScaleFactor(float parScaleFactor) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getScaleFactor()
+	 */
+	@Override
+	public float getScaleFactor() {
+		// TODO Auto-generated method stub
+		return 1.0F;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#sendEntitySyncPacket()
+	 */
+	@Override
+	public void sendEntitySyncPacket() {
+		// TODO Auto-generated method stub
+		
 	}
 }
