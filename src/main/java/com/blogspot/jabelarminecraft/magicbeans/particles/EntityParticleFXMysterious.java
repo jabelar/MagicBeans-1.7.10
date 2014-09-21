@@ -16,14 +16,14 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.particles;
 
-import net.minecraft.client.particle.EntitySpellParticleFX;
+import net.minecraft.client.particle.EntityAuraFX;
 import net.minecraft.world.World;
 
 /**
  * @author jabelar
  *
  */
-public class EntityParticleFXMysterious extends EntitySpellParticleFX
+public class EntityParticleFXMysterious extends EntityAuraFX
 {
 
 	/**
@@ -40,7 +40,9 @@ public class EntityParticleFXMysterious extends EntitySpellParticleFX
 			double parMotionX, double parMotionY, double parMotionZ) 
 	{
 		super(parWorld, parX, parY, parZ, parMotionX, parMotionY, parMotionZ);
-		setRBGColorF(0xAAAAAA, 0x000000, 0xAAAAAA);
+		setParticleTextureIndex(82); // same as happy villager
+		particleScale = 2.0F;
+		setRBGColorF(0x88, 0x00, 0x88);
 	}
 
 }
