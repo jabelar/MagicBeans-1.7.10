@@ -16,9 +16,13 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.World;
+
+import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 
 /**
  * @author jabelar
@@ -56,6 +60,7 @@ public class EntityMysteriousStranger extends EntityCreature
 	@Override
 	public void onUpdate()
 	{
+		super.onUpdate();
 //		if (worldObj.isRemote && ticksExisted%40==0)
 //		{
 //			for (int var3 = 0; var3 < 7; ++var3)
@@ -66,12 +71,14 @@ public class EntityMysteriousStranger extends EntityCreature
 //			worldObj.spawnParticle("happyVillager", posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
 //			}
 //		}
-		if (worldObj.isRemote && rand.nextFloat()<0.3F)
+		if (worldObj.isRemote && rand.nextFloat()<0.1F)
 		{
 			double var4 = rand.nextGaussian() * 0.02D;
 			double var6 = rand.nextGaussian() * 0.02D;
 			double var8 = rand.nextGaussian() * 0.02D;
-			worldObj.spawnParticle("happyVillager", posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
-		}
+//			worldObj.spawnParticle("happyVillager", posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
+			EntityFX particleMysterious = new EntityParticleFXMysterious(worldObj, posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
+			Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
+	}
 	}
 }
