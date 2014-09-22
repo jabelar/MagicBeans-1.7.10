@@ -23,13 +23,13 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -43,19 +43,60 @@ import org.lwjgl.opengl.GL12;
  */
 public class GuiMysteriousStranger extends GuiScreen
 {
-	private final int bookImageWidth = 192;
 	private final int bookImageHeight = 192;
-	private GuiButton buttonSign;
-	private GuiButton buttonDone;
-	private GuiButton buttonFinalize;
-	private GuiButton buttonCancel;
-
+	private final int bookImageWidth = 192;
+	private final int currPage = 0;
+	private final int bookTotalPages = 1;
+    private static final ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
+	
 	public GuiMysteriousStranger()
 	{
 		// DEBUG
 		System.out.println("GuiMysteriousStranger() constructor");
-		
+		// Don't need to do anything in constructor because the init() function is 
+		// also directly called.
 	}
+
+    /**
+     * Adds the buttons (and other controls) to the screen in question.
+     */
+    @Override
+	public void initGui() 
+    {
+    	// DEBUG
+    	System.out.println("GuiMysteriousStranger initGUI()");
+        buttonList.clear();
+        Keyboard.enableRepeatEvents(true);
+
+		buttonList.add(new GuiButton(3, width / 2 - 100, 4 + bookImageHeight , 98, 20, I18n.format("book.signButton", new Object[0])));
+        buttonList.add(new GuiButton(0, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.done", new Object[0])));
+        buttonList.add(new GuiButton(5, width / 2 - 100, 4 + bookImageHeight, 98, 20, I18n.format("book.finalizeButton", new Object[0])));
+        buttonList.add(new GuiButton(4, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.cancel", new Object[0])));
+
+        updateButtons();
+
+    }
+
+    private void updateButtons()
+    {
+//        buttonNextPage.visible = !field_146480_s && (currPage < bookTotalPages - 1 || bookIsUnsigned);
+//        buttonPreviousPage.visible = !field_146480_s && currPage > 0;
+//        buttonDone.visible = !bookIsUnsigned || !field_146480_s;
+//
+//            buttonSign.visible = !field_146480_s;
+//            buttonCancel.visible = field_146480_s;
+//            buttonFinalize.visible = field_146480_s;
+//            buttonFinalize.enabled = bookTitle.trim().length() > 0;
+    }
+
+    /**
+     * Called from the main game loop to update the screen.
+     */
+    @Override
+	public void updateScreen() 
+    {
+    	
+    }
 	
     /**
      * Draws the screen and all the components in it.
@@ -63,17 +104,45 @@ public class GuiMysteriousStranger extends GuiScreen
     @Override
 	public void drawScreen(int parWidth, int parHeight, float p_73863_3_)
     {
-        int k;
-
-        for (k = 0; k < buttonList.size(); ++k)
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        mc.getTextureManager().bindTexture(bookGuiTextures);
+        int k = (width - bookImageWidth ) / 2;
+        byte b0 = 2;
+        drawTexturedModalRect(k, b0, 0, 0, bookImageWidth, bookImageHeight);
+        String s;
+        String s1;
+        int l;
         {
-            ((GuiButton)buttonList.get(k)).drawButton(mc, parWidth, parHeight);
+            s = I18n.format("book.pageIndicator", new Object[] {Integer.valueOf(currPage + 1), bookTotalPages});
+            s1 = "";
+
+                if (fontRendererObj.getBidiFlag())
+                {
+                    s1 = s1 + "_";
+                }
+                else
+                {
+                    s1 = s1 + "" + EnumChatFormatting.GRAY + "_";
+                }
+
+            l = fontRendererObj.getStringWidth(s);
+            fontRendererObj.drawString(s, k - l + bookImageWidth - 44, b0 + 16, 0);
+            fontRendererObj.drawSplitString(s1, k + 36, b0 + 16 + 16, 116, 0);
         }
 
-        for (k = 0; k < labelList.size(); ++k)
-        {
-            ((GuiLabel)labelList.get(k)).func_146159_a(mc, parWidth, parHeight);
-        }
+        super.drawScreen(parWidth, parHeight, p_73863_3_);
+
+//    	drawWorldBackground(0);
+//
+//        for (int k = 0; k < buttonList.size(); ++k)
+//        {
+//            ((GuiButton)buttonList.get(k)).drawButton(mc, parWidth, parHeight);
+//        }
+//
+//        for (int k = 0; k < labelList.size(); ++k)
+//        {
+//            ((GuiLabel)labelList.get(k)).func_146159_a(mc, parWidth, parHeight);
+//        }
     }
 
     @Override
@@ -228,47 +297,6 @@ public class GuiMysteriousStranger extends GuiScreen
     }
 
     /**
-     * Adds the buttons (and other controls) to the screen in question.
-     */
-    @Override
-	public void initGui() 
-    {
-    	// DEBUG
-    	System.out.println("GuiMysteriousStranger initGUI()");
-        buttonList.clear();
-        Keyboard.enableRepeatEvents(true);
-
-			buttonList.add(buttonSign = new GuiButton(3, width / 2 - 100, 4 + bookImageHeight , 98, 20, I18n.format("book.signButton", new Object[0])));
-            buttonList.add(buttonDone = new GuiButton(0, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.done", new Object[0])));
-            buttonList.add(buttonFinalize = new GuiButton(5, width / 2 - 100, 4 + bookImageHeight, 98, 20, I18n.format("book.finalizeButton", new Object[0])));
-            buttonList.add(buttonCancel = new GuiButton(4, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.cancel", new Object[0])));
-
-        updateButtons();
-
-    }
-
-    private void updateButtons()
-    {
-//        buttonNextPage.visible = !field_146480_s && (currPage < bookTotalPages - 1 || bookIsUnsigned);
-//        buttonPreviousPage.visible = !field_146480_s && currPage > 0;
-//        buttonDone.visible = !bookIsUnsigned || !field_146480_s;
-//
-//            buttonSign.visible = !field_146480_s;
-//            buttonCancel.visible = field_146480_s;
-//            buttonFinalize.visible = field_146480_s;
-//            buttonFinalize.enabled = bookTitle.trim().length() > 0;
-    }
-
-    /**
-     * Called from the main game loop to update the screen.
-     */
-    @Override
-	public void updateScreen() 
-    {
-    	
-    }
-
-    /**
      * Called when the screen is unloaded. Used to disable keyboard repeat events
      */
     @Override
@@ -293,9 +321,9 @@ public class GuiMysteriousStranger extends GuiScreen
         {
             drawGradientRect(0, 0, width, height, -1072689136, -804253680);
         }
-        else
-        {
-            drawBackground(parBackgroundIndex);
+       else
+       {
+           drawBackground(parBackgroundIndex);
         }
     }
 
