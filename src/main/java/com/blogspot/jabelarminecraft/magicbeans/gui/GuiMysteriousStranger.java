@@ -37,6 +37,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+
 /**
  * @author jabelar
  *
@@ -47,8 +49,9 @@ public class GuiMysteriousStranger extends GuiScreen
 	private final int bookImageWidth = 192;
 	private final int currPage = 0;
 	private final int bookTotalPages = 1;
-    private static final ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
-	
+    private static final ResourceLocation bookGuiTextures = new ResourceLocation(MagicBeans.MODID+":textures/gui/book_jack.png");
+	private GuiButton buttonDone;
+    
 	public GuiMysteriousStranger()
 	{
 		// DEBUG
@@ -68,10 +71,11 @@ public class GuiMysteriousStranger extends GuiScreen
         buttonList.clear();
         Keyboard.enableRepeatEvents(true);
 
-		buttonList.add(new GuiButton(3, width / 2 - 100, 4 + bookImageHeight , 98, 20, I18n.format("book.signButton", new Object[0])));
-        buttonList.add(new GuiButton(0, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.done", new Object[0])));
-        buttonList.add(new GuiButton(5, width / 2 - 100, 4 + bookImageHeight, 98, 20, I18n.format("book.finalizeButton", new Object[0])));
-        buttonList.add(new GuiButton(4, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.cancel", new Object[0])));
+        buttonDone = new GuiButton(0, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.done", new Object[0]));
+		
+        buttonList.add(buttonDone);
+//        buttonList.add(new GuiButton(5, width / 2 - 100, 4 + bookImageHeight, 98, 20, I18n.format("book.finalizeButton", new Object[0])));
+//        buttonList.add(new GuiButton(4, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.cancel", new Object[0])));
 
         updateButtons();
 
@@ -274,7 +278,13 @@ public class GuiMysteriousStranger extends GuiScreen
     @Override
 	protected void actionPerformed(GuiButton parButton) 
     {
-    	
+    	if (parButton == buttonDone)
+    	{
+    		// DEBUG
+    		System.out.println("actionPerformed() buttonDone");
+    		mc.thePlayer.inventory.addItemStackToInventory(new ItemStack(MagicBeans.magicBeans));
+            mc.displayGuiScreen((GuiScreen)null);
+    	}
     }
 
     /**

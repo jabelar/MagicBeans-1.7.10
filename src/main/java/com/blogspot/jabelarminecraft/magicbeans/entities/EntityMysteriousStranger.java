@@ -89,6 +89,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	@Override
 	public boolean interact(EntityPlayer parPlayer)
 	{
+		this.collideWithNearbyEntities();;
 		if (parPlayer.worldObj.isRemote)
 		{
 			Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger());
