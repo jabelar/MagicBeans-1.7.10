@@ -28,6 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.VersionChecker;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
@@ -91,6 +92,8 @@ public class ClientProxy extends CommonProxy
 		super.fmlLifeCycleEvent(event);
 
 		// do client-specific stuff
+		Thread versionCheckThread = new Thread(new VersionChecker(), "Version Check");
+		versionCheckThread.start();
 	}
 
 	/*
