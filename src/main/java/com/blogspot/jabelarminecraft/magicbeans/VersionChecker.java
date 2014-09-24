@@ -29,47 +29,57 @@ import org.apache.commons.io.IOUtils;
  */
 public class VersionChecker implements Runnable
 {
-	private static boolean isLatestVersion = false;
-	private static String latestVersion = "";
+    private static boolean isLatestVersion = false;
+    private static String latestVersion = "";
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
-	@Override
-	public void run() 
-	{
-		InputStream in = null;
-		try 
-		{
-			in = new URL("https://raw.githubusercontent.com/jabelar/MagicBeans-1.7.10/master/src/main/java/com/blogspot/jabelarminecraft/magicbeans/version_file").openStream();
-		} 
-		catch 
-		(MalformedURLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    @Override
+    public void run() 
+    {
+        InputStream in = null;
+        try 
+        {
+            in = new URL("https://raw.githubusercontent.com/jabelar/MagicBeans-1.7.10/master/src/main/java/com/blogspot/jabelarminecraft/magicbeans/version_file").openStream();
+        } 
+        catch 
+        (MalformedURLException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+        catch (IOException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-		try 
-		{
-			latestVersion = IOUtils.toString(in);
-		} 
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		finally 
-		{
-			IOUtils.closeQuietly(in);
-		}
-		System.out.println("Latest mod version = "+latestVersion);
-	    isLatestVersion = MagicBeans.MODVERSION.equals(latestVersion);
-	    System.out.println("Are you running latest version = "+isLatestVersion);
-	}
+        try 
+        {
+            latestVersion = IOUtils.toString(in);
+        } 
+        catch (IOException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+        finally 
+        {
+            IOUtils.closeQuietly(in);
+        }
+        System.out.println("Latest mod version = "+latestVersion);
+        isLatestVersion = MagicBeans.MODVERSION.equals(latestVersion);
+        System.out.println("Are you running latest version = "+isLatestVersion);
+    }
+    
+    public boolean isLatestVersion()
+    {
+    	return isLatestVersion;
+    }
+    
+    public String getLatestVersion()
+    {
+    	return latestVersion;
+    }
 }

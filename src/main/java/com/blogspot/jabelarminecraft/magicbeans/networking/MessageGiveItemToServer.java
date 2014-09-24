@@ -1,0 +1,84 @@
+/**
+    Copyright (C) 2014 by jabelar
+
+    This file is part of jabelar's Minecraft Forge modding examples; as such,
+    you can redistribute it and/or modify it under the terms of the GNU
+    General Public License as published by the Free Software Foundation,
+    either version 3 of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    For a copy of the GNU General Public License see <http://www.gnu.org/licenses/>.
+*/
+
+package com.blogspot.jabelarminecraft.magicbeans.networking;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.common.registry.GameRegistry;
+
+/**
+ * @author jabelar
+ *
+ */
+public class MessageGiveItemToServer implements IMessage 
+{
+    
+    private ItemStack itemToGive;
+    public String itemName;
+
+    public MessageGiveItemToServer() 
+    { 
+    	// need this constructor
+    }
+
+    public MessageGiveItemToServer(ItemStack parItemStack) 
+    {
+        itemToGive = parItemStack;
+        // DEBUG
+        System.out.println("MessageGiveItemToServer constructor");
+    }
+
+    @Override
+    public void fromBytes(ByteBuf buf) 
+    {
+    	itemName = ByteBufUtils.readUTF8String(buf); // this class is very useful in general for writing more complex objects
+    	// DEBUG
+    	System.out.println("fromBytes = "+itemName);
+    }
+
+    @Override
+    public void toBytes(ByteBuf buf) 
+    {
+    	itemName = GameRegistry.findUniqueIdentifierFor(itemToGive.getItem()).name;
+        ByteBufUtils.writeUTF8String(buf, itemName);
+//        ByteBufUtils.writeTag(buf, theTileEntity.;);
+        // DEBUG
+        System.out.println("toBytes encoded = "+itemName);
+    }
+
+    public static class Handler implements IMessageHandler<MessageGiveItemToServer, IMessage> 
+    {
+        
+        @Override
+        public IMessage onMessage(MessageGiveItemToServer message, MessageContext ctx) 
+        {
+        	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
+        	// DEBUG
+            System.out.println(String.format("Received %s from %s", message.itemName, thePlayer.getDisplayName()));
+            thePlayer.inventory.addItemStackToInventory(new ItemStack(MagicBeans.magicBeans));
+            return null; // no response in this case
+        }
+    }
+}

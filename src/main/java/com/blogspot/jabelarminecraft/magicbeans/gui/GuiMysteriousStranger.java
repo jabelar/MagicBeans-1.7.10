@@ -38,6 +38,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemToServer;
 
 /**
  * @author jabelar
@@ -282,7 +283,7 @@ public class GuiMysteriousStranger extends GuiScreen
     	{
     		// DEBUG
     		System.out.println("actionPerformed() buttonDone");
-    		mc.thePlayer.inventory.addItemStackToInventory(new ItemStack(MagicBeans.magicBeans));
+    		MagicBeans.network.sendToServer(new MessageGiveItemToServer(new ItemStack(MagicBeans.magicBeans)));
             mc.displayGuiScreen((GuiScreen)null);
     	}
     }

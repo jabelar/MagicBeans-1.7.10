@@ -39,6 +39,7 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.items.MagicBeansMonsterPlacer;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemToServer;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
@@ -92,15 +93,7 @@ public class CommonProxy
     {
         // register custom event listeners
         registerEventListeners();
- 
-        // register networking channel 
-        // registerNetworkingChannel();
-        
-        // register networking messages
-                
-        // register server packet handler
-        // registerServerPacketHandler();
-        
+         
         // register recipes here to allow use of items from other mods
         registerRecipes();
     }
@@ -152,8 +145,10 @@ public class CommonProxy
 		// DEBUG
 		System.out.println("registering simple networking");
 		MagicBeans.network = NetworkRegistry.INSTANCE.newSimpleChannel(MagicBeans.NETWORK_CHANNEL_NAME);
-        MagicBeans.network.registerMessage(MessageToServer.Handler.class, MessageToServer.class, 0, Side.SERVER);
-        MagicBeans.network.registerMessage(MessageToClient.Handler.class, MessageToClient.class, 1, Side.CLIENT);
+		int packetId = 0;
+        MagicBeans.network.registerMessage(MessageToServer.Handler.class, MessageToServer.class, packetId++, Side.SERVER);
+        MagicBeans.network.registerMessage(MessageToClient.Handler.class, MessageToClient.class, packetId++, Side.CLIENT);
+        MagicBeans.network.registerMessage(MessageGiveItemToServer.Handler.class, MessageGiveItemToServer.class, packetId++, Side.SERVER);
 	}
 	
 	/*	 
