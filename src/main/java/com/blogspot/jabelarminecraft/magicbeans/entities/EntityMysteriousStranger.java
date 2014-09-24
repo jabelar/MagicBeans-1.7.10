@@ -35,6 +35,7 @@ import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMyster
  */
 public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans
 {
+	private EntityCowMagicBeans cowSummonedBy = null;
 
 	/**
 	 * @param parWorld
@@ -92,7 +93,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		this.collideWithNearbyEntities();;
 		if (parPlayer.worldObj.isRemote)
 		{
-			Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger());
+			Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger(this));
 		}
 		return false;
 		
@@ -186,5 +187,17 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	public void sendEntitySyncPacket() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void setSummonedBy(EntityCowMagicBeans parCowMagicBeans)
+	{
+		cowSummonedBy = parCowMagicBeans;
+		// DEBUG
+		System.out.println("EntityMysteriousStranger setSummonedBy = "+(cowSummonedBy != null));
+	}
+	
+	public EntityCowMagicBeans getSummonedBy()
+	{
+		return cowSummonedBy;
 	}
 }

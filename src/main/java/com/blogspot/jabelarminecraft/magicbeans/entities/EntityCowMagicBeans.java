@@ -87,6 +87,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		                      * 360.0F), 0.0F);
 		                worldObj.spawnEntityInWorld(entityToSpawn);
 		                entityToSpawn.playLivingSound();
+		                ((EntityMysteriousStranger)entityToSpawn).setSummonedBy(this);
 		            }
 		            else
 		            {

@@ -38,6 +38,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemToServer;
 
 /**
@@ -46,6 +47,8 @@ import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemToServ
  */
 public class GuiMysteriousStranger extends GuiScreen
 {
+	private EntityMysteriousStranger entityMysteriousStranger = null;
+	
 	private final int bookImageHeight = 192;
 	private final int bookImageWidth = 192;
 	private final int currPage = 0;
@@ -59,6 +62,15 @@ public class GuiMysteriousStranger extends GuiScreen
 		System.out.println("GuiMysteriousStranger() constructor");
 		// Don't need to do anything in constructor because the init() function is 
 		// also directly called.
+	}
+
+	public GuiMysteriousStranger(EntityMysteriousStranger parMysteriousStranger)
+	{
+		// DEBUG
+		System.out.println("GuiMysteriousStranger() constructor");
+		// Don't need to do anything in constructor because the init() function is 
+		// also directly called.
+		entityMysteriousStranger = parMysteriousStranger;
 	}
 
     /**
@@ -284,7 +296,8 @@ public class GuiMysteriousStranger extends GuiScreen
     		// DEBUG
     		System.out.println("actionPerformed() buttonDone");
     		MagicBeans.network.sendToServer(new MessageGiveItemToServer(new ItemStack(MagicBeans.magicBeans)));
-            mc.displayGuiScreen((GuiScreen)null);
+    		entityMysteriousStranger.getSummonedBy().setDead();
+    		mc.displayGuiScreen((GuiScreen)null);
     	}
     }
 
