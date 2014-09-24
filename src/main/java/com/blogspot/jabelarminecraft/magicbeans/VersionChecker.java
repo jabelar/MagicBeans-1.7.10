@@ -41,7 +41,7 @@ public class VersionChecker implements Runnable
 		InputStream in = null;
 		try 
 		{
-			in = new URL( "http://jakarta.apache.org" ).openStream();
+			in = new URL("https://raw.githubusercontent.com/jabelar/MagicBeans-1.7.10/master/src/main/java/com/blogspot/jabelarminecraft/magicbeans/version_file").openStream();
 		} 
 		catch 
 		(MalformedURLException e) 
@@ -69,6 +69,7 @@ public class VersionChecker implements Runnable
 			IOUtils.closeQuietly(in);
 		}
 		System.out.println("Latest mod version = "+latestVersion);
-	    // isLatestVersion = MagicBeans.MODVERSION.equals(latestVersion);
+	    isLatestVersion = MagicBeans.MODVERSION.equals(latestVersion);
+	    System.out.println("Are you running latest version = "+isLatestVersion);
 	}
 }
