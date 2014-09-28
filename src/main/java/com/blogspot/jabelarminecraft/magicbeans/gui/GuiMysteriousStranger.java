@@ -295,8 +295,7 @@ public class GuiMysteriousStranger extends GuiScreen
     	{
     		// DEBUG
     		System.out.println("actionPerformed() buttonDone");
-    		MagicBeans.network.sendToServer(new MessageGiveItemToServer(new ItemStack(MagicBeans.magicBeans)));
-    		entityMysteriousStranger.getSummonedBy().setDead();
+    		MagicBeans.network.sendToServer(new MessageGiveItemToServer(new ItemStack(MagicBeans.magicBeans), entityMysteriousStranger.getCowSummonedBy()));
     		mc.displayGuiScreen((GuiScreen)null);
     	}
     }

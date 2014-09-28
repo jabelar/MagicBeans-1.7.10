@@ -21,16 +21,28 @@ package com.blogspot.jabelarminecraft.magicbeans.items;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeansUtilities;
 
 public class ItemMagicBeans extends ItemSeedFoodMagicBeans 
 {
-    public ItemMagicBeans() 
+    private static final ItemStack p_77653_1_ = null;
+
+	public ItemMagicBeans() 
     {
         super(1, 0.3F, MagicBeans.blockMagicBeanStalk, Blocks.farmland);
         setUnlocalizedName("magicbeans");
         setTextureName("magicbeans:magicbeans");
         setCreativeTab(CreativeTabs.tabFood);
+    }
+    
+    @Override
+    public String getItemStackDisplayName(ItemStack parItemStack) 
+    {
+        return (MagicBeansUtilities.stringToRainbow(StatCollector.translateToLocal(getUnlocalizedNameInefficiently(p_77653_1_) + ".name")).trim());
+//        return (""+EnumChatFormatting.DARK_AQUA+StatCollector.translateToLocal(getUnlocalizedNameInefficiently(p_77653_1_) + ".name")).trim();
     }
 }

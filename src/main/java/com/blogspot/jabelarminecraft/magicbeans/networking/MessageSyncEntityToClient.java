@@ -17,41 +17,36 @@
 package com.blogspot.jabelarminecraft.magicbeans.networking;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansUtilities;
-import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * @author jabelar
  *
  */
-public class MessageGiveItemToServer implements IMessage 
+public class MessageSyncEntityToClient implements IMessage 
 {
-    
-    private ItemStack itemToGive;
-    public String itemName;
-    private EntityCowMagicBeans entityCowMagicBeans;
-    public static int entityID;
+    private int entityId ;
+    private NBTTagCompound entityExtPropsCompound;
 
-    public MessageGiveItemToServer() 
+    public MessageSyncEntityToClient() 
     { 
     	// need this constructor
     }
 
-    public MessageGiveItemToServer(ItemStack parItemStack, EntityCowMagicBeans parCowMagicBeans) 
+    public MessageSyncEntityToClient(int parEntityId, NBTTagCompound parTagCompound) 
     {
-        itemToGive = parItemStack;
-        entityCowMagicBeans = parCowMagicBeans;
+    	entityId = parEntityId;
+        entityExtPropsCompound = parTagCompound;
         // DEBUG
         System.out.println("MessageGiveItemToServer constructor");
     }
@@ -59,36 +54,33 @@ public class MessageGiveItemToServer implements IMessage
     @Override
     public void fromBytes(ByteBuf buf) 
     {
-    	itemName = ByteBufUtils.readUTF8String(buf); // this class is very useful in general for writing more complex objects
-    	entityID = ByteBufUtils.readVarInt(buf, 4);
+    	entityId = ByteBufUtils.readVarInt(buf, 4);
+    	entityExtPropsCompound = ByteBufUtils.readTag(buf); // this class is very useful in general for writing more complex objects
     	// DEBUG
-    	System.out.println("fromBytes = "+itemName+" from Entity ID = "+entityID);
+    	System.out.println("fromBytes");
     }
 
     @Override
     public void toBytes(ByteBuf buf) 
     {
-    	itemName = GameRegistry.findUniqueIdentifierFor(itemToGive.getItem()).name;
-    	entityID = entityCowMagicBeans.getEntityId();
-    	ByteBufUtils.writeUTF8String(buf, itemName);
-    	ByteBufUtils.writeVarInt(buf, entityID, 4);
+    	ByteBufUtils.writeVarInt(buf, entityId, 4);
+    	ByteBufUtils.writeTag(buf, entityExtPropsCompound);
         // DEBUG
-        System.out.println("toBytes encoded = "+itemName+" from Entity ID ="+entityID);
+        System.out.println("toBytes encoded");
     }
 
-    public static class Handler implements IMessageHandler<MessageGiveItemToServer, IMessage> 
+    public static class Handler implements IMessageHandler<MessageSyncEntityToClient, IMessage> 
     {
         
         @Override
-        public IMessage onMessage(MessageGiveItemToServer message, MessageContext ctx) 
+        public IMessage onMessage(MessageSyncEntityToClient message, MessageContext ctx) 
         {
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
+        	IEntityMagicBeans theEntity = (IEntityMagicBeans)MagicBeansUtilities.getEntityByID(message.entityId, thePlayer.worldObj);
+        	theEntity.setExtProps(message.entityExtPropsCompound);
         	// DEBUG
-            System.out.println(String.format("Received %s from %s", message.itemName, thePlayer.getDisplayName()));
-            thePlayer.inventory.addItemStackToInventory(new ItemStack(MagicBeans.magicBeans));
-            Entity theEntity = MagicBeansUtilities.getEntityByID(entityID, thePlayer.worldObj);
-            theEntity.setDead();
+        	System.out.println("MessageSyncEnitityToClient onMessage(), entity ID = "+message.entityId);
             return null; // no response in this case
         }
     }
- }
+}

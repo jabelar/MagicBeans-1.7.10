@@ -18,6 +18,9 @@ package com.blogspot.jabelarminecraft.magicbeans.entities;
 
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.EntityCreature;
@@ -26,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeansUtilities;
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 
@@ -35,7 +39,7 @@ import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMyster
  */
 public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans
 {
-	private EntityCowMagicBeans cowSummonedBy = null;
+    private NBTTagCompound extPropsCompound = new NBTTagCompound();
 
 	/**
 	 * @param parWorld
@@ -43,7 +47,8 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	public EntityMysteriousStranger(World parWorld) 
 	{
 		super(parWorld);
-		// TODO Auto-generated constructor stub
+		
+		initExtProps();
 	}
 
 	// you don't have to call this as it is called automatically during EntityLiving subclass creation
@@ -121,83 +126,126 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()
 	 */
 	@Override
-	public void initExtProps() {
-		// TODO Auto-generated method stub
-		
+	public void initExtProps() 
+	{
+        extPropsCompound.setFloat("scaleFactor", 1.0F);
+        extPropsCompound.setInteger("cowSummonedById", -1);
+        extPropsCompound.setInteger("playerSummonedById", -1);		
 	}
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtProps()
 	 */
-	@Override
-	public NBTTagCompound getExtProps() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public NBTTagCompound getExtProps()
+    {
+        return extPropsCompound;
+    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtProps(net.minecraft.nbt.NBTTagCompound)
 	 */
-	@Override
-	public void setExtProps(NBTTagCompound parCompound) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void setExtProps(NBTTagCompound parCompound) 
+    {
+        extPropsCompound = parCompound;
+        
+        // probably need to be careful sync'ing here as this is called by
+        // sync process itself -- don't create infinite loop
+    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtPropsToBuffer(io.netty.buffer.ByteBufOutputStream)
 	 */
-	@Override
-	public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    // no need to return the buffer because the buffer is operated on directly
+    public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) 
+    {
+        try {
+            parBBOS.writeFloat(extPropsCompound.getFloat("scaleFactor"));
+            parBBOS.writeInt(extPropsCompound.getInteger("cowSummonedById"));
+            parBBOS.writeInt(extPropsCompound.getInteger("playerSummonedById"));
+        } catch (IOException e) { e.printStackTrace(); }        
+    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtPropsFromBuffer(io.netty.buffer.ByteBufInputStream)
 	 */
-	@Override
-	public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    // no need to return anything because the extended properties tag is updated directly
+    public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) 
+    {
+        try {
+            extPropsCompound.setFloat("scaleFactor", parBBIS.readFloat());
+            extPropsCompound.setInteger("cowSummonedById", parBBIS.readInt());
+            extPropsCompound.setInteger("playerSummonedById", parBBIS.readInt());
+        } catch (IOException e) { e.printStackTrace(); }
+    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setScaleFactor(float)
 	 */
-	@Override
-	public void setScaleFactor(float parScaleFactor) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void setScaleFactor(float parScaleFactor)
+    {
+        extPropsCompound.setFloat("scaleFactor", Math.abs(parScaleFactor));
+       
+        // don't forget to sync client and server
+        sendEntitySyncPacket();
+    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getScaleFactor()
 	 */
-	@Override
-	public float getScaleFactor() {
-		// TODO Auto-generated method stub
-		return 1.0F;
+    @Override
+    public float getScaleFactor()
+    {
+        return extPropsCompound.getFloat("scaleFactor");
+    }
+	
+	public EntityCowMagicBeans getCowSummonedBy()
+	{
+		int cowSummonedById = extPropsCompound.getInteger("cowSummonedById");
+
+		// DEBUG
+		System.out.println("EntityMysteriousStranger getCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
+		return (EntityCowMagicBeans) MagicBeansUtilities.getEntityByID(cowSummonedById, worldObj);
+	}
+	
+	public void setCowSummonedBy(EntityCowMagicBeans parCowMagicBeans)
+	{
+		// DEBUG
+		System.out.println("EntityMysteriousStranger setCowSummonedBy = "+parCowMagicBeans.getEntityId()+", on world.isRemote = "+worldObj.isRemote);
+
+		extPropsCompound.setInteger("cowSummonedById", parCowMagicBeans.getEntityId());
+	       
+        // don't forget to sync client and server
+        sendEntitySyncPacket();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#sendEntitySyncPacket()
-	 */
-	@Override
-	public void sendEntitySyncPacket() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void setSummonedBy(EntityCowMagicBeans parCowMagicBeans)
+	public EntityPlayer getPlayerSummonedBy() 
 	{
-		cowSummonedBy = parCowMagicBeans;
+		int playerSummonedById = extPropsCompound.getInteger("playerSummonedById");
+
 		// DEBUG
-		System.out.println("EntityMysteriousStranger setSummonedBy = "+(cowSummonedBy != null));
+		System.out.println("EntityMysteriousStranger getPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
+		return (EntityPlayer) MagicBeansUtilities.getEntityByID(playerSummonedById, worldObj);
+	}
+
+	public void setPlayerSummonedBy(EntityPlayer parPlayerSummonedBy) 
+	{
+		// DEBUG
+		System.out.println("EntityMysteriousStranger setPlayerSummonedBy = "+parPlayerSummonedBy.getEntityId()+", on world.isRemote = "+worldObj.isRemote);
+
+		extPropsCompound.setInteger("cowSummonedById", parPlayerSummonedBy.getEntityId());
+	       
+        // don't forget to sync client and server
+        sendEntitySyncPacket();
 	}
 	
-	public EntityCowMagicBeans getSummonedBy()
+	@Override
+	public void sendEntitySyncPacket()
 	{
-		return cowSummonedBy;
+		MagicBeansUtilities.sendEntitySyncPacket(this);
 	}
 }
