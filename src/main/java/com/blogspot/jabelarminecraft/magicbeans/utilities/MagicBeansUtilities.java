@@ -14,12 +14,13 @@
     For a copy of the GNU General Public License see <http://www.gnu.org/licenses/>.
 */
 
-package com.blogspot.jabelarminecraft.magicbeans;
+package com.blogspot.jabelarminecraft.magicbeans.utilities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageSyncEntityToClient;
 

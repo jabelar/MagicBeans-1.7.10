@@ -29,9 +29,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeansUtilities;
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 /**
  * @author jabelar
@@ -214,10 +214,12 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	
 	public void setCowSummonedBy(EntityCowMagicBeans parCowMagicBeans)
 	{
+		int cowSummonedById = parCowMagicBeans.getEntityId();
+		
 		// DEBUG
-		System.out.println("EntityMysteriousStranger setCowSummonedBy = "+parCowMagicBeans.getEntityId()+", on world.isRemote = "+worldObj.isRemote);
+		System.out.println("EntityMysteriousStranger setCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
 
-		extPropsCompound.setInteger("cowSummonedById", parCowMagicBeans.getEntityId());
+		extPropsCompound.setInteger("cowSummonedById", cowSummonedById);
 	       
         // don't forget to sync client and server
         sendEntitySyncPacket();
@@ -234,10 +236,12 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 
 	public void setPlayerSummonedBy(EntityPlayer parPlayerSummonedBy) 
 	{
+		int playerSummonedById = parPlayerSummonedBy.getEntityId();
+		
 		// DEBUG
-		System.out.println("EntityMysteriousStranger setPlayerSummonedBy = "+parPlayerSummonedBy.getEntityId()+", on world.isRemote = "+worldObj.isRemote);
+		System.out.println("EntityMysteriousStranger setPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
 
-		extPropsCompound.setInteger("cowSummonedById", parPlayerSummonedBy.getEntityId());
+		extPropsCompound.setInteger("playerSummonedById", playerSummonedById);
 	       
         // don't forget to sync client and server
         sendEntitySyncPacket();
