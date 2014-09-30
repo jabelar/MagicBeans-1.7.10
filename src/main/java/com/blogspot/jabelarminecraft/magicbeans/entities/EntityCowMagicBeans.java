@@ -80,7 +80,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
         		{
         			EntityPlayer playerLeashedTo = (EntityPlayer) entityLeashedTo;
         			Vec3 playerLookVector = playerLeashedTo.getLookVec();
-        			playerLeashedTo.addChatMessage(new ChatComponentText("A mysterious stranger appears!"));
+        			playerLeashedTo.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("A mysterious stranger appears!")));
 		            String entityToSpawnNameFull = MagicBeans.MODID+".Mysterious Stranger";
 		            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
 		            {

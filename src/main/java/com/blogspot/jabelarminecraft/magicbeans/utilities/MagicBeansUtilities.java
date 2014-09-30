@@ -16,6 +16,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.utilities;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -45,7 +46,7 @@ public class MagicBeansUtilities
 			EnumChatFormatting.YELLOW,
 			EnumChatFormatting.GREEN,
 			EnumChatFormatting.AQUA,
-			EnumChatFormatting.BLACK,
+			EnumChatFormatting.BLUE,
 			EnumChatFormatting.LIGHT_PURPLE,
 			EnumChatFormatting.DARK_PURPLE
 			};
@@ -55,7 +56,37 @@ public class MagicBeansUtilities
 		}
 		return outputString;
 	}
-	
+
+	public static String stringToGolden(String parString, int parShineLocation)
+	{
+		int stringLength = parString.length();
+		if (stringLength < 1)
+		{
+			return "";
+		}
+		String outputString = "";
+		for (int i = 0; i < stringLength; i++)
+		{
+			if ((i+parShineLocation+Minecraft.getSystemTime()/20)%88==0)
+			{
+				outputString = outputString+EnumChatFormatting.WHITE+parString.substring(i, i+1);				
+			}
+			else if ((i+parShineLocation+Minecraft.getSystemTime()/20)%88==1)
+			{
+				outputString = outputString+EnumChatFormatting.YELLOW+parString.substring(i, i+1);				
+			}
+			else if ((i+parShineLocation+Minecraft.getSystemTime()/20)%88==87)
+			{
+				outputString = outputString+EnumChatFormatting.YELLOW+parString.substring(i, i+1);				
+			}
+			else
+			{
+				outputString = outputString+EnumChatFormatting.GOLD+parString.substring(i, i+1);								
+			}
+		}
+		return outputString;
+	}
+
 	public static Entity getEntityByID(int entityID, World world)        
 	{         
 	    for(Object o: world.getLoadedEntityList())                

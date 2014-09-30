@@ -28,6 +28,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -97,7 +98,7 @@ public class ItemGoldenEgg extends Item
     // unless you specifically check for localization here and convert
        public String getItemStackDisplayName(ItemStack par1ItemStack)
        {
-           return "Golden Egg";
+           return MagicBeansUtilities.stringToGolden("Golden Egg", 4);
        }  
 
 
