@@ -28,7 +28,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
 {
 	public boolean hasSpawnedCastle = false;
 	protected int ticksExisted = 0 ;
-	protected int maxStalkHeight = 132;
+	protected int maxStalkHeight = 75;
 	
 
     @Override
@@ -79,8 +79,10 @@ public class TileEntityMagicBeanStalk extends TileEntity
 				{
 					// DEBUG
 					System.out.println("Look up!");
-					MagicBeans.structureCastleTalia.generate(this, 0, -2, 0);
-					hasSpawnedCastle = true;
+//					MagicBeans.structureCastleTalia.generate(this, 0, -2, 0);
+					MagicBeans.structureCastleTalia.shouldGenerate = true;
+					MagicBeans.structureCastleTalia.generateTick(this, 0, -2, 0);
+					hasSpawnedCastle = MagicBeans.structureCastleTalia.finishedGenerating;
 				}
 				else
 				{

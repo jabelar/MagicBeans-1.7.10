@@ -45,11 +45,9 @@ public class Structure
 	protected int startY;
 	protected int startZ;
 	
-	protected boolean shouldGenerate = false;
-	protected boolean finishedGenerating = false;
-	protected int tickX;
-	protected int tickY;
-	protected int tickZ;
+	public boolean shouldGenerate = false;
+	public boolean finishedGenerating = false;
+	protected int ticksGenerating = 0;
 
 	String[][][] blockNameArray = null;
 	int[][][] blockMetaArray = null;
@@ -237,7 +235,6 @@ public class Structure
 	    				String blockName = blockNameArray[indX][indY][indZ];
 	    				if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
 	    				{
-//	    					theWorld.setBlockToAir(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ);
 							theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
 									Block.getBlockFromName(blockName), 0, 2);
 	    				}
@@ -286,6 +283,12 @@ public class Structure
 	 */
 	public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
+		// exit if generating not started or if finished
+		if (!shouldGenerate || finishedGenerating)
+		{
+			return;
+		}
+		
 		TileEntity theEntity = parEntity;
 		theWorld = theEntity.getWorldObj();
 
@@ -302,58 +305,64 @@ public class Structure
 		startZ = theEntity.zCoord;
 		
 		// generate the cloud
-		generateCloud(theWorld, startX, startY, startZ, 75);
-	    
-	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
-	    {
-	    	for (int indX = 0; indX < dimX; indX++)
-	    	{
-	    		for (int indZ = 0; indZ < dimZ; indZ++)
-	    		{
-	    			if (blockMetaArray[indX][indY][indZ]==0)
-	    			{
-	    				String blockName = blockNameArray[indX][indY][indZ];
-	    				if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
-	    				{
-//	    					theWorld.setBlockToAir(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ);
-							theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-									Block.getBlockFromName(blockName), 0, 2);
-	    				}
-	    			}	    			
-	    		}
-	    	}
-	    }
-	    // best to place metadata blocks after non-metadata blocks as they need to attach, etc.
-	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
-	    {
-	    	for (int indX = 0; indX < dimX; indX++)
-	    	{
-	    		for (int indZ = 0; indZ < dimZ; indZ++)
-	    		{
-	    			if (!(blockMetaArray[indX][indY][indZ]==0))
-	    			{
-						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-								Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
-	    			}	    			
-	    		}
-	    	}
-	    }
-	    // some blocks with 0 metadata, like string/tripwire, require other blocks to be placed already, so do them again as last pass.
-	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
-	    {
-	    	for (int indX = 0; indX < dimX; indX++)
-	    	{
-	    		for (int indZ = 0; indZ < dimZ; indZ++)
-	    		{
-    				String blockName = blockNameArray[indX][indY][indZ];
-    				if (blockName.equals("minecraft:tripwire"))
-    				{
-						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-								Block.getBlockFromName(blockName), 0, 2);
-    				}	    			
-	    		}
-	    	}
-	    }		
+//		generateCloud(theWorld, startX, startY, startZ, 75);
+		
+		int indY = ticksGenerating/(dimX*dimZ);
+		int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
+		int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
+		// DEBUG
+		System.out.println("Generating at "+indY+", "+indX+", "+indZ);
+
+		if (blockMetaArray[indX][indY][indZ]==0)
+		{
+			String blockName = blockNameArray[indX][indY][indZ];
+			if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+			{
+				theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+						Block.getBlockFromName(blockName), 0, 2);
+			}
+		}
+		
+		ticksGenerating++;
+		if (ticksGenerating >= dimX * dimY * dimZ)
+		{
+			// DEBUG
+			System.out.println("Finishing generation with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
+			shouldGenerate = false;
+			finishedGenerating = true;
+		}
+		
+//	    // best to place metadata blocks after non-metadata blocks as they need to attach, etc.
+//	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+//	    {
+//	    	for (int indX = 0; indX < dimX; indX++)
+//	    	{
+//	    		for (int indZ = 0; indZ < dimZ; indZ++)
+//	    		{
+//	    			if (!(blockMetaArray[indX][indY][indZ]==0))
+//	    			{
+//						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+//								Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
+//	    			}	    			
+//	    		}
+//	    	}
+//	    }
+//	    // some blocks with 0 metadata, like string/tripwire, require other blocks to be placed already, so do them again as last pass.
+//	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+//	    {
+//	    	for (int indX = 0; indX < dimX; indX++)
+//	    	{
+//	    		for (int indZ = 0; indZ < dimZ; indZ++)
+//	    		{
+//    				String blockName = blockNameArray[indX][indY][indZ];
+//    				if (blockName.equals("minecraft:tripwire"))
+//    				{
+//						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+//								Block.getBlockFromName(blockName), 0, 2);
+//    				}	    			
+//	    		}
+//	    	}
+//	    }		
 	}
 	
 	public void generateCloud(World parWorld, int parX, int parY, int parZ, int parCloudSize) 
