@@ -220,9 +220,9 @@ public class Structure
 			return;
 		}
 
-		startX = theEntity.xCoord;
-		startY = theEntity.yCoord;
-		startZ = theEntity.zCoord;
+		startX = theEntity.xCoord+parOffsetX;
+		startY = theEntity.yCoord+parOffsetY;
+		startZ = theEntity.zCoord+parOffsetZ;
 		
 		// generate the cloud
 		generateCloud(theWorld, startX, startY, startZ, 75);
@@ -238,7 +238,7 @@ public class Structure
 	    				String blockName = blockNameArray[indX][indY][indZ];
 	    				if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
 	    				{
-							theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+							theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
 									Block.getBlockFromName(blockName), 0, 2);
 	    				}
 	    			}	    			
@@ -254,7 +254,7 @@ public class Structure
 	    		{
 	    			if (!(blockMetaArray[indX][indY][indZ]==0))
 	    			{
-						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+						theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
 								Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
 	    			}	    			
 	    		}
@@ -270,7 +270,7 @@ public class Structure
     				String blockName = blockNameArray[indX][indY][indZ];
     				if (blockName.equals("minecraft:tripwire"))
     				{
-						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+						theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
 								Block.getBlockFromName(blockName), 0, 2);
     				}	    			
 	    		}
@@ -309,8 +309,18 @@ public class Structure
 		// generate the cloud
 		if (!finishedGeneratingCloud)
 		{
-			generateCloud(theWorld, startX, startY, startZ, 75);
-			finishedGeneratingCloud = true;
+			// DEBUG
+			System.out.println("Generating cloud");
+
+			int cloudSize = 75;
+			int posX = ticksGenerating/cloudSize;
+			generateCloudTick(theWorld, parEntity, posX, startY+1, startZ, cloudSize);
+			ticksGenerating += cloudSize;
+			if (ticksGenerating >= cloudSize * cloudSize)
+			{
+				finishedGeneratingCloud = true;
+				ticksGenerating = 0;
+			}
 		}
 		else if (!finishedGeneratingBasic)
 		{
@@ -321,14 +331,14 @@ public class Structure
 				for (int indZ = 0; indZ < dimZ; indZ++)
 				{
 					// DEBUG
-					System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
+					// System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
 	
 					if (blockMetaArray[indX][indY][indZ]==0) // check for basic block
 					{
 						String blockName = blockNameArray[indX][indY][indZ];
 						if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
 						{
-							theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+							theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
 									Block.getBlockFromName(blockName), 0, 2);
 						}
 					}
@@ -353,11 +363,11 @@ public class Structure
 				for (int indZ = 0; indZ < dimZ; indZ++)
 				{
 					// DEBUG
-					System.out.println("Generating meta blocks at "+indY+", "+indX+", "+indZ);
+					// System.out.println("Generating meta blocks at "+indY+", "+indX+", "+indZ);
 		
 					if (!(blockMetaArray[indX][indY][indZ]==0))
 					{
-						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+						theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
 								Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
 					}	
 				}
@@ -367,7 +377,7 @@ public class Structure
 			if (ticksGenerating >= totalVolume)
 			{
 				// DEBUG
-				System.out.println("Finishing generation meta blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
+				// System.out.println("Finishing generation meta blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
 				finishedGeneratingMeta = true;
 				ticksGenerating = 0;
 			}
@@ -381,12 +391,12 @@ public class Structure
 				for (int indZ = 0; indZ < dimZ; indZ++)
 				{
 					// DEBUG
-					System.out.println("Generating special blocks at "+indY+", "+indX+", "+indZ);
+					// System.out.println("Generating special blocks at "+indY+", "+indX+", "+indZ);
 		
 					String blockName = blockNameArray[indX][indY][indZ];
 					if (blockName.equals("minecraft:tripwire"))
 					{
-						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+						theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
 								Block.getBlockFromName(blockName), 0, 2);
 					}	    	
 				}
@@ -422,5 +432,26 @@ public class Structure
 			}
 		}
 	}
+	
+	public void generateCloudTick(World parWorld, TileEntity parEntity, int parX, int parY, int parZ, int parCloudSize) 
+	{	
+		// DEBUG
+		System.out.println("Generating cloud");
+		
+		if (parWorld.isRemote)
+		{
+			return;
+		}
 
+		for (int indZ = parZ-parCloudSize/2; indZ < parZ+parCloudSize/2; indZ++)
+		{
+			// DEBUG
+			// System.out.println("Generating cloud blocks at "+parX+", "+parY+", "+indZ);
+			// let the beanstalk go through the clouds
+			if (!((Math.abs(parX-parEntity.xCoord)<2)&&(Math.abs(indZ-parEntity.zCoord)<2)))
+			{
+				parWorld.setBlock(parX, parY, indZ, MagicBeans.blockCloud, 0, 2);
+			}
+		}
+	}
 }

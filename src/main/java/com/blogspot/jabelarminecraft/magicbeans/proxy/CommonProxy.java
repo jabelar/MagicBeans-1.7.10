@@ -200,6 +200,10 @@ public class CommonProxy
         System.out.println("Gold for beans = "+MagicBeans.configGoldForBeans);
         MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.1D).getDouble(0.1D);
         System.out.println("Chance cow is magic = "+MagicBeans.configChanceCowIsMagic);
+        MagicBeans.configMaxStalkHeight = config.get(Configuration.CATEGORY_GENERAL, "MaxStalkHeight", 133).getInt(133);
+        System.out.println("Maximum stalk height = "+MagicBeans.configMaxStalkHeight);
+        MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "TicksPerGrowStage", 1).getInt(1);
+        System.out.println("Ticks per grow stage = "+MagicBeans.configTicksPerGrowStage);
         
         // save is useful for the first run where config might not exist
         config.save();

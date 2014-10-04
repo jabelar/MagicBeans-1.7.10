@@ -27,9 +27,7 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 public class TileEntityMagicBeanStalk extends TileEntity
 {
 	public boolean hasSpawnedCastle = false;
-	protected int ticksExisted = 0 ;
-	protected int maxStalkHeight = 75;
-	
+	protected int ticksExisted = 0 ;	
 
     @Override
 	public void readFromNBT(NBTTagCompound parTagCompound)
@@ -57,11 +55,11 @@ public class TileEntityMagicBeanStalk extends TileEntity
 		
 		++ticksExisted;
 		markDirty();
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Math.min(7,  ticksExisted / 21), 2);
-		if (ticksExisted >= 10 * 20) // 10 seconds
+		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Math.min(7,  ticksExisted / MagicBeans.configTicksPerGrowStage), 2);
+		if (ticksExisted >= MagicBeans.configTicksPerGrowStage * 9) 
 		{
 			// check if higher than clouds
-			if (yCoord < maxStalkHeight)
+			if (yCoord < MagicBeans.configMaxStalkHeight)
 			{
 	    		// check if can build next growing position
 	    	    if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord))
