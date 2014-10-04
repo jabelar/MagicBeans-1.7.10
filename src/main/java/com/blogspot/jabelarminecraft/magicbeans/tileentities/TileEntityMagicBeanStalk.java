@@ -46,11 +46,11 @@ public class TileEntityMagicBeanStalk extends TileEntity
         parTagCompound.setInteger("ticksExisted", ticksExisted);
         parTagCompound.setBoolean("hasSpawnedCastle", hasSpawnedCastle);
     }
-	
+    	
 	@Override
 	public void updateEntity()
 	{
-		if (worldObj.isRemote)
+		if (worldObj.isRemote || hasSpawnedCastle)
 		{
 			return;
 		}
@@ -74,20 +74,10 @@ public class TileEntityMagicBeanStalk extends TileEntity
 			else // fully grown
 			{
 				// DEBUG
-				System.out.println("Beanstalk fully grown");
-				if (!hasSpawnedCastle)
-				{
-					// DEBUG
-					System.out.println("Look up!");
-					MagicBeans.structureCastleTalia.shouldGenerate = true;
-					MagicBeans.structureCastleTalia.generateTick(this, 5, -2, 5);
-					hasSpawnedCastle = MagicBeans.structureCastleTalia.finishedGeneratingSpecial;
-				}
-				else
-				{
-					// DEBUG
-					System.out.println("Castle already generated");
-				}
+				System.out.println("Beanstalk fully grown, look up!");
+				MagicBeans.structureCastleTalia.shouldGenerate = true;
+				MagicBeans.structureCastleTalia.generateTick(this, 5, -2, 5);
+				hasSpawnedCastle = MagicBeans.structureCastleTalia.finishedGeneratingSpecial;
 			}
 			
    	        // add vines all around
