@@ -312,21 +312,24 @@ public class Structure
 		{
 			int indY = ticksGenerating/(dimX*dimZ);
 			int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
-			int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
-			// DEBUG
-			System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
 
-			if (blockMetaArray[indX][indY][indZ]==0) // check for basic block
+			for (int indZ = 0; indZ < dimZ; indZ++)
 			{
-				String blockName = blockNameArray[indX][indY][indZ];
-				if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+				// DEBUG
+				System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
+
+				if (blockMetaArray[indX][indY][indZ]==0) // check for basic block
 				{
-					theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-							Block.getBlockFromName(blockName), 0, 2);
+					String blockName = blockNameArray[indX][indY][indZ];
+					if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+					{
+						theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+								Block.getBlockFromName(blockName), 0, 2);
+					}
 				}
 			}
 			
-			ticksGenerating++;
+			ticksGenerating += dimZ;
 			if (ticksGenerating >= totalVolume)
 			{
 				// DEBUG
@@ -339,17 +342,20 @@ public class Structure
 		{
 			int indY = ticksGenerating/(dimX*dimZ);
 			int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
-			int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
-			// DEBUG
-			System.out.println("Generating meta blocks at "+indY+", "+indX+", "+indZ);
-
-			if (!(blockMetaArray[indX][indY][indZ]==0))
-			{
-				theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-						Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
-			}	    			
 			
-			ticksGenerating++;
+			for (int indZ = 0; indZ < dimZ; indZ++)
+			{
+				// DEBUG
+				System.out.println("Generating meta blocks at "+indY+", "+indX+", "+indZ);
+	
+				if (!(blockMetaArray[indX][indY][indZ]==0))
+				{
+					theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+							Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
+				}	
+			}
+			
+			ticksGenerating += dimZ;
 			if (ticksGenerating >= totalVolume)
 			{
 				// DEBUG
@@ -362,18 +368,21 @@ public class Structure
 		{
 			int indY = ticksGenerating/(dimX*dimZ);
 			int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
-			int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
-			// DEBUG
-			System.out.println("Generating special blocks at "+indY+", "+indX+", "+indZ);
 
-			String blockName = blockNameArray[indX][indY][indZ];
-			if (blockName.equals("minecraft:tripwire"))
+			for (int indZ = 0; indZ < dimZ; indZ++)
 			{
-				theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
-						Block.getBlockFromName(blockName), 0, 2);
-			}	    			
+				// DEBUG
+				System.out.println("Generating special blocks at "+indY+", "+indX+", "+indZ);
+	
+				String blockName = blockNameArray[indX][indY][indZ];
+				if (blockName.equals("minecraft:tripwire"))
+				{
+					theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+							Block.getBlockFromName(blockName), 0, 2);
+				}	    	
+			}
 			
-			ticksGenerating++;
+			ticksGenerating += dimZ;
 			if (ticksGenerating >= totalVolume)
 			{
 				// DEBUG
