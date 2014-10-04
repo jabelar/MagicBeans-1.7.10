@@ -46,7 +46,9 @@ public class Structure
 	protected int startZ;
 	
 	public boolean shouldGenerate = false;
-	public boolean finishedGenerating = false;
+	public boolean finishedGeneratingBasic = false; // basic block generation
+	public boolean finishedGeneratingMeta = false; // blocks with metadata generation
+	public boolean finishedGeneratingSpecial = false; // special blocks like tripwire
 	protected int ticksGenerating = 0;
 
 	String[][][] blockNameArray = null;
@@ -284,16 +286,13 @@ public class Structure
 	public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
 		// exit if generating not started or if finished
-		if (!shouldGenerate || finishedGenerating)
+		if (!shouldGenerate || finishedGeneratingSpecial)
 		{
 			return;
 		}
 		
 		TileEntity theEntity = parEntity;
 		theWorld = theEntity.getWorldObj();
-
-		// DEBUG
-		System.out.println("Generating castle in the clouds. IsRemote = "+theWorld.isRemote);
 
 		if (theWorld.isRemote)
 		{
@@ -304,33 +303,86 @@ public class Structure
 		startY = theEntity.yCoord;
 		startZ = theEntity.zCoord;
 		
+		int totalVolume = dimX * dimY * dimZ;
+		
 		// generate the cloud
 //		generateCloud(theWorld, startX, startY, startZ, 75);
 		
-		int indY = ticksGenerating/(dimX*dimZ);
-		int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
-		int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
-		// DEBUG
-		System.out.println("Generating at "+indY+", "+indX+", "+indZ);
-
-		if (blockMetaArray[indX][indY][indZ]==0)
+		if (!finishedGeneratingBasic)
 		{
+			int indY = ticksGenerating/(dimX*dimZ);
+			int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
+			int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
+			// DEBUG
+			System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
+
+			if (blockMetaArray[indX][indY][indZ]==0) // check for basic block
+			{
+				String blockName = blockNameArray[indX][indY][indZ];
+				if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+				{
+					theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+							Block.getBlockFromName(blockName), 0, 2);
+				}
+			}
+			
+			ticksGenerating++;
+			if (ticksGenerating >= totalVolume)
+			{
+				// DEBUG
+				System.out.println("Finishing generation basic blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
+				finishedGeneratingBasic = true;
+				ticksGenerating = 0;
+			}
+		}
+		else if (!finishedGeneratingMeta)
+		{
+			int indY = ticksGenerating/(dimX*dimZ);
+			int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
+			int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
+			// DEBUG
+			System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
+
+			if (!(blockMetaArray[indX][indY][indZ]==0))
+			{
+				theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
+						Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
+			}	    			
+			
+			ticksGenerating++;
+			if (ticksGenerating >= totalVolume)
+			{
+				// DEBUG
+				System.out.println("Finishing generation meta blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
+				finishedGeneratingMeta = true;
+				ticksGenerating = 0;
+			}
+		}
+		else if (!finishedGeneratingSpecial)
+		{
+			int indY = ticksGenerating/(dimX*dimZ);
+			int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
+			int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
+			// DEBUG
+			System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
+
 			String blockName = blockNameArray[indX][indY][indZ];
-			if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+			if (blockName.equals("minecraft:tripwire"))
 			{
 				theWorld.setBlock(startX+parOffsetX+indX, startY+parOffsetY+indY, startZ+parOffsetZ+indZ, 
 						Block.getBlockFromName(blockName), 0, 2);
+			}	    			
+			
+			ticksGenerating++;
+			if (ticksGenerating >= totalVolume)
+			{
+				// DEBUG
+				System.out.println("Finishing generation special blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
+				finishedGeneratingSpecial = true;
+				ticksGenerating = 0;
 			}
 		}
 		
-		ticksGenerating++;
-		if (ticksGenerating >= dimX * dimY * dimZ)
-		{
-			// DEBUG
-			System.out.println("Finishing generation with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
-			shouldGenerate = false;
-			finishedGenerating = true;
-		}
 		
 //	    // best to place metadata blocks after non-metadata blocks as they need to attach, etc.
 //	    for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
