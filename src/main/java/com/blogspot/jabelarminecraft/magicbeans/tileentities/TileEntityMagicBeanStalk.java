@@ -79,9 +79,9 @@ public class TileEntityMagicBeanStalk extends TileEntity
 				{
 					// DEBUG
 					System.out.println("Look up!");
-//					MagicBeans.structureCastleTalia.generate(this, 0, -2, 0);
+//					MagicBeans.structureCastleTalia.generate(this, 5, -2, 5);
 					MagicBeans.structureCastleTalia.shouldGenerate = true;
-					MagicBeans.structureCastleTalia.generateTick(this, 0, -2, 0);
+					MagicBeans.structureCastleTalia.generateTick(this, 5, -2, 5);
 					hasSpawnedCastle = MagicBeans.structureCastleTalia.finishedGeneratingSpecial;
 				}
 				else

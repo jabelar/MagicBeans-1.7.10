@@ -341,7 +341,7 @@ public class Structure
 			int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
 			int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
 			// DEBUG
-			System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
+			System.out.println("Generating meta blocks at "+indY+", "+indX+", "+indZ);
 
 			if (!(blockMetaArray[indX][indY][indZ]==0))
 			{
@@ -364,7 +364,7 @@ public class Structure
 			int indX = (ticksGenerating-indY*dimX*dimZ)/dimZ;
 			int indZ = ticksGenerating-indY*dimX*dimZ-indX*dimZ;
 			// DEBUG
-			System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
+			System.out.println("Generating special blocks at "+indY+", "+indX+", "+indZ);
 
 			String blockName = blockNameArray[indX][indY][indZ];
 			if (blockName.equals("minecraft:tripwire"))
