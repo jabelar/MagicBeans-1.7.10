@@ -317,14 +317,14 @@ public class Structure
 
 			int posX = startX-cloudMarginX+ticksGenerating/(dimZ+2*cloudMarginZ);
 
-			for (int indZ = startZ-cloudMarginZ; indZ < startZ+cloudMarginZ; indZ++)
+			for (int indZ = startZ-cloudMarginZ; indZ < startZ+dimZ+cloudMarginZ; indZ++)
 			{
 				// DEBUG
 				// System.out.println("Generating cloud blocks at "+parX+", "+parY+", "+indZ);
 				// let the beanstalk go through the clouds
 				if (!((Math.abs(posX-parEntity.xCoord)<2)&&(Math.abs(indZ-parEntity.zCoord)<2)))
 				{
-					theWorld.setBlock(posX, startY, indZ, MagicBeans.blockCloud, 0, 2);
+					theWorld.setBlock(posX, startY+1, indZ, MagicBeans.blockCloud, 0, 2);
 				}
 			}
 			ticksGenerating += dimZ+2*cloudMarginZ;
