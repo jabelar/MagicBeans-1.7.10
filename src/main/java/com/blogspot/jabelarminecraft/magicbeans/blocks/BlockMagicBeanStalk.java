@@ -25,6 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -186,6 +187,7 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     @Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World parWorld, int parX, int parY, int parZ)
     {
+    	this.setBlockBounds(0.5F-0.125F, 0.0F, 0.5F-0.125F, 0.5F+0.125F, 1.0F, 0.5F+0.125F);
         return AxisAlignedBB.getBoundingBox(parX + minX, parY + minY, parZ + minZ, parX + maxX, parY + maxY, parZ + maxZ);
     }
 
@@ -204,4 +206,9 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
 		return new TileEntityMagicBeanStalk();
 	}
 
+	@Override
+	public boolean isLadder(IBlockAccess parWord, int parX, int parY, int parZ, EntityLivingBase parEntity)
+	{
+		return true;
+	}
 }

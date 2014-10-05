@@ -77,24 +77,6 @@ public class TileEntityMagicBeanStalk extends TileEntity
 				MagicBeans.structureCastleTalia.generateTick(this, 5, -2, 5);
 				hasSpawnedCastle = MagicBeans.structureCastleTalia.finishedGeneratingSpecial;
 			}
-			
-   	        // add vines all around
-    	    if(worldObj.isAirBlock(xCoord+1, yCoord , zCoord))
-    	    {
-    	        worldObj.setBlock(xCoord+1, yCoord, zCoord, MagicBeans.blockMagicBeansVine, 2, 2);	    	        
-    	    }   		
-    	    if(worldObj.isAirBlock(xCoord-1, yCoord , zCoord))
-    	    {
-    	        worldObj.setBlock(xCoord-1, yCoord, zCoord, MagicBeans.blockMagicBeansVine, 8, 2);	    	        
-    	    }   		
-    	    if(worldObj.isAirBlock(xCoord, yCoord , zCoord+1))
-    	    {
-    	        worldObj.setBlock(xCoord, yCoord, zCoord+1, MagicBeans.blockMagicBeansVine, 4, 2);	    	        
-    	    }   		
-    	    if(worldObj.isAirBlock(xCoord, yCoord , zCoord-1))
-    	    {
-    	        worldObj.setBlock(xCoord, yCoord, zCoord-1, MagicBeans.blockMagicBeansVine, 1, 2);	
-    	    }   		
 		}
 	}
 }
