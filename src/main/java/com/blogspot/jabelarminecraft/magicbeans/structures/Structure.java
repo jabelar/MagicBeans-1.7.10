@@ -45,6 +45,9 @@ public class Structure
 	protected int startY;
 	protected int startZ;
 	
+	protected int cloudMarginX = 15;
+	protected int cloudMarginZ = 15;
+	
 	public boolean shouldGenerate = false;
 	public boolean finishedGeneratingCloud = false; // cloud generation, this is unique to this mod
 	public boolean finishedGeneratingBasic = false; // basic block generation
@@ -312,11 +315,20 @@ public class Structure
 			// DEBUG
 			System.out.println("Generating cloud");
 
-			int cloudSize = 75;
-			int posX = ticksGenerating/cloudSize;
-			generateCloudTick(theWorld, parEntity, posX, startY+1, startZ, cloudSize);
-			ticksGenerating += cloudSize;
-			if (ticksGenerating >= cloudSize * cloudSize)
+			int posX = startX-cloudMarginX+ticksGenerating/(dimZ+2*cloudMarginZ);
+
+			for (int indZ = startZ-cloudMarginZ; indZ < startZ+cloudMarginZ; indZ++)
+			{
+				// DEBUG
+				// System.out.println("Generating cloud blocks at "+parX+", "+parY+", "+indZ);
+				// let the beanstalk go through the clouds
+				if (!((Math.abs(posX-parEntity.xCoord)<2)&&(Math.abs(indZ-parEntity.zCoord)<2)))
+				{
+					theWorld.setBlock(posX, startY, indZ, MagicBeans.blockCloud, 0, 2);
+				}
+			}
+			ticksGenerating += dimZ+2*cloudMarginZ;
+			if (ticksGenerating >= (dimX+2*cloudMarginX) * (dimZ+2*cloudMarginZ))
 			{
 				finishedGeneratingCloud = true;
 				ticksGenerating = 0;
@@ -429,28 +441,6 @@ public class Structure
 			{
 				parWorld.setBlockToAir(indX, parY-1, indZ);
 				parWorld.setBlock(indX, parY-1, indZ, MagicBeans.blockCloud, 0, 2);
-			}
-		}
-	}
-	
-	public void generateCloudTick(World parWorld, TileEntity parEntity, int parX, int parY, int parZ, int parCloudSize) 
-	{	
-		// DEBUG
-		System.out.println("Generating cloud");
-		
-		if (parWorld.isRemote)
-		{
-			return;
-		}
-
-		for (int indZ = parZ-parCloudSize/2; indZ < parZ+parCloudSize/2; indZ++)
-		{
-			// DEBUG
-			// System.out.println("Generating cloud blocks at "+parX+", "+parY+", "+indZ);
-			// let the beanstalk go through the clouds
-			if (!((Math.abs(parX-parEntity.xCoord)<2)&&(Math.abs(indZ-parEntity.zCoord)<2)))
-			{
-				parWorld.setBlock(parX, parY, indZ, MagicBeans.blockCloud, 0, 2);
 			}
 		}
 	}
