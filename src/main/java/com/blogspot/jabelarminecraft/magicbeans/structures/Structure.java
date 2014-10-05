@@ -309,12 +309,9 @@ public class Structure
 		// generate the cloud
 		if (!finishedGeneratingCloud)
 		{
-			// DEBUG
-			System.out.println("Generating cloud");
-
 			int cloudSize = 75;
-			int posX = ticksGenerating/cloudSize;
-			generateCloudTick(theWorld, parEntity, posX, startY+1, startZ, cloudSize);
+			int posX = startX+ticksGenerating/cloudSize;
+			generateCloudTick(theWorld, parEntity, posX-cloudSize/2, startY+1, startZ-cloudSize/2, cloudSize);
 			ticksGenerating += cloudSize;
 			if (ticksGenerating >= cloudSize * cloudSize)
 			{
