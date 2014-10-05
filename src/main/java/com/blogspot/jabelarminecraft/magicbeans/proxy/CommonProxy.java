@@ -204,6 +204,8 @@ public class CommonProxy
         System.out.println("Maximum stalk height = "+MagicBeans.configMaxStalkHeight);
         MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "TicksPerGrowStage", 1).getInt(1);
         System.out.println("Ticks per grow stage = "+MagicBeans.configTicksPerGrowStage);
+        MagicBeans.configTimeUntilNextEgg = config.get(Configuration.CATEGORY_GENERAL, "TimeUntilNextEgg", 600).getInt(600);
+        System.out.println("Time until next egg = "+MagicBeans.configTimeUntilNextEgg);
         
         // save is useful for the first run where config might not exist
         config.save();

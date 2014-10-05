@@ -26,6 +26,8 @@ import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -44,70 +46,93 @@ public class ModelGoldenGoose extends ModelBase
     public ModelGoldenGoose()
     {
         byte b0 = 16;
-        this.head = new ModelRenderer(this, 0, 0);
-        this.head.addBox(-2.0F, -6.0F, -2.0F, 4, 6, 3, 0.0F);
-        this.head.setRotationPoint(0.0F, -1 + b0, -4.0F);
-        this.bill = new ModelRenderer(this, 14, 0);
-        this.bill.addBox(-2.0F, -4.0F, -4.0F, 4, 2, 2, 0.0F);
-        this.bill.setRotationPoint(0.0F, -1 + b0, -4.0F);
-        this.chin = new ModelRenderer(this, 14, 4);
-        this.chin.addBox(-1.0F, -2.0F, -3.0F, 2, 2, 2, 0.0F);
-        this.chin.setRotationPoint(0.0F, -1 + b0, -4.0F);
-        this.body = new ModelRenderer(this, 0, 9);
-        this.body.addBox(-3.0F, -4.0F, -3.0F, 6, 8, 6, 0.0F);
-        this.body.setRotationPoint(0.0F, b0, 0.0F);
-        this.rightLeg = new ModelRenderer(this, 26, 0);
-        this.rightLeg.addBox(-1.0F, 0.0F, -3.0F, 3, 5, 3);
-        this.rightLeg.setRotationPoint(-2.0F, 3 + b0, 1.0F);
-        this.leftLeg = new ModelRenderer(this, 26, 0);
-        this.leftLeg.addBox(-1.0F, 0.0F, -3.0F, 3, 5, 3);
-        this.leftLeg.setRotationPoint(1.0F, 3 + b0, 1.0F);
-        this.rightWing = new ModelRenderer(this, 24, 13);
-        this.rightWing.addBox(0.0F, 0.0F, -3.0F, 1, 4, 6);
-        this.rightWing.setRotationPoint(-4.0F, -3 + b0, 0.0F);
-        this.leftWing = new ModelRenderer(this, 24, 13);
-        this.leftWing.addBox(-1.0F, 0.0F, -3.0F, 1, 4, 6);
-        this.leftWing.setRotationPoint(4.0F, -3 + b0, 0.0F);
+        head = new ModelRenderer(this, 0, 0);
+        head.addBox(-2.0F, -6.0F, -2.0F, 4, 6, 3, 0.0F);
+        head.setRotationPoint(0.0F, -1 + b0, -4.0F);
+        bill = new ModelRenderer(this, 14, 0);
+        bill.addBox(-2.0F, -4.0F, -4.0F, 4, 2, 2, 0.0F);
+        bill.setRotationPoint(0.0F, -1 + b0, -4.0F);
+        chin = new ModelRenderer(this, 14, 4);
+        chin.addBox(-1.0F, -2.0F, -3.0F, 2, 2, 2, 0.0F);
+        chin.setRotationPoint(0.0F, -1 + b0, -4.0F);
+        body = new ModelRenderer(this, 0, 9);
+        body.addBox(-3.0F, -4.0F, -3.0F, 6, 8, 6, 0.0F);
+        body.setRotationPoint(0.0F, b0, 0.0F);
+        rightLeg = new ModelRenderer(this, 26, 0);
+        rightLeg.addBox(-1.0F, 0.0F, -3.0F, 3, 5, 3);
+        rightLeg.setRotationPoint(-2.0F, 3 + b0, 1.0F);
+        leftLeg = new ModelRenderer(this, 26, 0);
+        leftLeg.addBox(-1.0F, 0.0F, -3.0F, 3, 5, 3);
+        leftLeg.setRotationPoint(1.0F, 3 + b0, 1.0F);
+        rightWing = new ModelRenderer(this, 24, 13);
+        rightWing.addBox(0.0F, 0.0F, -3.0F, 1, 4, 6);
+        rightWing.setRotationPoint(-4.0F, -3 + b0, 0.0F);
+        leftWing = new ModelRenderer(this, 24, 13);
+        leftWing.addBox(-1.0F, 0.0F, -3.0F, 1, 4, 6);
+        leftWing.setRotationPoint(4.0F, -3 + b0, 0.0F);
     }
 
     /**
      * Sets the models various rotation angles then renders the model.
      */
     @Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
+	public void render(Entity parEntity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+    	renderGoldenGoose((EntityGoldenGoose)parEntity, par2, par3, par4, par5, par6, par7);
+    }
+    
+    /**
+     * Renders specific entity to allow access to any specific fields
+     * @param parEntity
+     * @param par2
+     * @param par3
+     * @param par4
+     * @param par5
+     * @param par6
+     * @param par7
+     */
+    public void renderGoldenGoose(EntityGoldenGoose parEntity, float par2, float par3, float par4, float par5, float par6, float par7)
+    {
+        setRotationAngles(par2, par3, par4, par5, par6, par7, parEntity);
 
-        if (this.isChild)
+        // scale the whole thing for big or small entities
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0F, 1.5F-1.5F*parEntity.getScaleFactor(), 0F); // need to figure out how to calculate this from scaleFactor (need to manually tweak currently)
+    	GL11.glScalef(parEntity.getScaleFactor(), parEntity.getScaleFactor(), parEntity.getScaleFactor());
+
+        if (isChild)
         {
             float f6 = 2.0F;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 5.0F * par7, 2.0F * par7);
-            this.head.render(par7);
-            this.bill.render(par7);
-            this.chin.render(par7);
+            head.render(par7);
+            bill.render(par7);
+            chin.render(par7);
             GL11.glPopMatrix();
             GL11.glPushMatrix();
             GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
             GL11.glTranslatef(0.0F, 24.0F * par7, 0.0F);
-            this.body.render(par7);
-            this.rightLeg.render(par7);
-            this.leftLeg.render(par7);
-            this.rightWing.render(par7);
-            this.leftWing.render(par7);
+            body.render(par7);
+            rightLeg.render(par7);
+            leftLeg.render(par7);
+            rightWing.render(par7);
+            leftWing.render(par7);
             GL11.glPopMatrix();
         }
         else
         {
-            this.head.render(par7);
-            this.bill.render(par7);
-            this.chin.render(par7);
-            this.body.render(par7);
-            this.rightLeg.render(par7);
-            this.leftLeg.render(par7);
-            this.rightWing.render(par7);
-            this.leftWing.render(par7);
+            head.render(par7);
+            bill.render(par7);
+            chin.render(par7);
+            body.render(par7);
+            rightLeg.render(par7);
+            leftLeg.render(par7);
+            rightWing.render(par7);
+            leftWing.render(par7);
         }
+
+        // don't forget to pop the matrix for overall scaling
+        GL11.glPopMatrix();
     }
 
     /**
@@ -118,16 +143,16 @@ public class ModelGoldenGoose extends ModelBase
     @Override
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
-        this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
-        this.head.rotateAngleY = par4 / (180F / (float)Math.PI);
-        this.bill.rotateAngleX = this.head.rotateAngleX;
-        this.bill.rotateAngleY = this.head.rotateAngleY;
-        this.chin.rotateAngleX = this.head.rotateAngleX;
-        this.chin.rotateAngleY = this.head.rotateAngleY;
-        this.body.rotateAngleX = ((float)Math.PI / 2F);
-        this.rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
-        this.rightWing.rotateAngleZ = par3;
-        this.leftWing.rotateAngleZ = -par3;
+        head.rotateAngleX = par5 / (180F / (float)Math.PI);
+        head.rotateAngleY = par4 / (180F / (float)Math.PI);
+        bill.rotateAngleX = head.rotateAngleX;
+        bill.rotateAngleY = head.rotateAngleY;
+        chin.rotateAngleX = head.rotateAngleX;
+        chin.rotateAngleY = head.rotateAngleY;
+        body.rotateAngleX = ((float)Math.PI / 2F);
+        rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+        rightWing.rotateAngleZ = par3;
+        leftWing.rotateAngleZ = -par3;
     }
 }

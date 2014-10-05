@@ -57,16 +57,9 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     public EntityGoldenGoose(World parWorld)
     {
         super(parWorld);
-        setSize(0.3F, 0.7F);
-        timeUntilNextEgg = rand.nextInt(600) + 600;
-        tasks.addTask(0, new EntityAISwimming(this));
-        tasks.addTask(1, new EntityAIPanic(this, 1.4D));
-        tasks.addTask(2, new EntityAIMate(this, 1.0D));
-        tasks.addTask(3, new EntityAITempt(this, 1.0D, Items.wheat_seeds, false));
-        tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
-        tasks.addTask(5, new EntityAIWander(this, 1.0D));
-        tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        tasks.addTask(7, new EntityAILookIdle(this));
+        setSize(0.6F, 1.4F); // twice size of EntityChicken
+        timeUntilNextEgg = rand.nextInt(MagicBeans.configTimeUntilNextEgg) + MagicBeans.configTimeUntilNextEgg;
+        setupAI();
     }
 
     /**
@@ -225,61 +218,76 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     }
 
 	@Override
-	public void setupAI() {
+	public void setupAI() 
+	{
+        tasks.addTask(0, new EntityAISwimming(this));
+        tasks.addTask(1, new EntityAIPanic(this, 1.4D));
+        tasks.addTask(2, new EntityAIMate(this, 1.0D));
+        tasks.addTask(3, new EntityAITempt(this, 1.0D, Items.wheat_seeds, false));
+        tasks.addTask(4, new EntityAIFollowParent(this, 1.1D));
+        tasks.addTask(5, new EntityAIWander(this, 1.0D));
+        tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+        tasks.addTask(7, new EntityAILookIdle(this));
+	}
+
+	@Override
+	public void clearAITasks() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void clearAITasks() {
+	public void initExtProps() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void initExtProps() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public NBTTagCompound getExtProps() {
+	public NBTTagCompound getExtProps() 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void setExtProps(NBTTagCompound parCompound) {
+	public void setExtProps(NBTTagCompound parCompound) 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) {
+	public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) {
+	public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void setScaleFactor(float parScaleFactor) {
+	public void setScaleFactor(float parScaleFactor) 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public float getScaleFactor() {
-		// TODO Auto-generated method stub
-		return 1.0F;
+	public float getScaleFactor() 
+	{
+		return 1.3F;
 	}
 
 	@Override
-	public void sendEntitySyncPacket() {
+	public void sendEntitySyncPacket() 
+	{
 		// TODO Auto-generated method stub
 		
 	}

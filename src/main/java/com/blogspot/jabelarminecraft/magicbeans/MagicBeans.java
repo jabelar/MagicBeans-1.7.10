@@ -85,6 +85,7 @@ public class MagicBeans
     public static double configChanceCowIsMagic = 0.1D;
 	public static int configMaxStalkHeight = 136;
 	public static int configTicksPerGrowStage = 1;
+	public static int configTimeUntilNextEgg = 600;
     
     // instantiate materials
     public final static Material materialCloud = new Material(MapColor.snowColor);
