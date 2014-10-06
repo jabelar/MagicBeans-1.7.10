@@ -1,0 +1,20 @@
+{
+ "mob.goose.honk": 
+ {
+    "category": "neutral",
+    "sounds": 
+    [
+      "mob/goose/goose_honk_once_1",
+      "mob/goose/goose_honk_once_2",
+      "mob/goose/goose_honk_once_3"
+    ]
+  },
+  "mob.goose.death": 
+  {
+    "category": "neutral",
+    "sounds": 
+    [
+      "mob/goose/goose_honk_twice"
+    ]
+  }
+}

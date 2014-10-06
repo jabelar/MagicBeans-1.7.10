@@ -97,7 +97,7 @@ public class ModelGoldenGoose extends ModelBase
 
         // scale the whole thing for big or small entities
         GL11.glPushMatrix();
-        GL11.glTranslatef(0F, 1.5F-1.5F*parEntity.getScaleFactor(), 0F); // need to figure out how to calculate this from scaleFactor (need to manually tweak currently)
+        GL11.glTranslatef(0F, 1.5F-1.5F*parEntity.getScaleFactor(), 0F); 
     	GL11.glScalef(parEntity.getScaleFactor(), parEntity.getScaleFactor(), parEntity.getScaleFactor());
 
         if (isChild)

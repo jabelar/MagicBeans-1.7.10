@@ -144,7 +144,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     @Override
 	protected String getLivingSound()
     {
-        return "mob.chicken.say";
+        return "magicbeans:mob.goose.honk";
     }
 
     /**
@@ -153,7 +153,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     @Override
 	protected String getHurtSound()
     {
-        return "mob.chicken.hurt";
+        return "magicbeans:mob.goose.death";
     }
 
     /**
@@ -162,7 +162,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     @Override
 	protected String getDeathSound()
     {
-        return "mob.chicken.hurt";
+        return "magicbeans:mob.goose.death";
     }
 
     @Override
