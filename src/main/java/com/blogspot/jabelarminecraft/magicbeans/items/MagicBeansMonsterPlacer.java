@@ -191,7 +191,7 @@ public class MagicBeansMonsterPlacer extends ItemMonsterPlacer
     /**
      * Spawns the creature specified by the egg's type in the location specified by 
      * the last three parameters.
-     * Parameters: world, entityID, x, y, z.
+     * Parameters: world, x, y, z.
      */
     public Entity spawnEntity(World parWorld, double parX, double parY, double parZ)
     {

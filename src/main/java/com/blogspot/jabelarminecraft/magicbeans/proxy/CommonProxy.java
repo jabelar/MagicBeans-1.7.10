@@ -35,6 +35,7 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeansTerrainGenEventHandler
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructure;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructureCapture;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
@@ -297,6 +298,7 @@ public class CommonProxy
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "Golden Egg");
         registerModEntityWithEgg(EntityCowMagicBeans.class, "Family Cow", 0x4EF56D, 0xFCFC03);
         registerModEntityWithEgg(EntityMysteriousStranger.class, "Mysterious Stranger", 0x4EF56D, 0xFCFC03);
+        registerModEntityWithEgg(EntityGiant.class, "Giant", 0x4EF56D, 0xFCFC03);
     }
  
     /**

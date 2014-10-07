@@ -185,7 +185,7 @@ public class MagicBeansEventHandler
         if (event.entity instanceof IEntityMagicBeans)
         {
             // DEBUG
-            System.out.println("OnEntityConstructing registering IWildAnimalsEntity extended properties");
+            System.out.println("OnEntityConstructing registering IEntityMagicBeans extended properties");
             event.entity.registerExtendedProperties("ExtendedPropertiesMagicBeans", new ExtendedPropertiesMagicBeans());
         }
     }

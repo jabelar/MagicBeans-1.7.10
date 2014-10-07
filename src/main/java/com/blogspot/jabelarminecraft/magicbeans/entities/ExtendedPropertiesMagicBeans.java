@@ -24,24 +24,42 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
-public class ExtendedPropertiesMagicBeans implements IExtendedEntityProperties {
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
+public class ExtendedPropertiesMagicBeans implements IExtendedEntityProperties 
+{
+	protected Entity theEntity;
+	protected World theWorld;
+	
 	@Override
-	public void saveNBTData(NBTTagCompound compound) {
-		// TODO Auto-generated method stub
-
+	public void saveNBTData(NBTTagCompound parCompound) 
+	{
+		// DEBUG
+		System.out.println("ExtendedPropertiesMagicBeans saveNBTData(), Entity = "+theEntity.getEntityId()+", client side = "+theWorld.isRemote);
+		
+		// good idea to keep your extended properties in a sub-compound to avoid conflicts with other
+		// possible extended properties, even from other mods (like if a mod extends all EntityAnimal)
+		parCompound.setTag(MagicBeans.EXT_PROPS_NAME, ((IEntityMagicBeans)theEntity).getExtProps()); // set as a sub-compound
 	}
 
 	@Override
-	public void loadNBTData(NBTTagCompound compound) {
-		// TODO Auto-generated method stub
+	public void loadNBTData(NBTTagCompound parCompound) 
+	{
+		// DEBUG
+		System.out.println("ExtendedPropertiesMagicBeans loadNBTData(), Entity = "+theEntity.getEntityId()+", client side = "+theWorld.isRemote);
 
+		// Get the sub-compound
+		((IEntityMagicBeans)theEntity).setExtProps((NBTTagCompound) parCompound.getTag(MagicBeans.EXT_PROPS_NAME));
 	}
 
 	@Override
-	public void init(Entity entity, World world) {
-		// TODO Auto-generated method stub
+	public void init(Entity entity, World world) 
+	{
+		// DEBUG
+		System.out.println("ExtendedPropertiesMagicBeans init(), Entity = "+entity.getEntityId()+", client side = "+world.isRemote);
 
+		theEntity = entity;
+	    theWorld = world;
 	}
-
+  
 }

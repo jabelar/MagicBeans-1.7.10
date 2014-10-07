@@ -25,11 +25,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
+import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
@@ -37,19 +46,31 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
  * @author jabelar
  *
  */
-public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans
+public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 {
     private NBTTagCompound extPropsCompound = new NBTTagCompound();
+
+    // good to have instances of AI so task list can be modified, including in sub-classes
+    protected EntityAIBase aiSwimming = new EntityAISwimming(this);
+    protected EntityAIBase aiAttackOnCollide = new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, true);
+    protected EntityAIBase aiMoveTowardsRestriction = new EntityAIMoveTowardsRestriction(this, 1.0D);
+    protected EntityAIBase aiMoveThroughVillage = new EntityAIMoveThroughVillage(this, 1.0D, false);
+    protected EntityAIBase aiWander = new EntityAIWander(this, 1.0D);
+    protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
+    protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
+    protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
+    protected EntityAIBase aiNearestAttackableTarget = new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true);
 
 	/**
 	 * @param parWorld
 	 */
-	public EntityMysteriousStranger(World parWorld) 
+	public EntityGiant(World parWorld) 
 	{
 		super(parWorld);
 		
 		initExtProps();
 		setupAI();
+		setSize(2.0F, 6.0F);
 	}
 
 	// you don't have to call this as it is called automatically during EntityLiving subclass creation
@@ -59,14 +80,14 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	    super.applyEntityAttributes(); 
 
 	    // standard attributes registered to EntityLivingBase
-	   getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-	   getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.0D); // doesnt' move
-	   getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.8D);
+	   getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
+	   getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0D); 
+	   getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D); // can't knock back
 	   getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
 
 	    // need to register any additional attributes
-//	   getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-//	   getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
+	   getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+	   getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D);
 	}
 	
 	@Override
@@ -89,7 +110,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		this.collideWithNearbyEntities();;
 		if (parPlayer.worldObj.isRemote)
 		{
-			Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger(this));
+			// Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger(this));
 		}
 		return false;
 		
@@ -99,18 +120,29 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setupAI()
 	 */
 	@Override
-	public void setupAI() {
-		// TODO Auto-generated method stub
-		
+	public void setupAI() 
+	{
+        getNavigator().setBreakDoors(true);
+        clearAITasks();
+        tasks.addTask(0, aiSwimming);
+        tasks.addTask(1, aiAttackOnCollide);
+        tasks.addTask(2, aiMoveTowardsRestriction);
+        tasks.addTask(3, aiMoveThroughVillage);
+        tasks.addTask(4, aiWander);
+        tasks.addTask(5, aiWatchClosest);
+        tasks.addTask(6, aiLookIdle);
+        targetTasks.addTask(0, aiHurtByTarget);
+        targetTasks.addTask(1, aiNearestAttackableTarget);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#clearAITasks()
 	 */
 	@Override
-	public void clearAITasks() {
-		// TODO Auto-generated method stub
-		
+	public void clearAITasks() 
+	{
+        tasks.taskEntries.clear();
+        targetTasks.taskEntries.clear();
 	}
 
 	/* (non-Javadoc)
@@ -119,9 +151,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	@Override
 	public void initExtProps() 
 	{
-        extPropsCompound.setFloat("scaleFactor", 1.0F);
-        extPropsCompound.setInteger("cowSummonedById", -1);
-        extPropsCompound.setInteger("playerSummonedById", -1);		
+        extPropsCompound.setFloat("scaleFactor", 3.0F);
 	}
 
 	/* (non-Javadoc)
@@ -154,8 +184,6 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     {
         try {
             parBBOS.writeFloat(extPropsCompound.getFloat("scaleFactor"));
-            parBBOS.writeInt(extPropsCompound.getInteger("cowSummonedById"));
-            parBBOS.writeInt(extPropsCompound.getInteger("playerSummonedById"));
         } catch (IOException e) { e.printStackTrace(); }        
     }
 
@@ -168,8 +196,6 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     {
         try {
             extPropsCompound.setFloat("scaleFactor", parBBIS.readFloat());
-            extPropsCompound.setInteger("cowSummonedById", parBBIS.readInt());
-            extPropsCompound.setInteger("playerSummonedById", parBBIS.readInt());
         } catch (IOException e) { e.printStackTrace(); }
     }
 
@@ -193,50 +219,6 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     {
         return extPropsCompound.getFloat("scaleFactor");
     }
-	
-	public EntityCowMagicBeans getCowSummonedBy()
-	{
-		int cowSummonedById = extPropsCompound.getInteger("cowSummonedById");
-
-		// DEBUG
-		System.out.println("EntityMysteriousStranger getCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
-		return (EntityCowMagicBeans) MagicBeansUtilities.getEntityByID(cowSummonedById, worldObj);
-	}
-	
-	public void setCowSummonedBy(EntityCowMagicBeans parCowMagicBeans)
-	{
-		int cowSummonedById = parCowMagicBeans.getEntityId();
-		
-		// DEBUG
-		System.out.println("EntityMysteriousStranger setCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
-
-		extPropsCompound.setInteger("cowSummonedById", cowSummonedById);
-	       
-        // don't forget to sync client and server
-        sendEntitySyncPacket();
-	}
-
-	public EntityPlayer getPlayerSummonedBy() 
-	{
-		int playerSummonedById = extPropsCompound.getInteger("playerSummonedById");
-
-		// DEBUG
-		System.out.println("EntityMysteriousStranger getPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
-		return (EntityPlayer) MagicBeansUtilities.getEntityByID(playerSummonedById, worldObj);
-	}
-
-	public void setPlayerSummonedBy(EntityPlayer parPlayerSummonedBy) 
-	{
-		int playerSummonedById = parPlayerSummonedBy.getEntityId();
-		
-		// DEBUG
-		System.out.println("EntityMysteriousStranger setPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
-
-		extPropsCompound.setInteger("playerSummonedById", playerSummonedById);
-	       
-        // don't forget to sync client and server
-        sendEntitySyncPacket();
-	}
 	
 	@Override
 	public void sendEntitySyncPacket()
