@@ -70,7 +70,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 		
 		initExtProps();
 		setupAI();
-		setSize(2.0F, 6.0F);
+		setSize(1.5F, 4.5F);
 	}
 
 	// you don't have to call this as it is called automatically during EntityLiving subclass creation
@@ -151,7 +151,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 	@Override
 	public void initExtProps() 
 	{
-        extPropsCompound.setFloat("scaleFactor", 3.0F);
+        extPropsCompound.setFloat("scaleFactor", 2.25F);
 	}
 
 	/* (non-Javadoc)
