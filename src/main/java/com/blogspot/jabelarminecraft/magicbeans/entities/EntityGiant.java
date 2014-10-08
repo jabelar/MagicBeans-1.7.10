@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -31,7 +32,6 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -39,6 +39,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
+import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
@@ -59,8 +61,9 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
     protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
     protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
     protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
-    protected EntityAIBase aiNearestAttackableTarget = new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true);
-
+    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget(this, EntityPlayer.class, 2, true, false, (IEntitySelector)null);
+    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this, 16.0D);
+    
 	/**
 	 * @param parWorld
 	 */
@@ -113,8 +116,16 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 			// Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger(this));
 		}
 		return false;
-		
 	}
+	
+    /**
+     * Returns true if the newer Entity AI code should be run
+     */
+    @Override
+	public boolean isAIEnabled()
+    {
+        return true;
+    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setupAI()
@@ -133,6 +144,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         tasks.addTask(6, aiLookIdle);
         targetTasks.addTask(0, aiHurtByTarget);
         targetTasks.addTask(1, aiNearestAttackableTarget);
+        targetTasks.addTask(1, aiSeePlayer);
 	}
 
 	/* (non-Javadoc)
