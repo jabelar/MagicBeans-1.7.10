@@ -24,7 +24,10 @@ import java.io.IOException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.command.IEntitySelector;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -37,6 +40,8 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
@@ -110,7 +115,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 	@Override
 	public boolean interact(EntityPlayer parPlayer)
 	{
-		this.collideWithNearbyEntities();;
+		collideWithNearbyEntities();;
 		if (parPlayer.worldObj.isRemote)
 		{
 			// Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger(this));
@@ -143,7 +148,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         tasks.addTask(5, aiWatchClosest);
         tasks.addTask(6, aiLookIdle);
         targetTasks.addTask(0, aiHurtByTarget);
-        targetTasks.addTask(1, aiNearestAttackableTarget);
+        // targetTasks.addTask(1, aiNearestAttackableTarget);
         targetTasks.addTask(1, aiSeePlayer);
 	}
 
@@ -156,6 +161,81 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         tasks.taskEntries.clear();
         targetTasks.taskEntries.clear();
 	}
+	
+    @Override
+	public boolean attackEntityAsMob(Entity parEntity)
+    {
+        float f = (float)getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+        int i = 0;
+
+        if (parEntity instanceof EntityLivingBase)
+        {
+            f += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)parEntity);
+            i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)parEntity);
+        }
+
+        boolean flag = parEntity.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+
+        if (flag)
+        {
+            if (i > 0)
+            {
+                parEntity.addVelocity(-MathHelper.sin(rotationYaw * (float)Math.PI / 180.0F) * i * 0.5F, 0.1D, MathHelper.cos(rotationYaw * (float)Math.PI / 180.0F) * i * 0.5F);
+                motionX *= 0.6D;
+                motionZ *= 0.6D;
+            }
+
+            int j = EnchantmentHelper.getFireAspectModifier(this);
+
+            if (j > 0)
+            {
+                parEntity.setFire(j * 4);
+            }
+
+            if (parEntity instanceof EntityLivingBase)
+            {
+                EnchantmentHelper.func_151384_a((EntityLivingBase)parEntity, this);
+            }
+
+            EnchantmentHelper.func_151385_b(this, parEntity);
+        }
+
+        return flag;
+    }
+
+    /**
+     * Called when the entity is attacked.
+     */
+    @Override
+	public boolean attackEntityFrom(DamageSource parDamageSource, float parDamageAmount)
+    {
+        if (isEntityInvulnerable())
+        {
+            return false;
+        }
+        else if (super.attackEntityFrom(parDamageSource, parDamageAmount))
+        {
+            Entity entity = parDamageSource.getEntity();
+
+            if (riddenByEntity != entity && ridingEntity != entity)
+            {
+                if (entity != this)
+                {
+                    entityToAttack = entity;
+                }
+
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()

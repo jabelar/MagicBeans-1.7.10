@@ -45,8 +45,8 @@ public class EntityGiantAISeePlayer extends EntityAIBase
 	public boolean shouldExecute()
     {
         thePlayer = worldObject.getClosestPlayerToEntity(theGiant, minPlayerDistance);
-        return thePlayer != null ;
-    }
+        return thePlayer != null && theGiant.canEntityBeSeen(thePlayer) ? true : false;
+   }
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
