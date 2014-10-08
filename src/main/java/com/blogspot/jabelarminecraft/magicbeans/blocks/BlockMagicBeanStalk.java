@@ -55,6 +55,7 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     	// Basic block setup
         setBlockName("magicbeanstalk");
         setBlockTextureName("magicbeans:magicbeanstalk_stage_0");
+    	setBlockBounds(0.5F-0.125F, 0.0F, 0.5F-0.125F, 0.5F+0.125F, 1.0F, 0.5F+0.125F);
     }
     
     // identifies what food (ItemFood or ItemSeedFood type) is harvested from this
@@ -187,7 +188,6 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     @Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World parWorld, int parX, int parY, int parZ)
     {
-    	this.setBlockBounds(0.5F-0.125F, 0.0F, 0.5F-0.125F, 0.5F+0.125F, 1.0F, 0.5F+0.125F);
         return AxisAlignedBB.getBoundingBox(parX + minX, parY + minY, parZ + minZ, parX + maxX, parY + maxY, parZ + maxZ);
     }
 
