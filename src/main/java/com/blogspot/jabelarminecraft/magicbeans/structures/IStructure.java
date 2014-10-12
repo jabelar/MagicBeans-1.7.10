@@ -1,0 +1,93 @@
+/**
+    Copyright (C) 2014 by jabelar
+
+    This file is part of jabelar's Minecraft Forge modding examples; as such,
+    you can redistribute it and/or modify it under the terms of the GNU
+    General Public License as published by the Free Software Foundation,
+    either version 3 of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    For a copy of the GNU General Public License see <http://www.gnu.org/licenses/>.
+*/
+
+package com.blogspot.jabelarminecraft.magicbeans.structures;
+
+import net.minecraft.tileentity.TileEntity;
+
+/**
+ * @author jabelar
+ *
+ */
+public interface IStructure 
+{
+	/**
+	 * Name of the structure, not used at this time, but potentially useful
+	 * @return
+	 */
+	String getName();
+	
+	/**
+	 * Size of structure in X dimension, based on array read from file
+	 * @return
+	 */
+	int getDimX();
+				
+	/**
+	 * Size of structure in Y dimension, based on array read from file
+	 * @return
+	 */
+	int getDimY();
+				
+	/**
+	 * Size of structure in Z dimension, based on array read from file
+	 * @return
+	 */
+	int getDimZ();
+	
+	/**
+	 * Should read from an asset file and populate a local array of strings
+	 * with the block names, later used by generateTick() to place blocks
+	 * @return
+	 */
+	String[][][] getBlockNameArray();
+	
+	/**
+	 * Should read from an asset file and populate a local array of metadata
+	 * corresponding to the same block positions in the block name array,
+	 * later used by generateTick() to place blocks that have metadata.
+	 * @return
+	 */
+	int[][][] getBlockMetaArray();
+
+	/**
+	 * Read from an asset file and populate the name array and metadata array
+	 * @param parName
+	 */
+	void readArrays(String parName);
+
+	/**
+	 * Generate a portion of the structure per tick to minimize lag
+	 * Suggest that at least one dimension is iterated over ticks rather than loop within tick.
+	 * Order of generation should be 1) blocks with no metadata except special blocks like tripwire,
+	 * 2) blocks with metadata, 3) special blocks like tripwire that depend on previously placed blocks.
+	 * @param tileEntityMagicBeanStalk
+	 * @param parOffsetX
+	 * @param parOffsetY
+	 * @param parOffsetZ
+	 */
+	void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ);
+	
+	/**
+	 * Put items on floor or in tile entity inventories (chests, furnace, etc.)
+	 */
+	void populateItems();
+	
+	/**
+	 * Spawn any entities that may inhabit the structure by default
+	 */
+	void populateEntities();
+}

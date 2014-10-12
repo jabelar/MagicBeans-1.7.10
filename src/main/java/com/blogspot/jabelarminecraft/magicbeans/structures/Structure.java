@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
-public class Structure
+public class Structure implements IStructure
 {
 	protected String theName;
 	
@@ -66,37 +66,44 @@ public class Structure
 		readArrays(theName);
 	}
 	
+	@Override
 	public String getName()
 	{
 		return theName;
 	}
 	
+	@Override
 	public int getDimX()
 	{
 		return dimX;
 	}
 				
+	@Override
 	public int getDimY()
 	{
 		return dimY;
 	}
 				
+	@Override
 	public int getDimZ()
 	{
 		return dimZ;
 	}
 				
+	@Override
 	public String[][][] getBlockNameArray()
 	{
 		return blockNameArray;
 	}
 	
+	@Override
 	public int[][][] getBlockMetaArray()
 	{
 		return blockMetaArray;
 	}
 				
-	protected void readArrays(String parName)
+	@Override
+	public void readArrays(String parName)
 	{
 	    try 
 	    {
@@ -281,12 +288,7 @@ public class Structure
 	    }		
 	}
 
-	/**
-	 * @param tileEntityMagicBeanStalk
-	 * @param parOffsetX
-	 * @param parOffsetY
-	 * @param parOffsetZ
-	 */
+	@Override
 	public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
 		// exit if generating not started or if finished
@@ -443,5 +445,17 @@ public class Structure
 				parWorld.setBlock(indX, parY-1, indZ, MagicBeans.blockCloud, 0, 2);
 			}
 		}
+	}
+	
+	@Override
+	public void populateItems()
+	{
+		
+	}
+	
+	@Override
+	public void populateEntities()
+	{
+		
 	}
 }

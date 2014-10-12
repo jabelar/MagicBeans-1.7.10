@@ -93,7 +93,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 		
 		initExtProps();
 		setupAI();
-		setSize(1.5F, 4.5F);
+		setSize(1.0F, 4.5F);
 	}
 
 	// you don't have to call this as it is called automatically during EntityLiving subclass creation
@@ -110,7 +110,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 
 	    // need to register any additional attributes
 	   getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-	   getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D);
+	   getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
 	}
 	
 	@Override
@@ -435,6 +435,13 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 	public boolean allowLeashing()
     {
     	return false;
+    }
+
+
+    @Override
+	public float getEyeHeight()
+    {
+        return height * 0.85F * getScaleFactor();
     }
 
 	/* (non-Javadoc)

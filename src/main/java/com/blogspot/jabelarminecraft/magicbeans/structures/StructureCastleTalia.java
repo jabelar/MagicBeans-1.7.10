@@ -26,4 +26,16 @@ public class StructureCastleTalia extends Structure
 	{
 		super("taliaCastle");
 	}
+	
+	@Override
+	public void populateItems() 
+	{
+		
+	}
+	
+	@Override
+	public void populateEntities()
+	{
+		
+	}
 }
