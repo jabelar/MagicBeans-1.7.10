@@ -36,10 +36,13 @@ public class Structure implements IStructure
 	protected String theName;
 	
 	protected World theWorld;
+	protected Entity theEntity;
+	protected TileEntity theTileEntity;
 	
 	protected int dimX;
 	protected int dimY;
 	protected int dimZ;
+	protected int totalVolume;
 	
 	protected int startX;
 	protected int startY;
@@ -53,6 +56,8 @@ public class Structure implements IStructure
 	public boolean finishedGeneratingBasic = false; // basic block generation
 	public boolean finishedGeneratingMeta = false; // blocks with metadata generation
 	public boolean finishedGeneratingSpecial = false; // special blocks like tripwire
+	public boolean finishedPopulatingItems = false; // items into inventories and such
+	public boolean finishedPopulatingEntities = false; // default entities that inhabit structure
 	protected int ticksGenerating = 0;
 
 	String[][][] blockNameArray = null;
@@ -144,6 +149,210 @@ public class Structure implements IStructure
 	    catch (IOException e)
 		{
 			e.printStackTrace();
+		}
+	}
+	@Override
+	public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
+	{
+		// exit if generating not started or if finished
+		if (!shouldGenerate || finishedPopulatingEntities)
+		{
+			return;
+		}
+		
+		theTileEntity = parEntity;
+		theWorld = theTileEntity.getWorldObj();
+
+		if (theWorld.isRemote)
+		{
+			return;
+		}
+
+		startX = theTileEntity.xCoord+parOffsetX;
+		startY = theTileEntity.yCoord+parOffsetY;
+		startZ = theTileEntity.zCoord+parOffsetZ;
+		
+		totalVolume = dimX * dimY * dimZ;
+		
+		// generate the cloud
+		if (!finishedGeneratingCloud)
+		{
+			generateCloudTick();
+		}
+		else if (!finishedGeneratingBasic)
+		{
+			generateBasicBlocksTick();
+		}
+		else if (!finishedGeneratingMeta)
+		{
+			generateMetaBlocksTick();
+		}
+		else if (!finishedGeneratingSpecial)
+		{
+			generateSpecialBlocksTick();
+		}
+		else if (!finishedPopulatingItems)
+		{
+			populateItems();
+		}
+		else if (!finishedPopulatingEntities)
+		{
+			populateEntities();
+		}
+	}
+	
+	@Override
+	public void generateBasicBlocksTick() 
+	{
+		int indY = ticksGenerating/(dimX*dimZ);
+
+		for (int indX = 0; indX < dimX; indX++)
+		{
+			for (int indZ = 0; indZ < dimZ; indZ++)
+			{
+				// DEBUG
+				// System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
+
+				if (blockMetaArray[indX][indY][indZ]==0) // check for basic block
+				{
+					String blockName = blockNameArray[indX][indY][indZ];
+					if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+					{
+						theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
+								Block.getBlockFromName(blockName), 0, 2);
+					}
+				}
+			}
+		}
+		
+		ticksGenerating += dimX * dimZ;
+		if (ticksGenerating >= totalVolume)
+		{
+			// DEBUG
+			System.out.println("Finishing generation basic blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
+			finishedGeneratingBasic = true;
+			ticksGenerating = 0;
+		}
+	}
+
+	@Override
+	public void generateMetaBlocksTick() 
+	{
+		int indY = ticksGenerating/(dimX*dimZ);
+
+		for (int indX = 0; indX < dimX; indX++)
+		{
+			for (int indZ = 0; indZ < dimZ; indZ++)
+			{
+				// DEBUG
+				// System.out.println("Generating meta blocks at "+indY+", "+indX+", "+indZ);
+	
+				if (!(blockMetaArray[indX][indY][indZ]==0))
+				{
+					theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
+							Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
+				}	
+			}
+		}
+		
+		ticksGenerating += dimX * dimZ;
+		if (ticksGenerating >= totalVolume)
+		{
+			// DEBUG
+			System.out.println("Finishing generation meta blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
+			finishedGeneratingMeta = true;
+			ticksGenerating = 0;
+		}
+	}
+
+	@Override
+	public void generateSpecialBlocksTick() 
+	{
+		int indY = ticksGenerating/(dimX*dimZ);
+
+		for (int indX = 0; indX < dimX; indX++)
+		{
+			for (int indZ = 0; indZ < dimZ; indZ++)
+			{
+				// DEBUG
+				// System.out.println("Generating special blocks at "+indY+", "+indX+", "+indZ);
+	
+				String blockName = blockNameArray[indX][indY][indZ];
+				if (blockName.equals("minecraft:tripwire"))
+				{
+					theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
+							Block.getBlockFromName(blockName), 0, 2);
+				}	    	
+			}
+		}
+		
+		ticksGenerating += dimX * dimZ;
+		if (ticksGenerating >= totalVolume)
+		{
+			// DEBUG
+			System.out.println("Finishing generation special blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
+			finishedGeneratingSpecial = true;
+			ticksGenerating = 0;
+		}
+	}
+
+	public void generateCloudTick() 
+	{
+		// DEBUG
+		System.out.println("Generating cloud");
+
+		int posX = startX-cloudMarginX+ticksGenerating/(dimZ+2*cloudMarginZ);
+
+		for (int indZ = startZ-cloudMarginZ; indZ < startZ+dimZ+cloudMarginZ; indZ++)
+		{
+			// DEBUG
+			// System.out.println("Generating cloud blocks at "+parX+", "+parY+", "+indZ);
+			// let the beanstalk go through the clouds
+			if (!((Math.abs(posX-theTileEntity.xCoord)<2)&&(Math.abs(indZ-theTileEntity.zCoord)<2)))
+			{
+				theWorld.setBlock(posX, startY+1, indZ, MagicBeans.blockCloud, 0, 2);
+			}
+		}
+		ticksGenerating += dimZ+2*cloudMarginZ;
+		if (ticksGenerating >= (dimX+2*cloudMarginX) * (dimZ+2*cloudMarginZ))
+		{
+			finishedGeneratingCloud = true;
+			ticksGenerating = 0;
+		}
+	}
+
+	@Override
+	public void populateItems()
+	{
+        // DEBUG
+        System.out.println("Finished populating items in structure.");
+		finishedPopulatingItems = true;
+	}
+	
+	@Override
+	public void populateEntities()
+	{
+		finishedPopulatingEntities = true;
+	}
+
+	
+	public void generateCloud(World parWorld, int parX, int parY, int parZ, int parCloudSize) 
+	{	
+		// DEBUG
+		System.out.println("Generating cloud");
+		
+		if (parWorld.isRemote)
+		{
+			return;
+		}
+
+		for (int indX = parX-parCloudSize/2; indX < parX+parCloudSize/2; indX++)
+		{
+			for (int indZ = parZ-parCloudSize/2; indZ < parZ+parCloudSize/2; indZ++)
+			{
+				parWorld.setBlockToAir(indX, parY-1, indZ);
+				parWorld.setBlock(indX, parY-1, indZ, MagicBeans.blockCloud, 0, 2);
+			}
 		}
 	}
 
@@ -288,174 +497,5 @@ public class Structure implements IStructure
 	    }		
 	}
 
-	@Override
-	public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
-	{
-		// exit if generating not started or if finished
-		if (!shouldGenerate || finishedGeneratingSpecial)
-		{
-			return;
-		}
-		
-		TileEntity theEntity = parEntity;
-		theWorld = theEntity.getWorldObj();
 
-		if (theWorld.isRemote)
-		{
-			return;
-		}
-
-		startX = theEntity.xCoord+parOffsetX;
-		startY = theEntity.yCoord+parOffsetY;
-		startZ = theEntity.zCoord+parOffsetZ;
-		
-		int totalVolume = dimX * dimY * dimZ;
-		
-		// generate the cloud
-		if (!finishedGeneratingCloud)
-		{
-			// DEBUG
-			System.out.println("Generating cloud");
-
-			int posX = startX-cloudMarginX+ticksGenerating/(dimZ+2*cloudMarginZ);
-
-			for (int indZ = startZ-cloudMarginZ; indZ < startZ+dimZ+cloudMarginZ; indZ++)
-			{
-				// DEBUG
-				// System.out.println("Generating cloud blocks at "+parX+", "+parY+", "+indZ);
-				// let the beanstalk go through the clouds
-				if (!((Math.abs(posX-parEntity.xCoord)<2)&&(Math.abs(indZ-parEntity.zCoord)<2)))
-				{
-					theWorld.setBlock(posX, startY+1, indZ, MagicBeans.blockCloud, 0, 2);
-				}
-			}
-			ticksGenerating += dimZ+2*cloudMarginZ;
-			if (ticksGenerating >= (dimX+2*cloudMarginX) * (dimZ+2*cloudMarginZ))
-			{
-				finishedGeneratingCloud = true;
-				ticksGenerating = 0;
-			}
-		}
-		else if (!finishedGeneratingBasic)
-		{
-			int indY = ticksGenerating/(dimX*dimZ);
-
-			for (int indX = 0; indX < dimX; indX++)
-			{
-				for (int indZ = 0; indZ < dimZ; indZ++)
-				{
-					// DEBUG
-					// System.out.println("Generating basic blocks at "+indY+", "+indX+", "+indZ);
-	
-					if (blockMetaArray[indX][indY][indZ]==0) // check for basic block
-					{
-						String blockName = blockNameArray[indX][indY][indZ];
-						if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
-						{
-							theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-									Block.getBlockFromName(blockName), 0, 2);
-						}
-					}
-				}
-			}
-			
-			ticksGenerating += dimX * dimZ;
-			if (ticksGenerating >= totalVolume)
-			{
-				// DEBUG
-				System.out.println("Finishing generation basic blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
-				finishedGeneratingBasic = true;
-				ticksGenerating = 0;
-			}
-		}
-		else if (!finishedGeneratingMeta)
-		{
-			int indY = ticksGenerating/(dimX*dimZ);
-
-			for (int indX = 0; indX < dimX; indX++)
-			{
-				for (int indZ = 0; indZ < dimZ; indZ++)
-				{
-					// DEBUG
-					// System.out.println("Generating meta blocks at "+indY+", "+indX+", "+indZ);
-		
-					if (!(blockMetaArray[indX][indY][indZ]==0))
-					{
-						theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-								Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
-					}	
-				}
-			}
-			
-			ticksGenerating += dimX * dimZ;
-			if (ticksGenerating >= totalVolume)
-			{
-				// DEBUG
-				// System.out.println("Finishing generation meta blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
-				finishedGeneratingMeta = true;
-				ticksGenerating = 0;
-			}
-		}
-		else if (!finishedGeneratingSpecial)
-		{
-			int indY = ticksGenerating/(dimX*dimZ);
-
-			for (int indX = 0; indX < dimX; indX++)
-			{
-				for (int indZ = 0; indZ < dimZ; indZ++)
-				{
-					// DEBUG
-					// System.out.println("Generating special blocks at "+indY+", "+indX+", "+indZ);
-		
-					String blockName = blockNameArray[indX][indY][indZ];
-					if (blockName.equals("minecraft:tripwire"))
-					{
-						theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-								Block.getBlockFromName(blockName), 0, 2);
-					}	    	
-				}
-			}
-			
-			ticksGenerating += dimX * dimZ;
-			if (ticksGenerating >= totalVolume)
-			{
-				// DEBUG
-				System.out.println("Finishing generation special blocks with dimX = "+dimX+" dimY = "+dimY+" dimZ = "+dimZ);
-				finishedGeneratingSpecial = true;
-				ticksGenerating = 0;
-			}
-		}
-	}
-	
-	public void generateCloud(World parWorld, int parX, int parY, int parZ, int parCloudSize) 
-	{	
-		// DEBUG
-		System.out.println("Generating cloud");
-		
-		if (parWorld.isRemote)
-		{
-			return;
-		}
-
-		for (int indX = parX-parCloudSize/2; indX < parX+parCloudSize/2; indX++)
-		{
-			for (int indZ = parZ-parCloudSize/2; indZ < parZ+parCloudSize/2; indZ++)
-			{
-				parWorld.setBlockToAir(indX, parY-1, indZ);
-				parWorld.setBlock(indX, parY-1, indZ, MagicBeans.blockCloud, 0, 2);
-			}
-		}
-	}
-	
-	@Override
-	public void populateItems()
-	{
-		
-	}
-	
-	@Override
-	public void populateEntities()
-	{
-		
-	}
 }

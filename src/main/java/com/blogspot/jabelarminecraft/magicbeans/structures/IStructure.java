@@ -72,14 +72,31 @@ public interface IStructure
 	/**
 	 * Generate a portion of the structure per tick to minimize lag
 	 * Suggest that at least one dimension is iterated over ticks rather than loop within tick.
-	 * Order of generation should be 1) blocks with no metadata except special blocks like tripwire,
-	 * 2) blocks with metadata, 3) special blocks like tripwire that depend on previously placed blocks.
+	 * This method should call 1) generateBasicBlocksTick(), 2) generateMetaBlocksTick(), 
+	 * 3) generateSpecialBlocksTick(), 4) populateItems(), 5) populateEntities()
 	 * @param tileEntityMagicBeanStalk
 	 * @param parOffsetX
 	 * @param parOffsetY
 	 * @param parOffsetZ
 	 */
 	void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ);
+	
+	/**
+	 * Generates "basic" blocks, meaning blocks with metadata value 0 that are not special
+	 * like trip wire (which require other blocks placed first).
+	 */
+	void generateBasicBlocksTick();
+
+	/**
+	 * Generates blocks with metadata values.
+	 */
+	void generateMetaBlocksTick();
+	
+	/**
+	 * Generates blocks that are special due to requiring other blocks to be placed first
+	 * like trip wires.
+	 */
+	void generateSpecialBlocksTick();
 	
 	/**
 	 * Put items on floor or in tile entity inventories (chests, furnace, etc.)

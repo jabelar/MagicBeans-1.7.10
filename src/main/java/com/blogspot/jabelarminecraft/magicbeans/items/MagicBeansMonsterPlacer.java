@@ -81,39 +81,39 @@ public class MagicBeansMonsterPlacer extends ItemMonsterPlacer
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, 
-          World par3World, int par4, int par5, int par6, int par7, float par8, 
+    public boolean onItemUse(ItemStack parItemSpawnEgg, EntityPlayer parPlayer, 
+          World parWorld, int parX, int parY, int parZ, int parBlockSide, float par8, 
           float par9, float par10)
     {
-        if (par3World.isRemote)
+        if (parWorld.isRemote)
         {
             return true;
         }
         else
         {
-            Block block = par3World.getBlock(par4, par5, par6);
-            par4 += Facing.offsetsXForSide[par7];
-            par5 += Facing.offsetsYForSide[par7];
-            par6 += Facing.offsetsZForSide[par7];
+            Block block = parWorld.getBlock(parX, parY, parZ);
+            parX += Facing.offsetsXForSide[parBlockSide];
+            parY += Facing.offsetsYForSide[parBlockSide];
+            parZ += Facing.offsetsZForSide[parBlockSide];
             double d0 = 0.0D;
 
-            if (par7 == 1 && block.getRenderType() == 11)
+            if (parBlockSide == 1 && block.getRenderType() == 11)
             {
                 d0 = 0.5D;
             }
 
-            Entity entity = spawnEntity(par3World, par4 + 0.5D, par5 + d0, par6 + 0.5D);
+            Entity entity = spawnEntity(parWorld, parX + 0.5D, parY + d0, parZ + 0.5D);
 
             if (entity != null)
             {
-                if (entity instanceof EntityLivingBase && par1ItemStack.hasDisplayName())
+                if (entity instanceof EntityLivingBase && parItemSpawnEgg.hasDisplayName())
                 {
-                    ((EntityLiving)entity).setCustomNameTag(par1ItemStack.getDisplayName());
+                    ((EntityLiving)entity).setCustomNameTag(parItemSpawnEgg.getDisplayName());
                 }
 
-                if (!par2EntityPlayer.capabilities.isCreativeMode)
+                if (!parPlayer.capabilities.isCreativeMode)
                 {
-                    --par1ItemStack.stackSize;
+                    --parItemSpawnEgg.stackSize;
                 }
             }
 

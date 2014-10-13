@@ -16,6 +16,12 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.structures;
 
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.MathHelper;
+
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+
 /**
  * @author jabelar
  *
@@ -30,12 +36,37 @@ public class StructureCastleTalia extends Structure
 	@Override
 	public void populateItems() 
 	{
-		
+        // DEBUG
+        System.out.println("Finished populating items in structure.");
+		finishedPopulatingItems = true;
 	}
 	
 	@Override
 	public void populateEntities()
 	{
-		
+		if (!theWorld.isRemote)
+		{
+			String entityToSpawnName = "Golden Goose";
+	        String entityToSpawnNameFull = MagicBeans.MODID+"."+entityToSpawnName;
+	        if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
+	        {
+	            EntityLiving entityToSpawn = (EntityLiving) EntityList
+	                  .createEntityByName(entityToSpawnNameFull, theWorld);
+	            entityToSpawn.setLocationAndAngles(startX-3, startY+2, startZ-3, 
+	                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
+	                  * 360.0F), 0.0F);
+	            theWorld.spawnEntityInWorld(entityToSpawn);
+	            entityToSpawn.playLivingSound();
+	        }
+	        else
+	        {
+	            //DEBUG
+	            System.out.println("Entity not found "+entityToSpawnName);
+	        }
+	        
+	        // DEBUG
+	        System.out.println("Finished populating entities in structure.");
+	        finishedPopulatingEntities = true;
+		}
 	}
 }

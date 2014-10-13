@@ -75,7 +75,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
 				System.out.println("Beanstalk fully grown, look up!");
 				MagicBeans.structureCastleTalia.shouldGenerate = true;
 				MagicBeans.structureCastleTalia.generateTick(this, 5, -2, 5);
-				hasSpawnedCastle = MagicBeans.structureCastleTalia.finishedGeneratingSpecial;
+				hasSpawnedCastle = MagicBeans.structureCastleTalia.finishedPopulatingEntities;
 			}
 		}
 	}
