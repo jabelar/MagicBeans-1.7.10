@@ -60,14 +60,12 @@ public class EntityGoldenEggThrown extends EntityThrowable
 
         if (!worldObj.isRemote) // never spawn entity on client side
         {
-    		// need to put in randomness here
     	    // should sometimes give gold ingot
             // should sometimes (very rarely) give baby golden goose
         	int dropItem = MathHelper.getRandomIntegerInRange(rand, 0, 8);
         	if (dropItem == 0) // 1in8 chance of spawning entity, like chicken egg
         	{
                 EntityAnimal entityToSpawn = (EntityAnimal) EntityList.createEntityByName("magicbeans.Golden Goose", worldObj);
-                // entityToSpawn.setGrowingAge(-24000);
                 entityToSpawn.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);
                 worldObj.spawnEntityInWorld(entityToSpawn);
         	}

@@ -104,7 +104,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 
 	    // standard attributes registered to EntityLivingBase
 	   getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-	   getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0D); 
+	   getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D); 
 	   getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D); // can't knock back
 	   getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
 
@@ -181,7 +181,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 	public boolean attackEntityAsMob(Entity parEntity)
     {
     	//DEBUG
-    	System.out.println("EntityGiant attackEntityAsMob");
+    	// System.out.println("EntityGiant attackEntityAsMob");
     	
     	entityAttacked = parEntity;
         attackDamage = (float)getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
@@ -195,7 +195,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 
         wasDamageDone = entityAttacked.attackEntityFrom(DamageSource.causeMobDamage(this), attackDamage);
         // DEBUG
-        System.out.println("Damage was done ="+wasDamageDone+", damage amount ="+attackDamage);
+        // System.out.println("Damage was done ="+wasDamageDone+", damage amount ="+attackDamage);
         if (wasDamageDone)
         {
             if (knockback > 0)
@@ -234,7 +234,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         entityAttackedBy = damageSource.getEntity();
 
         // DEBUG
-    	System.out.println("EntityGiant attackEntityFrom()");
+    	// System.out.println("EntityGiant attackEntityFrom()");
         if (ForgeHooks.onLivingAttack(this, damageSource, damageAmount)) return false;
 
         if (conditionsPreventDamage(damageSource))
@@ -267,7 +267,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         if (entityAttackedBy != null)
         {
         	// DEBUG
-        	System.out.println("Attacked by an entity");
+        	// System.out.println("Attacked by an entity");
             if (entityAttackedBy instanceof EntityLivingBase)
             {
                 setRevengeTarget((EntityLivingBase)entityAttackedBy);
@@ -276,7 +276,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
             if (entityAttackedBy instanceof EntityPlayer)
             {
             	// DEBUG
-            	System.out.println("Attacked by a player");
+            	// System.out.println("Attacked by a player");
                 recentlyHit = 100;
                 attackingPlayer = (EntityPlayer)entityAttackedBy;
             }
@@ -317,7 +317,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
             else // non-entity was damage source
             {
             	// DEBUG
-            	System.out.println("Damage was done by something other than an entity");
+            	// System.out.println("Damage was done by something other than an entity");
                 attackedAtYaw = (int)(Math.random() * 2.0D) * 180;
             }
         }
@@ -374,7 +374,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         if (hurtResistantTime > maxHurtResistantTime / 2.0F)
         {
         	// DEBUG
-        	System.out.println("Reduced damage done, damage amount ="+damageAmount+". health remaining ="+getHealth());
+        	// System.out.println("Reduced damage done, damage amount ="+damageAmount+". health remaining ="+getHealth());
             if (damageAmount <= lastDamage)
             {
                 return false;
@@ -386,13 +386,13 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         }
         else // do normal damage
         {
-        	// DEBUG
-        	System.out.println("Normal damage done, damage amount ="+damageAmount+". health remaining ="+getHealth());
             lastDamage = damageAmount;
             prevHealth = getHealth();
             hurtResistantTime = maxHurtResistantTime;
             damageEntity(damageSource, damageAmount);
             hurtTime = maxHurtTime = 10;
+        	// DEBUG
+        	// System.out.println("Normal damage done, damage amount ="+damageAmount+". health remaining ="+getHealth());
         }
         
 		return wasDamageDoneOutsideResistancePeriod;
@@ -444,6 +444,28 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         return height * 0.85F * getScaleFactor();
     }
 
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    @Override
+	public void writeEntityToNBT(NBTTagCompound parCompound)
+    {
+        super.writeEntityToNBT(parCompound);
+        // DEBUG
+        System.out.println("EntityGiant writeEntityToNBT");
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+	public void readEntityFromNBT(NBTTagCompound parCompound)
+    {
+        super.readEntityFromNBT(parCompound);
+        // DEBUG
+        System.out.println("EntityGiant readEntityFromNBT");
+    }
+
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()
 	 */
@@ -481,9 +503,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
     // no need to return the buffer because the buffer is operated on directly
     public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) 
     {
-        try {
+        try 
+        {
             parBBOS.writeFloat(extPropsCompound.getFloat("scaleFactor"));
-        } catch (IOException e) { e.printStackTrace(); }        
+        } 
+        catch (IOException e) 
+        { 
+        	e.printStackTrace(); 
+        }        
     }
 
 	/* (non-Javadoc)
@@ -493,9 +520,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
     // no need to return anything because the extended properties tag is updated directly
     public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) 
     {
-        try {
+        try 
+        {
             extPropsCompound.setFloat("scaleFactor", parBBIS.readFloat());
-        } catch (IOException e) { e.printStackTrace(); }
+        } 
+        catch (IOException e) 
+        { 
+        	e.printStackTrace(); 
+        }
     }
 
 	/* (non-Javadoc)

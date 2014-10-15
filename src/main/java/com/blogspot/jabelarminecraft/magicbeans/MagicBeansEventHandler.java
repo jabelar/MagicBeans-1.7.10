@@ -21,9 +21,7 @@ package com.blogspot.jabelarminecraft.magicbeans;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -186,7 +184,7 @@ public class MagicBeansEventHandler
         {
             // DEBUG
             System.out.println("OnEntityConstructing registering IEntityMagicBeans extended properties");
-            event.entity.registerExtendedProperties("ExtendedPropertiesMagicBeans", new ExtendedPropertiesMagicBeans());
+            event.entity.registerExtendedProperties(MagicBeans.EXT_PROPS_NAME, new ExtendedPropertiesMagicBeans());
         }
     }
     
@@ -262,11 +260,7 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(LivingDropsEvent event)
     {
-    	EntityLivingBase attacker = event.entityLiving.getLastAttacker();
-    	if (attacker instanceof EntityPlayer)
-    	{
-    		// do what you want with attacker inventory here
-    	}
+
     }
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
@@ -408,11 +402,7 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(AttackEntityEvent event)
     {
-        // check if client side before sending message
-        if (event.entity.worldObj.isRemote) {
-            System.out.println("Attack!");
-            Minecraft.getMinecraft().thePlayer.sendChatMessage("Attack!");
-        }
+
     }
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

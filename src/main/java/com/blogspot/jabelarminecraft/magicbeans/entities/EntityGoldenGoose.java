@@ -236,6 +236,28 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 		// TODO Auto-generated method stub
 		
 	}
+	
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    @Override
+	public void writeEntityToNBT(NBTTagCompound parCompound)
+    {
+        super.writeEntityToNBT(parCompound);
+        // DEBUG
+        System.out.println("EntityGoldenGoose writeEntityToNBT");
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    @Override
+	public void readEntityFromNBT(NBTTagCompound parCompound)
+    {
+        super.readEntityFromNBT(parCompound);
+        // DEBUG
+        System.out.println("EntityGoldenGoose readEntityFromNBT");
+    }
 
 	@Override
 	public void initExtProps() 

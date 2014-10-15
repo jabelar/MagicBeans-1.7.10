@@ -69,10 +69,10 @@ public class RenderGoldenEggThrown extends Render
             GL11.glPushMatrix();
             GL11.glTranslatef((float)parX, (float)parY, (float)parZ);
             // DEBUG
-            System.out.println("Rendering on client side ="+parEntity.worldObj.isRemote);
-            System.out.println("Thrown egg entity position ="+parEntity.posX+", "+parEntity.posY+", "+parEntity.posZ);
-            System.out.println("Thrown egg entity server position ="+parEntity.serverPosX/32.0D+", "+parEntity.serverPosY/32.0D+", "+parEntity.serverPosZ/32.0D);
-            System.out.println("Thrown egg entity motion ="+parEntity.motionX+", "+parEntity.motionY+", "+parEntity.motionZ);
+//            System.out.println("Rendering on client side ="+parEntity.worldObj.isRemote);
+//            System.out.println("Thrown egg entity position ="+parEntity.posX+", "+parEntity.posY+", "+parEntity.posZ);
+//            System.out.println("Thrown egg entity server position ="+parEntity.serverPosX/32.0D+", "+parEntity.serverPosY/32.0D+", "+parEntity.serverPosZ/32.0D);
+//            System.out.println("Thrown egg entity motion ="+parEntity.motionX+", "+parEntity.motionY+", "+parEntity.motionZ);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(0.5F, 0.5F, 0.5F);
             int l = 0xF5E16F;
