@@ -46,7 +46,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.IExtendedEntityProperties;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
@@ -56,7 +58,7 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
  * @author jabelar
  *
  */
-public class EntityGiant extends EntityCreature implements IEntityMagicBeans
+public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IExtendedEntityProperties
 {
     private NBTTagCompound extPropsCompound = new NBTTagCompound();
 
@@ -465,6 +467,46 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         // DEBUG
         System.out.println("EntityGiant readEntityFromNBT");
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see net.minecraftforge.common.IExtendedEntityProperties#saveNBTData(net.minecraft.nbt.NBTTagCompound)
+     */
+   	@Override
+	public void saveNBTData(NBTTagCompound parCompound) 
+	{
+		// DEBUG
+		System.out.println("Extended properties saveNBTData(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
+		
+		// good idea to keep your extended properties in a sub-compound to avoid conflicts with other
+		// possible extended properties, even from other mods (like if a mod extends all EntityAnimal)
+		parCompound.setTag(MagicBeans.EXT_PROPS_NAME, getExtProps()); // set as a sub-compound
+	}
+
+   	/*
+   	 * @Override(non-Javadoc)
+   	 * @see net.minecraftforge.common.IExtendedEntityProperties#loadNBTData(net.minecraft.nbt.NBTTagCompound)
+   	 */
+	@Override
+	public void loadNBTData(NBTTagCompound parCompound) 
+	{
+		// DEBUG
+		System.out.println("Extended properties loadNBTData(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
+
+		// Get the sub-compound
+		setExtProps((NBTTagCompound) parCompound.getTag(MagicBeans.EXT_PROPS_NAME));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.minecraftforge.common.IExtendedEntityProperties#init(net.minecraft.entity.Entity, net.minecraft.world.World)
+	 */
+	@Override
+	public void init(Entity entity, World world) 
+	{
+		// DEBUG
+		System.out.println("Extended properties init(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
+	}
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()
@@ -529,6 +571,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         	e.printStackTrace(); 
         }
     }
+
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setScaleFactor(float)

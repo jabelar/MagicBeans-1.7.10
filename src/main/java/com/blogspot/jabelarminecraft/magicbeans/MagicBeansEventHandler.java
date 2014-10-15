@@ -19,7 +19,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.util.MathHelper;
@@ -42,6 +41,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.ForgeChunkManager.ForceChunkEvent;
 import net.minecraftforge.common.ForgeChunkManager.UnforceChunkEvent;
+import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -108,8 +108,6 @@ import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.entities.ExtendedPropertiesMagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -180,11 +178,11 @@ public class MagicBeansEventHandler
     {
         // Register extended entity properties
 
-        if (event.entity instanceof IEntityMagicBeans)
+        if (event.entity instanceof IExtendedEntityProperties)
         {
             // DEBUG
             System.out.println("OnEntityConstructing registering IEntityMagicBeans extended properties");
-            event.entity.registerExtendedProperties(MagicBeans.EXT_PROPS_NAME, new ExtendedPropertiesMagicBeans());
+            event.entity.registerExtendedProperties(MagicBeans.EXT_PROPS_NAME, (IExtendedEntityProperties) event.entity);
         }
     }
     
@@ -420,12 +418,7 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(EntityItemPickupEvent event)
     {
-        // check if client side before sending message
-        if (event.entity.worldObj.isRemote) 
-        {
-            System.out.println("Yay loot!");
-            Minecraft.getMinecraft().thePlayer.sendChatMessage("Yay loot!");
-        }
+
     }
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
