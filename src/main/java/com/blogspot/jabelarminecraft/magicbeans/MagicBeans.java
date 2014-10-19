@@ -84,7 +84,7 @@ public class MagicBeans
     public static int configGiantAttackDamage = 4;
     public static double configChanceCowIsMagic = 0.1D;
 	public static int configMaxStalkHeight = 136;
-	public static int configTicksPerGrowStage = 1;
+	public static int configTicksPerGrowStage = 20;
 	public static int configTimeUntilNextEgg = 600;
     
     // instantiate materials

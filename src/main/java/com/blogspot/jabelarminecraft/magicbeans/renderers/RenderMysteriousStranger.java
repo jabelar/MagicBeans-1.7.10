@@ -22,8 +22,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
+import org.lwjgl.opengl.GL11;
+
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
+import com.blogspot.jabelarminecraft.magicbeans.proxy.ClientProxy;
 
 /**
  * @author jabelar
@@ -68,5 +71,19 @@ public class RenderMysteriousStranger extends RenderLiving
     protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return mysteriousStrangerTexture;
+    }
+    
+    @Override
+	protected void passSpecialRender(EntityLivingBase parEntity, double parX, double parY, double parZ)
+    {
+		super.passSpecialRender(parEntity, parX, parY, parZ);
+		GL11.glPushMatrix();
+		GL11.glTranslated(parX, parY + parEntity.height / 2, parZ);
+		GL11.glScalef(3.0F, 3.0F, 3.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+		GL11.glCallList(ClientProxy.sphereID);
+		GL11.glPopMatrix();
     }
 }

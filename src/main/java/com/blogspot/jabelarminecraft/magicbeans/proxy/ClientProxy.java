@@ -24,8 +24,12 @@ import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.model.ModelVillager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.glu.Sphere;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.VersionChecker;
@@ -58,6 +62,11 @@ public class ClientProxy extends CommonProxy
 	 */
 	public static KeyBinding[] keyBindings;
 	
+	/*
+	 * For rendering a sphere if needed
+	 */
+	public static int sphereID;
+	
 	@Override
 	public void fmlLifeCycleEvent(FMLPreInitializationEvent event)
 	{
@@ -83,6 +92,9 @@ public class ClientProxy extends CommonProxy
 		// do client-specific stuff
 		// registerClientPacketHandler();
 		registerKeyBindings();
+
+    	// create sphere call list
+    	createSphereCallList();
 	}
 	
 	@Override
@@ -147,5 +159,36 @@ public class ClientProxy extends CommonProxy
 
         // Solution is to double-check side before returning the player:
         return (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayerEntityFromContext(ctx));
+    }
+    
+    /*
+     * For rendering a sphere, need to make the call list
+     * Must be called after pre-init, otherwise Minecraft.getMinecraft() will fail will null pointer exception
+     */
+    public void createSphereCallList()
+    {
+        Sphere sphere = new Sphere();
+       //GLU_POINT will render it as dots.
+       //GLU_LINE will render as wireframe
+       //GLU_SILHOUETTE will render as ?shadowed? wireframe
+       //GLU_FILL as a solid.
+        sphere.setDrawStyle(GLU.GLU_FILL);
+       //GLU_SMOOTH will try to smoothly apply lighting
+       //GLU_FLAT will have a solid brightness per face, and will not shade.
+       //GLU_NONE will be completely solid, and probably will have no depth to it's appearance.
+        sphere.setNormals(GLU.GLU_SMOOTH);
+       //GLU_INSIDE will render as if you are inside the sphere, making it appear inside out.(Similar to how ender portals are rendered)
+        sphere.setOrientation(GLU.GLU_OUTSIDE);
+        sphereID = GL11.glGenLists(1);
+       //Create a new list to hold our sphere data.
+        GL11.glNewList(sphereID, GL11.GL_COMPILE);
+       //binds the texture 
+       ResourceLocation rL = new ResourceLocation(MagicBeans.MODID+":textures/entities/sphere.png");
+       System.out.println("sphere texture resource location ="+rL);
+       Minecraft.getMinecraft().getTextureManager().bindTexture(rL);
+       //The drawing the sphere is automatically doing is getting added to our list. Careful, the last 2 variables
+       //control the detail, but have a massive impact on performance. 32x32 is a good balance on my machine.s
+       sphere.draw(0.5F, 32, 32);
+       GL11.glEndList();
     }
 }
