@@ -65,7 +65,8 @@ public class ClientProxy extends CommonProxy
 	/*
 	 * For rendering a sphere if needed
 	 */
-	public static int sphereID;
+	public static int sphereIdOutside;
+	public static int sphereIdInside;
 	
 	@Override
 	public void fmlLifeCycleEvent(FMLPreInitializationEvent event)
@@ -179,12 +180,22 @@ public class ClientProxy extends CommonProxy
         sphere.setNormals(GLU.GLU_SMOOTH);
        //GLU_INSIDE will render as if you are inside the sphere, making it appear inside out.(Similar to how ender portals are rendered)
         sphere.setOrientation(GLU.GLU_OUTSIDE);
-        sphereID = GL11.glGenLists(1);
+        sphereIdOutside = GL11.glGenLists(1);
        //Create a new list to hold our sphere data.
-        GL11.glNewList(sphereID, GL11.GL_COMPILE);
+        GL11.glNewList(sphereIdOutside, GL11.GL_COMPILE);
        //binds the texture 
        ResourceLocation rL = new ResourceLocation(MagicBeans.MODID+":textures/entities/sphere.png");
-       System.out.println("sphere texture resource location ="+rL);
+       Minecraft.getMinecraft().getTextureManager().bindTexture(rL);
+       //The drawing the sphere is automatically doing is getting added to our list. Careful, the last 2 variables
+       //control the detail, but have a massive impact on performance. 32x32 is a good balance on my machine.s
+       sphere.draw(0.5F, 32, 32);
+       GL11.glEndList();
+
+       //GLU_INSIDE will render as if you are inside the sphere, making it appear inside out.(Similar to how ender portals are rendered)
+       sphere.setOrientation(GLU.GLU_INSIDE);
+       sphereIdInside = GL11.glGenLists(1);
+       //Create a new list to hold our sphere data.
+       GL11.glNewList(sphereIdInside, GL11.GL_COMPILE);
        Minecraft.getMinecraft().getTextureManager().bindTexture(rL);
        //The drawing the sphere is automatically doing is getting added to our list. Careful, the last 2 variables
        //control the detail, but have a massive impact on performance. 32x32 is a good balance on my machine.s

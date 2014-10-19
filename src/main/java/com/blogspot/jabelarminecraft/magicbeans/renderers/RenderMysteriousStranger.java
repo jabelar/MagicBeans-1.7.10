@@ -83,7 +83,8 @@ public class RenderMysteriousStranger extends RenderLiving
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-		GL11.glCallList(ClientProxy.sphereID);
+		GL11.glCallList(ClientProxy.sphereIdOutside);
+		GL11.glCallList(ClientProxy.sphereIdInside);
 		GL11.glPopMatrix();
     }
 }
