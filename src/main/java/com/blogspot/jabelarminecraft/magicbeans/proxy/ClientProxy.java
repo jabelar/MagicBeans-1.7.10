@@ -63,7 +63,7 @@ public class ClientProxy extends CommonProxy
 	public static KeyBinding[] keyBindings;
 	
 	/*
-	 * For rendering a sphere if needed
+	 * For rendering a sphere, need ids for call lists for outside and inside
 	 */
 	public static int sphereIdOutside;
 	public static int sphereIdInside;
