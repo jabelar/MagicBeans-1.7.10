@@ -16,8 +16,11 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.structures;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.MathHelper;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
@@ -40,7 +43,17 @@ public class StructureCastleTalia extends Structure
         System.out.println("Finished populating items in structure.");
 		finishedPopulatingItems = true;
 	}
-	
+
+	@Override
+	public void generateTileEntity(Block theBlock, int theMetadata, int parX,
+			int parY, int parZ) 
+	{
+		if (theBlock == Blocks.chest)
+		{
+			TileEntityChest theTileEntity = (TileEntityChest) theWorld.getTileEntity(parX, parY, parZ);
+		}
+	}
+
 	@Override
 	public void populateEntities()
 	{

@@ -249,8 +249,14 @@ public class Structure implements IStructure
 	
 				if (!(blockMetaArray[indX][indY][indZ]==0))
 				{
+					Block theBlock = Block.getBlockFromName(blockNameArray[indX][indY][indZ]);
+					int theMetadata = blockMetaArray[indX][indY][indZ];
 					theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-							Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
+							theBlock, theMetadata, 2);
+					if (theBlock.hasTileEntity(theMetadata))
+					{
+						generateTileEntity(theBlock, theMetadata, startX+indX, startY+indY, startZ+indZ);
+					}
 				}	
 			}
 		}
@@ -263,6 +269,13 @@ public class Structure implements IStructure
 			finishedGeneratingMeta = true;
 			ticksGenerating = 0;
 		}
+	}
+
+	@Override
+	public void generateTileEntity(Block theBlock, int theMetadata, int parX,
+			int parY, int parZ) 
+	{
+		
 	}
 
 	@Override

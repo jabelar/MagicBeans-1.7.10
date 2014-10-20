@@ -16,6 +16,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.structures;
 
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -107,4 +108,10 @@ public interface IStructure
 	 * Spawn any entities that may inhabit the structure by default
 	 */
 	void populateEntities();
+
+	/**
+	 * During block placement, if block has a tile entity, process it.
+	 * For example you can put things in inventory, etc.
+	 */
+	void generateTileEntity(Block parBlock, int parMetadata, int parX, int parY, int parZ);
 }
