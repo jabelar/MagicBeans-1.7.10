@@ -83,6 +83,7 @@ public class RenderMysteriousStranger extends RenderLiving
 			GL11.glTranslated(parX, parY + parEntity.height / 2, parZ);
 			GL11.glScalef(3.0F, 3.0F, 3.0F);
 			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glDepthMask(false);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, (40.0F-parEntity.ticksExisted)/40.0F);
 			GL11.glEnable(GL11.GL_ALPHA_TEST);
