@@ -17,6 +17,7 @@
 package com.blogspot.jabelarminecraft.magicbeans.models;
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 import org.lwjgl.opengl.GL11;
@@ -29,6 +30,8 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
  */
 public class ModelGiant extends ModelBiped
 {
+    public ModelRenderer modelNose;
+
     public ModelGiant()
     {
         this(0.0F);
@@ -39,6 +42,10 @@ public class ModelGiant extends ModelBiped
         super(parScaleFactor, 0.0F, 64, 32);
         // DEBUG
         System.out.println("ModelGiant() constructor");
+        modelNose = new ModelRenderer(this, 24, 0);
+        modelNose.addBox(-1.0F, -3.5F, -6.0F, 2, 4, 2, parScaleFactor);
+        modelNose.setRotationPoint(0.0F, 0.0F, 0.0F);
+        bipedHead.addChild(modelNose);
     }
 
     /**
