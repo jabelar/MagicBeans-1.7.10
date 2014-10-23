@@ -106,7 +106,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IE
 
 	    // standard attributes registered to EntityLivingBase
 	   getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-	   getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D); 
+	   getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); 
 	   getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D); // can't knock back
 	   getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
 
@@ -165,8 +165,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IE
         tasks.addTask(5, aiWatchClosest);
         tasks.addTask(6, aiLookIdle);
         targetTasks.addTask(0, aiHurtByTarget);
-        // targetTasks.addTask(1, aiNearestAttackableTarget);
-        targetTasks.addTask(1, aiSeePlayer);
+        targetTasks.addTask(1, aiNearestAttackableTarget);
+        // targetTasks.addTask(1, aiSeePlayer);
 	}
 
 	/* (non-Javadoc)
