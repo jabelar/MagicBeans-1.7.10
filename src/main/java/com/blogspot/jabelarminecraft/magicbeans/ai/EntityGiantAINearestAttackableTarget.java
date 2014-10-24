@@ -70,9 +70,6 @@ public class EntityGiantAINearestAttackableTarget extends EntityAITarget
     @Override
 	public boolean shouldExecute()
     {
-    	// DEBUG
-    	System.out.println("EntityGiantAINearestAttackable shoudlExecute()");
-    	
         if (targetChance > 0 && taskOwner.getRNG().nextInt(targetChance) != 0)
         {
             return false;
