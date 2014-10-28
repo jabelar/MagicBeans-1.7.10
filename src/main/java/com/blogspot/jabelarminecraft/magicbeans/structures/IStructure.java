@@ -113,5 +113,5 @@ public interface IStructure
 	 * During block placement, if block has a tile entity, process it.
 	 * For example you can put things in inventory, etc.
 	 */
-	void generateTileEntity(Block parBlock, int parMetadata, int parX, int parY, int parZ);
+	void customizeTileEntity(Block parBlock, int parMetadata, int parX, int parY, int parZ);
 }

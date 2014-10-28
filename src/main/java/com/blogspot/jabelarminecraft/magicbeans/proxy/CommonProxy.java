@@ -19,7 +19,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
-import net.minecraft.block.BlockDirt;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -62,9 +61,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.ExistingSubstitutionException;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.Type;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -224,12 +221,6 @@ public class CommonProxy
     	GameRegistry.registerBlock(MagicBeans.blockMagicBeanStalk, "magicbeanstalk");
     	GameRegistry.registerBlock(MagicBeans.blockMagicBeansVine, "magicbeansvine");
     	GameRegistry.registerBlock(MagicBeans.blockCloud, "magicbeanscloud");
-    	try {
-			GameRegistry.addSubstitutionAlias("blockCloud", Type.BLOCK, new BlockDirt());
-		} catch (ExistingSubstitutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
 
     /** 
@@ -306,8 +297,8 @@ public class CommonProxy
         registerModEntity(EntityGoldenGoose.class, "Golden Goose");
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "Golden Egg");
         registerModEntityWithEgg(EntityCowMagicBeans.class, "Family Cow", 0x4EF56D, 0xFCFC03);
-        registerModEntityWithEgg(EntityMysteriousStranger.class, "Mysterious Stranger", 0x4EF56D, 0xFCFC03);
-        registerModEntityWithEgg(EntityGiant.class, "Giant", 0x4EF56D, 0xFCFC03);
+        registerModEntityWithEgg(EntityMysteriousStranger.class, "Mysterious Stranger", 0x8C6620, 0xA100B3);
+        registerModEntityWithEgg(EntityGiant.class, "Giant", 0xDB9112, 0x0AC798);
     }
  
     /**

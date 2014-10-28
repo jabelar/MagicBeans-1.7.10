@@ -20,6 +20,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.MathHelper;
 
@@ -45,12 +47,17 @@ public class StructureCastleTalia extends Structure
 	}
 
 	@Override
-	public void generateTileEntity(Block theBlock, int theMetadata, int parX,
+	public void customizeTileEntity(Block theBlock, int theMetadata, int parX,
 			int parY, int parZ) 
 	{
 		if (theBlock == Blocks.chest)
 		{
 			TileEntityChest theTileEntity = (TileEntityChest) theWorld.getTileEntity(parX, parY, parZ);
+			int inventorySize = theTileEntity.getSizeInventory();
+			for (int i=0; i < inventorySize; i++)
+			{
+				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.emerald, 5));
+			}
 		}
 	}
 

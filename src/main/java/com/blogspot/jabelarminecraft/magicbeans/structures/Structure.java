@@ -255,7 +255,7 @@ public class Structure implements IStructure
 							theBlock, theMetadata, 2);
 					if (theBlock.hasTileEntity(theMetadata))
 					{
-						generateTileEntity(theBlock, theMetadata, startX+indX, startY+indY, startZ+indZ);
+						customizeTileEntity(theBlock, theMetadata, startX+indX, startY+indY, startZ+indZ);
 					}
 				}	
 			}
@@ -271,8 +271,12 @@ public class Structure implements IStructure
 		}
 	}
 
+	/**
+	 * In this method you can do additional processing for a tile entity
+	 * such as putting contents into the inventory.
+	 */
 	@Override
-	public void generateTileEntity(Block theBlock, int theMetadata, int parX,
+	public void customizeTileEntity(Block theBlock, int theMetadata, int parX,
 			int parY, int parZ) 
 	{
 		
