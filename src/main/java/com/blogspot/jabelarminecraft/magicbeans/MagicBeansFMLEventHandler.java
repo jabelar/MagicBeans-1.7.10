@@ -166,6 +166,8 @@ public class MagicBeansFMLEventHandler
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(OnConfigChangedEvent eventArgs) 
 	{
+		// DEBUG
+		System.out.println("OnConfigChangedEvent");
 		if(eventArgs.modID.equals(MagicBeans.MODID))
 		{
 			MagicBeans.proxy.syncConfig();
