@@ -22,7 +22,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityDispenser;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.MathHelper;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
@@ -57,6 +60,33 @@ public class StructureCastleTalia extends Structure
 			for (int i=0; i < inventorySize; i++)
 			{
 				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.emerald, 5));
+			}
+		}
+		if (theBlock == Blocks.furnace)
+		{
+			TileEntityFurnace theTileEntity = (TileEntityFurnace) theWorld.getTileEntity(parX, parY, parZ);
+			int inventorySize = theTileEntity.getSizeInventory();
+			for (int i=0; i < inventorySize; i++)
+			{
+				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.gold_ingot, 5));
+			}
+		}
+		if (theBlock == Blocks.dispenser)
+		{
+			TileEntityDispenser theTileEntity = (TileEntityDispenser) theWorld.getTileEntity(parX, parY, parZ);
+			int inventorySize = theTileEntity.getSizeInventory();
+			for (int i=0; i < inventorySize; i++)
+			{
+				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.arrow, theTileEntity.getInventoryStackLimit()));
+			}
+		}
+		if (theBlock == Blocks.brewing_stand)
+		{
+			TileEntityBrewingStand theTileEntity = (TileEntityBrewingStand) theWorld.getTileEntity(parX, parY, parZ);
+			int inventorySize = theTileEntity.getSizeInventory();
+			for (int i=0; i < inventorySize; i++)
+			{
+				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.bone, 5));
 			}
 		}
 	}
