@@ -75,7 +75,7 @@ public class CommonProxy
     { 
         // load configuration before doing anything else
         // got config tutorial from http://www.minecraftforge.net/wiki/How_to_make_an_advanced_configuration_file
-        processConfig(event);
+        initConfig(event);
 
         // register stuff
         registerBlocks();
@@ -170,7 +170,7 @@ public class CommonProxy
 	 * Process the configuration
 	 * @param event
 	 */
-    protected void processConfig(FMLPreInitializationEvent event)
+    protected void initConfig(FMLPreInitializationEvent event)
     {
         // might need to use suggestedConfigFile (event.getSuggestedConfigFile) location to publish
         MagicBeans.configFile = event.getSuggestedConfigurationFile();
@@ -178,6 +178,9 @@ public class CommonProxy
         System.out.println(MagicBeans.MODNAME+" config path = "+MagicBeans.configFile.getAbsolutePath());
         System.out.println("Config file exists = "+MagicBeans.configFile.canRead());
         
+        config = new Configuration(MagicBeans.configFile);
+        MagicBeans.config = config;
+
         syncConfig();
     }
     
@@ -187,10 +190,7 @@ public class CommonProxy
      */
     public void syncConfig()
     {
-        config = new Configuration(MagicBeans.configFile);
-        MagicBeans.config = config;
-        
-        // don't need to do a config.load() because the constructor already calls it
+    	config.load();
         MagicBeans.configGiantIsHostile = config.get(Configuration.CATEGORY_GENERAL, "GiantIsHostile", true).getBoolean(true);
         System.out.println("Giant is hostile = "+MagicBeans.configGiantIsHostile);
         MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "GiantHealth", 10).getInt(10);

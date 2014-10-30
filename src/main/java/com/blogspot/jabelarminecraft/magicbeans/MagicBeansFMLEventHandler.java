@@ -170,6 +170,8 @@ public class MagicBeansFMLEventHandler
 		System.out.println("OnConfigChangedEvent");
 		if(eventArgs.modID.equals(MagicBeans.MODID))
 		{
+			System.out.println("Syncing config for mod ="+eventArgs.modID);
+			MagicBeans.config.save();
 			MagicBeans.proxy.syncConfig();
 	    }
 	}
