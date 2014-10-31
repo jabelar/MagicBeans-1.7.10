@@ -93,7 +93,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IE
 	{
 		super(parWorld);
 		
-		initExtProps();
+		// initExtProps();
 		setupAI();
 		setSize(1.0F, 4.5F);
 	}
@@ -444,28 +444,6 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IE
 	public float getEyeHeight()
     {
         return height * 0.85F * getScaleFactor();
-    }
-
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    @Override
-	public void writeEntityToNBT(NBTTagCompound parCompound)
-    {
-        super.writeEntityToNBT(parCompound);
-        // DEBUG
-        System.out.println("EntityGiant writeEntityToNBT");
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-	public void readEntityFromNBT(NBTTagCompound parCompound)
-    {
-        super.readEntityFromNBT(parCompound);
-        // DEBUG
-        System.out.println("EntityGiant readEntityFromNBT");
     }
     
     /*

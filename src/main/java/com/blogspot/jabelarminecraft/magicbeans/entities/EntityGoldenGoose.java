@@ -21,6 +21,9 @@ package com.blogspot.jabelarminecraft.magicbeans.entities;
 
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+
+import java.io.IOException;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -45,9 +48,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans, IExtendedEntityProperties
 {
+    private NBTTagCompound extPropsCompound = new NBTTagCompound();
+
     public float rotationFloat1;
     public float destPos;
     public float rotationFloat2;
@@ -238,28 +244,6 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 		// TODO Auto-generated method stub
 		
 	}
-
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    @Override
-	public void writeEntityToNBT(NBTTagCompound parCompound)
-    {
-        super.writeEntityToNBT(parCompound);
-        // DEBUG
-        System.out.println("EntityGoldenGoose writeEntityToNBT");
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-	public void readEntityFromNBT(NBTTagCompound parCompound)
-    {
-        super.readEntityFromNBT(parCompound);
-        // DEBUG
-        System.out.println("EntityGoldenGoose readEntityFromNBT");
-    }
     
     /*
      * (non-Javadoc)
@@ -301,58 +285,95 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 		System.out.println("Extended properties init(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()
+	 */
 	@Override
 	public void initExtProps() 
 	{
-		// TODO Auto-generated method stub
-		
+        extPropsCompound.setFloat("scaleFactor", 1.3F);
 	}
 
-	@Override
-	public NBTTagCompound getExtProps() 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtProps()
+	 */
+    @Override
+    public NBTTagCompound getExtProps()
+    {
+        return extPropsCompound;
+    }
 
-	@Override
-	public void setExtProps(NBTTagCompound parCompound) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtProps(net.minecraft.nbt.NBTTagCompound)
+	 */
+    @Override
+    public void setExtProps(NBTTagCompound parCompound) 
+    {
+        extPropsCompound = parCompound;
+        
+        // probably need to be careful sync'ing here as this is called by
+        // sync process itself -- don't create infinite loop
+    }
 
-	@Override
-	public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtPropsToBuffer(io.netty.buffer.ByteBufOutputStream)
+	 */
+    @Override
+    // no need to return the buffer because the buffer is operated on directly
+    public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) 
+    {
+        try 
+        {
+            parBBOS.writeFloat(extPropsCompound.getFloat("scaleFactor"));
+        } 
+        catch (IOException e) 
+        { 
+        	e.printStackTrace(); 
+        }        
+    }
 
-	@Override
-	public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtPropsFromBuffer(io.netty.buffer.ByteBufInputStream)
+	 */
+    @Override
+    // no need to return anything because the extended properties tag is updated directly
+    public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) 
+    {
+        try 
+        {
+            extPropsCompound.setFloat("scaleFactor", parBBIS.readFloat());
+        } 
+        catch (IOException e) 
+        { 
+        	e.printStackTrace(); 
+        }
+    }
 
-	@Override
-	public void setScaleFactor(float parScaleFactor) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public float getScaleFactor() 
-	{
-		return 1.3F;
-	}
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setScaleFactor(float)
+	 */
+    @Override
+    public void setScaleFactor(float parScaleFactor)
+    {
+        extPropsCompound.setFloat("scaleFactor", Math.abs(parScaleFactor));
+       
+        // don't forget to sync client and server
+        sendEntitySyncPacket();
+    }
 
+	/* (non-Javadoc)
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getScaleFactor()
+	 */
+    @Override
+    public float getScaleFactor()
+    {
+        return extPropsCompound.getFloat("scaleFactor");
+    }
+	
 	@Override
-	public void sendEntitySyncPacket() 
+	public void sendEntitySyncPacket()
 	{
-		// TODO Auto-generated method stub
-		
+		MagicBeansUtilities.sendEntitySyncPacket(this);
 	}
 }

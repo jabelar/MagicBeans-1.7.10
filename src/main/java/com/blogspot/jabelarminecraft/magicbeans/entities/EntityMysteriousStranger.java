@@ -51,7 +51,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	{
 		super(parWorld);
 		
-		initExtProps();
+		// initExtProps();
 		setupAI();
 	}
 

@@ -56,7 +56,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans,
 		// DEBUG
 		System.out.println("EntityCowMagicBeans constructor");
 		
-		initExtProps();
+		// initExtProps();
 	}
 	
     @Override
