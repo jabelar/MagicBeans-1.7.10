@@ -16,11 +16,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
-
-import java.io.IOException;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -34,7 +29,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IExtendedEntityProperties;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
@@ -43,9 +37,9 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
  * @author jabelar
  *
  */
-public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans, IExtendedEntityProperties
+public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 {
-    public NBTTagCompound extPropsCompound = new NBTTagCompound();
+    public NBTTagCompound syncDataCompound = new NBTTagCompound();
 
 	/**
 	 * @param parWorld
@@ -56,7 +50,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans,
 		// DEBUG
 		System.out.println("EntityCowMagicBeans constructor");
 		
-		// initExtProps();
+		initSyncDataCompound();
 	}
 	
     @Override
@@ -195,120 +189,53 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans,
 		
 	}
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     @Override
-	public void writeEntityToNBT(NBTTagCompound parCompound)
+    public void readEntityFromNBT(NBTTagCompound parCompound)
     {
-        super.writeEntityToNBT(parCompound);
-        // DEBUG
-        System.out.println("EntityCowMagicBeans writeEntityToNBT");
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-	public void readEntityFromNBT(NBTTagCompound parCompound)
-    {
-        super.readEntityFromNBT(parCompound);
+    	super.readEntityFromNBT(parCompound);
+    	syncDataCompound = (NBTTagCompound) parCompound.getTag("syncDataCompound");
         // DEBUG
         System.out.println("EntityCowMagicBeans readEntityFromNBT");
     }
     
-    /*
-     * (non-Javadoc)
-     * @see net.minecraftforge.common.IExtendedEntityProperties#saveNBTData(net.minecraft.nbt.NBTTagCompound)
-     */
-   	@Override
-	public void saveNBTData(NBTTagCompound parCompound) 
-	{
-		// DEBUG
-		System.out.println("Extended properties saveNBTData(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
-		
-		// good idea to keep your extended properties in a sub-compound to avoid conflicts with other
-		// possible extended properties, even from other mods (like if a mod extends all EntityAnimal)
-		parCompound.setTag(MagicBeans.EXT_PROPS_NAME, getExtProps()); // set as a sub-compound
-	}
-
-   	/*
-   	 * @Override(non-Javadoc)
-   	 * @see net.minecraftforge.common.IExtendedEntityProperties#loadNBTData(net.minecraft.nbt.NBTTagCompound)
-   	 */
-	@Override
-	public void loadNBTData(NBTTagCompound parCompound) 
-	{
-		// DEBUG
-		System.out.println("Extended properties loadNBTData(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
-
-		// Get the sub-compound
-		setExtProps((NBTTagCompound) parCompound.getTag(MagicBeans.EXT_PROPS_NAME));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraftforge.common.IExtendedEntityProperties#init(net.minecraft.entity.Entity, net.minecraft.world.World)
-	 */
-	@Override
-	public void init(Entity entity, World world) 
-	{
-		// DEBUG
-		System.out.println("Extended properties init(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
-	}
-
+    @Override
+    public void writeEntityToNBT(NBTTagCompound parCompound)
+    {
+    	super.writeEntityToNBT(parCompound);
+    	parCompound.setTag("syncDataCompound", syncDataCompound);
+        // DEBUG
+        System.out.println("EntityCowMagicBeans writeEntityToNBT");
+    }
+    
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()
 	 */
 	@Override
-	public void initExtProps() 
+	public void initSyncDataCompound() 
 	{
-        extPropsCompound.setFloat("scaleFactor", 1.0F);
+		// don't use setters because it might be too early to send sync packet
+        syncDataCompound.setFloat("scaleFactor", 1.0F);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtProps()
 	 */
     @Override
-    public NBTTagCompound getExtProps()
+    public NBTTagCompound getSyncDataCompound()
     {
-        return extPropsCompound;
+        return syncDataCompound;
     }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtProps(net.minecraft.nbt.NBTTagCompound)
 	 */
     @Override
-    public void setExtProps(NBTTagCompound parCompound) 
+    public void setSyncDataCompound(NBTTagCompound parCompound) 
     {
-        extPropsCompound = parCompound;
+        syncDataCompound = parCompound;
         
         // probably need to be careful sync'ing here as this is called by
         // sync process itself -- don't create infinite loop
-    }
-
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtPropsToBuffer(io.netty.buffer.ByteBufOutputStream)
-	 */
-    @Override
-    // no need to return the buffer because the buffer is operated on directly
-    public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) 
-    {
-        try {
-            parBBOS.writeFloat(extPropsCompound.getFloat("scaleFactor"));
-        } catch (IOException e) { e.printStackTrace(); }        
-    }
-
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtPropsFromBuffer(io.netty.buffer.ByteBufInputStream)
-	 */
-    @Override
-    // no need to return anything because the extended properties tag is updated directly
-    public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) 
-    {
-        try {
-            extPropsCompound.setFloat("scaleFactor", parBBIS.readFloat());
-        } catch (IOException e) { e.printStackTrace(); }
     }
 
 	/* (non-Javadoc)
@@ -317,7 +244,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans,
     @Override
     public void setScaleFactor(float parScaleFactor)
     {
-        extPropsCompound.setFloat("scaleFactor", Math.abs(parScaleFactor));
+        syncDataCompound.setFloat("scaleFactor", Math.abs(parScaleFactor));
        
         // don't forget to sync client and server
         sendEntitySyncPacket();
@@ -329,7 +256,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans,
     @Override
     public float getScaleFactor()
     {
-        return extPropsCompound.getFloat("scaleFactor");
+        return syncDataCompound.getFloat("scaleFactor");
     }
 
 	/* (non-Javadoc)

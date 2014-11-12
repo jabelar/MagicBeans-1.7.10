@@ -19,8 +19,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.nbt.NBTTagCompound;
 
 public interface IEntityMagicBeans 
@@ -31,25 +29,19 @@ public interface IEntityMagicBeans
 	// use clear tasks for subclasses then build up their ai task list specifically
 	void clearAITasks();
 	
-	// methods for extended properties
+	// initialize the tag compound used for syncing custom entity data
+	void initSyncDataCompound();
 	
-	void initExtProps();
+	NBTTagCompound getSyncDataCompound();
 	
-	public NBTTagCompound getExtProps();
-	
-	public void setExtProps(NBTTagCompound parCompound);
-	
-	// buffer doesn't need to be returned as it is manipulated directly
-	public void getExtPropsToBuffer(ByteBufOutputStream parBBOS);  
-	
-	public void setExtPropsFromBuffer(ByteBufInputStream parBBIS);
-	
-	// common encapsulation methods
-	public void setScaleFactor(float parScaleFactor);
-	
-	public float getScaleFactor();
+	void setSyncDataCompound(NBTTagCompound parCompound);
 	
 	// method to send sync of extended properties from server to clients
-	public void sendEntitySyncPacket();
+	void sendEntitySyncPacket();
+
+	// common encapsulation methods
+	void setScaleFactor(float parScaleFactor);
+	
+	float getScaleFactor();
 
 }

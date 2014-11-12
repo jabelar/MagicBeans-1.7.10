@@ -110,7 +110,7 @@ public class MagicBeansUtilities
         {
         	// DEBUG
         	System.out.println("sendEntitySyncPacket from server");
-            MagicBeans.network.sendToAll(new MessageSyncEntityToClient(theEntity.getEntityId(), parEntity.getExtProps()));           
+            MagicBeans.network.sendToAll(new MessageSyncEntityToClient(theEntity.getEntityId(), parEntity.getSyncDataCompound()));           
         }
     }
 }

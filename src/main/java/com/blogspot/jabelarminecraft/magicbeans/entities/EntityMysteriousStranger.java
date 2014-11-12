@@ -16,22 +16,14 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
-
-import java.io.IOException;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IExtendedEntityProperties;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
@@ -40,9 +32,9 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
  * @author jabelar
  *
  */
-public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans, IExtendedEntityProperties
+public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans
 {
-    private NBTTagCompound extPropsCompound = new NBTTagCompound();
+    private NBTTagCompound syncDataCompound = new NBTTagCompound();
 
 	/**
 	 * @param parWorld
@@ -51,7 +43,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	{
 		super(parWorld);
 		
-		// initExtProps();
+		initSyncDataCompound();
 		setupAI();
 	}
 
@@ -62,10 +54,10 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	    super.applyEntityAttributes(); 
 
 	    // standard attributes registered to EntityLivingBase
-	   getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-	   getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.0D); // doesnt' move
-	   getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.8D);
-	   getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
+	    getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
+	    getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.0D); // doesnt' move
+	    getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.8D);
+	    getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
 
 	    // need to register any additional attributes
 //	   getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
@@ -102,140 +94,70 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setupAI()
 	 */
 	@Override
-	public void setupAI() {
-		// TODO Auto-generated method stub
-		
+	public void setupAI() 
+	{
+		// no AI needed as this entity just stays in one place
 	}
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#clearAITasks()
 	 */
 	@Override
-	public void clearAITasks() {
-		// TODO Auto-generated method stub
-		
+	public void clearAITasks() 
+	{
+		tasks.taskEntries.clear();
+		targetTasks.taskEntries.clear();
 	}
 	
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     @Override
-	public void writeEntityToNBT(NBTTagCompound parCompound)
+    public void readEntityFromNBT(NBTTagCompound parCompound)
     {
-        super.writeEntityToNBT(parCompound);
-        // DEBUG
-        System.out.println("EntityMysteriousStranger writeEntityToNBT");
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-	public void readEntityFromNBT(NBTTagCompound parCompound)
-    {
-        super.readEntityFromNBT(parCompound);
+    	super.readEntityFromNBT(parCompound);
+    	syncDataCompound = (NBTTagCompound) parCompound.getTag("syncDataCompound");
         // DEBUG
         System.out.println("EntityMysteriousStranger readEntityFromNBT");
     }
     
-    /*
-     * (non-Javadoc)
-     * @see net.minecraftforge.common.IExtendedEntityProperties#saveNBTData(net.minecraft.nbt.NBTTagCompound)
-     */
-   	@Override
-	public void saveNBTData(NBTTagCompound parCompound) 
-	{
-		// DEBUG
-		System.out.println("Extended properties saveNBTData(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
-		
-		// good idea to keep your extended properties in a sub-compound to avoid conflicts with other
-		// possible extended properties, even from other mods (like if a mod extends all EntityAnimal)
-		parCompound.setTag(MagicBeans.EXT_PROPS_NAME, getExtProps()); // set as a sub-compound
-	}
-
-   	/*
-   	 * @Override(non-Javadoc)
-   	 * @see net.minecraftforge.common.IExtendedEntityProperties#loadNBTData(net.minecraft.nbt.NBTTagCompound)
-   	 */
-	@Override
-	public void loadNBTData(NBTTagCompound parCompound) 
-	{
-		// DEBUG
-		System.out.println("Extended properties loadNBTData(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
-
-		// Get the sub-compound
-		setExtProps((NBTTagCompound) parCompound.getTag(MagicBeans.EXT_PROPS_NAME));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraftforge.common.IExtendedEntityProperties#init(net.minecraft.entity.Entity, net.minecraft.world.World)
-	 */
-	@Override
-	public void init(Entity entity, World world) 
-	{
-		// DEBUG
-		System.out.println("Extended properties init(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
-	}
+    @Override
+    public void writeEntityToNBT(NBTTagCompound parCompound)
+    {
+    	super.writeEntityToNBT(parCompound);
+    	parCompound.setTag("syncDataCompound", syncDataCompound);
+        // DEBUG
+        System.out.println("EntityMysteriousStranger writeEntityToNBT");
+    }    
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()
 	 */
 	@Override
-	public void initExtProps() 
+	public void initSyncDataCompound() 
 	{
-        extPropsCompound.setFloat("scaleFactor", 1.0F);
-        extPropsCompound.setInteger("cowSummonedById", -1);
-        extPropsCompound.setInteger("playerSummonedById", -1);		
+		// don't use setters because it might be too early to send sync packet
+        syncDataCompound.setFloat("scaleFactor", 1.0F);
+        syncDataCompound.setInteger("cowSummonedById", -1);
+        syncDataCompound.setInteger("playerSummonedById", -1);		
 	}
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtProps()
 	 */
     @Override
-    public NBTTagCompound getExtProps()
+    public NBTTagCompound getSyncDataCompound()
     {
-        return extPropsCompound;
+        return syncDataCompound;
     }
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtProps(net.minecraft.nbt.NBTTagCompound)
 	 */
     @Override
-    public void setExtProps(NBTTagCompound parCompound) 
+    public void setSyncDataCompound(NBTTagCompound parCompound) 
     {
-        extPropsCompound = parCompound;
+        syncDataCompound = parCompound;
         
         // probably need to be careful sync'ing here as this is called by
         // sync process itself -- don't create infinite loop
-    }
-
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtPropsToBuffer(io.netty.buffer.ByteBufOutputStream)
-	 */
-    @Override
-    // no need to return the buffer because the buffer is operated on directly
-    public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) 
-    {
-        try {
-            parBBOS.writeFloat(extPropsCompound.getFloat("scaleFactor"));
-            parBBOS.writeInt(extPropsCompound.getInteger("cowSummonedById"));
-            parBBOS.writeInt(extPropsCompound.getInteger("playerSummonedById"));
-        } catch (IOException e) { e.printStackTrace(); }        
-    }
-
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtPropsFromBuffer(io.netty.buffer.ByteBufInputStream)
-	 */
-    @Override
-    // no need to return anything because the extended properties tag is updated directly
-    public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) 
-    {
-        try {
-            extPropsCompound.setFloat("scaleFactor", parBBIS.readFloat());
-            extPropsCompound.setInteger("cowSummonedById", parBBIS.readInt());
-            extPropsCompound.setInteger("playerSummonedById", parBBIS.readInt());
-        } catch (IOException e) { e.printStackTrace(); }
     }
 
 	/* (non-Javadoc)
@@ -244,7 +166,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     @Override
     public void setScaleFactor(float parScaleFactor)
     {
-        extPropsCompound.setFloat("scaleFactor", Math.abs(parScaleFactor));
+        syncDataCompound.setFloat("scaleFactor", Math.abs(parScaleFactor));
        
         // don't forget to sync client and server
         sendEntitySyncPacket();
@@ -256,12 +178,12 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     @Override
     public float getScaleFactor()
     {
-        return extPropsCompound.getFloat("scaleFactor");
+        return syncDataCompound.getFloat("scaleFactor");
     }
 	
 	public EntityCowMagicBeans getCowSummonedBy()
 	{
-		int cowSummonedById = extPropsCompound.getInteger("cowSummonedById");
+		int cowSummonedById = syncDataCompound.getInteger("cowSummonedById");
 
 		// DEBUG
 		System.out.println("EntityMysteriousStranger getCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
@@ -275,7 +197,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		// DEBUG
 		System.out.println("EntityMysteriousStranger setCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
 
-		extPropsCompound.setInteger("cowSummonedById", cowSummonedById);
+		syncDataCompound.setInteger("cowSummonedById", cowSummonedById);
 	       
         // don't forget to sync client and server
         sendEntitySyncPacket();
@@ -283,7 +205,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 
 	public EntityPlayer getPlayerSummonedBy() 
 	{
-		int playerSummonedById = extPropsCompound.getInteger("playerSummonedById");
+		int playerSummonedById = syncDataCompound.getInteger("playerSummonedById");
 
 		// DEBUG
 		System.out.println("EntityMysteriousStranger getPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
@@ -297,7 +219,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		// DEBUG
 		System.out.println("EntityMysteriousStranger setPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
 
-		extPropsCompound.setInteger("playerSummonedById", playerSummonedById);
+		syncDataCompound.setInteger("playerSummonedById", playerSummonedById);
 	       
         // don't forget to sync client and server
         sendEntitySyncPacket();

@@ -16,11 +16,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.ByteBufOutputStream;
-
-import java.io.IOException;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.command.IEntitySelector;
@@ -46,9 +41,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.IExtendedEntityProperties;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
@@ -58,9 +51,9 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
  * @author jabelar
  *
  */
-public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IExtendedEntityProperties
+public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 {
-    private NBTTagCompound extPropsCompound = new NBTTagCompound();
+    private NBTTagCompound syncDataCompound = new NBTTagCompound();
 
     // good to have instances of AI so task list can be modified, including in sub-classes
     protected EntityAIBase aiSwimming = new EntityAISwimming(this);
@@ -93,7 +86,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IE
 	{
 		super(parWorld);
 		
-		// initExtProps();
+		initSyncDataCompound();
 		setupAI();
 		setSize(1.0F, 4.5F);
 	}
@@ -102,17 +95,17 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IE
 	@Override
 	protected void applyEntityAttributes()
 	{
-	    super.applyEntityAttributes(); 
+		super.applyEntityAttributes(); 
 
-	    // standard attributes registered to EntityLivingBase
-	   getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-	   getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); 
-	   getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D); // can't knock back
-	   getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
+		// standard attributes registered to EntityLivingBase
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); 
+		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D); // can't knock back
+		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
 
 	    // need to register any additional attributes
-	   getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-	   getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
 	}
 	
 	@Override
@@ -445,119 +438,60 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IE
     {
         return height * 0.85F * getScaleFactor();
     }
+
+    @Override
+	public NBTTagCompound getSyncDataCompound()
+    {
+    	return syncDataCompound;
+    }
     
-    /*
-     * (non-Javadoc)
-     * @see net.minecraftforge.common.IExtendedEntityProperties#saveNBTData(net.minecraft.nbt.NBTTagCompound)
-     */
-   	@Override
-	public void saveNBTData(NBTTagCompound parCompound) 
-	{
-		// DEBUG
-		System.out.println("Extended properties saveNBTData(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
-		
-		// good idea to keep your extended properties in a sub-compound to avoid conflicts with other
-		// possible extended properties, even from other mods (like if a mod extends all EntityAnimal)
-		parCompound.setTag(MagicBeans.EXT_PROPS_NAME, getExtProps()); // set as a sub-compound
-	}
-
-   	/*
-   	 * @Override(non-Javadoc)
-   	 * @see net.minecraftforge.common.IExtendedEntityProperties#loadNBTData(net.minecraft.nbt.NBTTagCompound)
-   	 */
+    @Override
+	public void setSyncDataCompound(NBTTagCompound parCompound)
+    {
+    	syncDataCompound = parCompound;
+    }
+    
+    @Override
+    public void readEntityFromNBT(NBTTagCompound parCompound)
+    {
+    	super.readEntityFromNBT(parCompound);
+    	syncDataCompound = (NBTTagCompound) parCompound.getTag("syncDataCompound");
+        // DEBUG
+        System.out.println("EntityGiant readEntityFromNBT");
+    }
+    
+    @Override
+    public void writeEntityToNBT(NBTTagCompound parCompound)
+    {
+    	super.writeEntityToNBT(parCompound);
+    	parCompound.setTag("syncDataCompound", syncDataCompound);
+        // DEBUG
+        System.out.println("EntityGiant writeEntityToNBT");
+    }
+    
 	@Override
-	public void loadNBTData(NBTTagCompound parCompound) 
+	public void sendEntitySyncPacket()
 	{
-		// DEBUG
-		System.out.println("Extended properties loadNBTData(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
-
-		// Get the sub-compound
-		setExtProps((NBTTagCompound) parCompound.getTag(MagicBeans.EXT_PROPS_NAME));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.minecraftforge.common.IExtendedEntityProperties#init(net.minecraft.entity.Entity, net.minecraft.world.World)
-	 */
-	@Override
-	public void init(Entity entity, World world) 
-	{
-		// DEBUG
-		System.out.println("Extended properties init(), Entity = "+getEntityId()+", client side = "+worldObj.isRemote);
+		MagicBeansUtilities.sendEntitySyncPacket(this);
 	}
 
 	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initExtProps()
+	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initSyncCompound()
 	 */
 	@Override
-	public void initExtProps() 
+	public void initSyncDataCompound() 
 	{
-        extPropsCompound.setFloat("scaleFactor", 2.25F);
+		// don't use setters because it might be too early to send sync packet
+		syncDataCompound.setFloat("scaleFactor", 2.25F);;
 	}
-
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtProps()
-	 */
-    @Override
-    public NBTTagCompound getExtProps()
-    {
-        return extPropsCompound;
-    }
-
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtProps(net.minecraft.nbt.NBTTagCompound)
-	 */
-    @Override
-    public void setExtProps(NBTTagCompound parCompound) 
-    {
-        extPropsCompound = parCompound;
-        
-        // probably need to be careful sync'ing here as this is called by
-        // sync process itself -- don't create infinite loop
-    }
-
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtPropsToBuffer(io.netty.buffer.ByteBufOutputStream)
-	 */
-    @Override
-    // no need to return the buffer because the buffer is operated on directly
-    public void getExtPropsToBuffer(ByteBufOutputStream parBBOS) 
-    {
-        try 
-        {
-            parBBOS.writeFloat(extPropsCompound.getFloat("scaleFactor"));
-        } 
-        catch (IOException e) 
-        { 
-        	e.printStackTrace(); 
-        }        
-    }
-
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setExtPropsFromBuffer(io.netty.buffer.ByteBufInputStream)
-	 */
-    @Override
-    // no need to return anything because the extended properties tag is updated directly
-    public void setExtPropsFromBuffer(ByteBufInputStream parBBIS) 
-    {
-        try 
-        {
-            extPropsCompound.setFloat("scaleFactor", parBBIS.readFloat());
-        } 
-        catch (IOException e) 
-        { 
-        	e.printStackTrace(); 
-        }
-    }
-
-
+    
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setScaleFactor(float)
 	 */
     @Override
     public void setScaleFactor(float parScaleFactor)
     {
-        extPropsCompound.setFloat("scaleFactor", Math.abs(parScaleFactor));
+        syncDataCompound.setFloat("scaleFactor", Math.abs(parScaleFactor));
        
         // don't forget to sync client and server
         sendEntitySyncPacket();
@@ -569,12 +503,6 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IE
     @Override
     public float getScaleFactor()
     {
-        return extPropsCompound.getFloat("scaleFactor");
+        return syncDataCompound.getFloat("scaleFactor");
     }
-	
-	@Override
-	public void sendEntitySyncPacket()
-	{
-		MagicBeansUtilities.sendEntitySyncPacket(this);
-	}
 }

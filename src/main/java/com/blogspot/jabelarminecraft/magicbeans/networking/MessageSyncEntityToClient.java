@@ -36,7 +36,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 public class MessageSyncEntityToClient implements IMessage 
 {
     private int entityId ;
-    private NBTTagCompound entityExtPropsCompound;
+    private NBTTagCompound entitySyncDataCompound;
 
     public MessageSyncEntityToClient() 
     { 
@@ -46,7 +46,7 @@ public class MessageSyncEntityToClient implements IMessage
     public MessageSyncEntityToClient(int parEntityId, NBTTagCompound parTagCompound) 
     {
     	entityId = parEntityId;
-        entityExtPropsCompound = parTagCompound;
+        entitySyncDataCompound = parTagCompound;
         // DEBUG
         System.out.println("MessageGiveItemToServer constructor");
     }
@@ -55,7 +55,7 @@ public class MessageSyncEntityToClient implements IMessage
     public void fromBytes(ByteBuf buf) 
     {
     	entityId = ByteBufUtils.readVarInt(buf, 4);
-    	entityExtPropsCompound = ByteBufUtils.readTag(buf); // this class is very useful in general for writing more complex objects
+    	entitySyncDataCompound = ByteBufUtils.readTag(buf); // this class is very useful in general for writing more complex objects
     	// DEBUG
     	System.out.println("fromBytes");
     }
@@ -64,7 +64,7 @@ public class MessageSyncEntityToClient implements IMessage
     public void toBytes(ByteBuf buf) 
     {
     	ByteBufUtils.writeVarInt(buf, entityId, 4);
-    	ByteBufUtils.writeTag(buf, entityExtPropsCompound);
+    	ByteBufUtils.writeTag(buf, entitySyncDataCompound);
         // DEBUG
         System.out.println("toBytes encoded");
     }
@@ -77,7 +77,7 @@ public class MessageSyncEntityToClient implements IMessage
         {
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
         	IEntityMagicBeans theEntity = (IEntityMagicBeans)MagicBeansUtilities.getEntityByID(message.entityId, thePlayer.worldObj);
-        	theEntity.setExtProps(message.entityExtPropsCompound);
+        	theEntity.setSyncDataCompound(message.entitySyncDataCompound);
         	// DEBUG
         	System.out.println("MessageSyncEnitityToClient onMessage(), entity ID = "+message.entityId);
             return null; // no response in this case

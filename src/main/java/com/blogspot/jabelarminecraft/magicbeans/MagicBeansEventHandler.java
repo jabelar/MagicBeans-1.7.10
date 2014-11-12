@@ -108,7 +108,6 @@ import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -183,8 +182,8 @@ public class MagicBeansEventHandler
         {
             // DEBUG
             System.out.println("EntityConstructing registering IEntityMagicBeans extended properties");
-            ((IEntityMagicBeans)event.entity).initExtProps();
-            event.entity.registerExtendedProperties(MagicBeans.EXT_PROPS_NAME, (IExtendedEntityProperties) event.entity);
+//            ((IEntityMagicBeans)event.entity).initExtProps();
+//            event.entity.registerExtendedProperties(MagicBeans.EXT_PROPS_NAME, (IExtendedEntityProperties) event.entity);
         }
     }
     
