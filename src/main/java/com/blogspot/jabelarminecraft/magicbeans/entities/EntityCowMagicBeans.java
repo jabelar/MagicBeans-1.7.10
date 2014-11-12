@@ -40,6 +40,8 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 {
     public NBTTagCompound syncDataCompound = new NBTTagCompound();
+    
+    public boolean hasSpawnedMysteriousStranger = false;
 
 	/**
 	 * @param parWorld
@@ -63,7 +65,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 	public void onUpdate()
     {
     	super.onUpdate();
-    	if (getLeashed() && !worldObj.isRemote)
+    	if (getLeashed() && !worldObj.isRemote && !hasSpawnedMysteriousStranger)
     	{
     		// chance mysterious stranger will appear
     		if (rand.nextFloat() < (1.0F / (30 * 20)))
@@ -91,6 +93,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		                entityToSpawn.playLivingSound();
 		                ((EntityMysteriousStranger)entityToSpawn).setCowSummonedBy(this);
 		                ((EntityMysteriousStranger)entityToSpawn).setPlayerSummonedBy(playerLeashedTo);
+		                hasSpawnedMysteriousStranger = true;
 		            }
 		            else
 		            {
