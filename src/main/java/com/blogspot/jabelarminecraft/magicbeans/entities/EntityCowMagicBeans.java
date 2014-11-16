@@ -41,8 +41,6 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 {
     public NBTTagCompound syncDataCompound = new NBTTagCompound();
     
-    public boolean hasSpawnedMysteriousStranger = false;
-
 	/**
 	 * @param parWorld
 	 */
@@ -65,7 +63,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 	public void onUpdate()
     {
     	super.onUpdate();
-    	if (getLeashed() && !worldObj.isRemote && !hasSpawnedMysteriousStranger)
+    	if (getLeashed() && !worldObj.isRemote && !getHasSpawnedMysteriousStranger())
     	{
     		// chance mysterious stranger will appear
     		if (rand.nextFloat() < (1.0F / (30 * 20)))
@@ -93,7 +91,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		                entityToSpawn.playLivingSound();
 		                ((EntityMysteriousStranger)entityToSpawn).setCowSummonedBy(this);
 		                ((EntityMysteriousStranger)entityToSpawn).setPlayerSummonedBy(playerLeashedTo);
-		                hasSpawnedMysteriousStranger = true;
+		                setHasSpawnedMysteriousStranger(true);
 		            }
 		            else
 		            {
@@ -218,6 +216,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 	{
 		// don't use setters because it might be too early to send sync packet
         syncDataCompound.setFloat("scaleFactor", 1.0F);
+        syncDataCompound.setBoolean("hasSpawnedMysteriousStranger", false);
 	}
 
 	/* (non-Javadoc)
@@ -260,6 +259,19 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     public float getScaleFactor()
     {
         return syncDataCompound.getFloat("scaleFactor");
+    }
+
+    public boolean getHasSpawnedMysteriousStranger()
+    {
+        return syncDataCompound.getBoolean("hasSpawnedMysteriousStranger");
+    }
+    
+    public void setHasSpawnedMysteriousStranger(boolean parHasSpawnedMysteriousStranger)
+    {
+        syncDataCompound.setBoolean("hasSpawnedMysteriousStranger", parHasSpawnedMysteriousStranger);
+       
+        // don't forget to sync client and server
+        sendEntitySyncPacket();
     }
 
 	/* (non-Javadoc)
