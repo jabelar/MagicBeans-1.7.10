@@ -65,7 +65,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
 	    	    if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord))
 	    	    {
 	    	    	// DEBUG
-	    	    	System.out.println("Beanstalk still growing, hasSpawnedCastle = "+hasSpawnedCastle);
+	    	    	// System.out.println("Beanstalk still growing, hasSpawnedCastle = "+hasSpawnedCastle);
 	    	        worldObj.setBlock(xCoord, yCoord + 1, zCoord, MagicBeans.blockMagicBeanStalk);	    	        
 	    	    }   		
  			}
