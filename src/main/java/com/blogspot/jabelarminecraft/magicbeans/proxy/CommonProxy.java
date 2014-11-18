@@ -199,7 +199,7 @@ public class CommonProxy
         System.out.println("Giant Attack Damage = "+MagicBeans.configGiantAttackDamage);
         MagicBeans.configGoldForBeans = config.get(Configuration.CATEGORY_GENERAL, "GoldForBeans", 100).getInt(100);
         System.out.println("Gold for beans = "+MagicBeans.configGoldForBeans);
-        MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.1D).getDouble(0.1D);
+        MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.1D, "Chance that a cow spawns as magic cow", 0.0D, 1.0D).getDouble(0.1D);
         System.out.println("Chance cow is magic = "+MagicBeans.configChanceCowIsMagic);
         MagicBeans.configMaxStalkHeight = config.get(Configuration.CATEGORY_GENERAL, "MaxStalkHeight", 133).getInt(133);
         System.out.println("Maximum stalk height = "+MagicBeans.configMaxStalkHeight);

@@ -304,7 +304,7 @@ public class MagicBeansEventHandler
 	    	float chance = world.rand.nextFloat();
 	    	// DEBUG
 	    	System.out.println("spawn replacement rand = "+chance);
-	    	if (chance < 0.1F)
+	    	if (chance < MagicBeans.configChanceCowIsMagic)
 	    	{
         		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
         		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
