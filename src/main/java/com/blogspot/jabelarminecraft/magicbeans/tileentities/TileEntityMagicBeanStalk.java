@@ -23,10 +23,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
 
 public class TileEntityMagicBeanStalk extends TileEntity
 {
-	public boolean hasSpawnedCastle = false;
+//	public boolean hasSpawnedCastle = false;
 	protected int ticksExisted = 0 ;	
 
     @Override
@@ -34,7 +35,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
     {
     	super.readFromNBT(parTagCompound);
         ticksExisted = parTagCompound.getInteger("ticksExisted");
-        hasSpawnedCastle = parTagCompound.getBoolean("hasSpawnedCastle");
+//        hasSpawnedCastle = parTagCompound.getBoolean("hasSpawnedCastle");
     }
 
     @Override
@@ -42,13 +43,13 @@ public class TileEntityMagicBeanStalk extends TileEntity
     {
     	super.writeToNBT(parTagCompound);
         parTagCompound.setInteger("ticksExisted", ticksExisted);
-        parTagCompound.setBoolean("hasSpawnedCastle", hasSpawnedCastle);
+//        parTagCompound.setBoolean("hasSpawnedCastle", hasSpawnedCastle);
     }
     	
 	@Override
 	public void updateEntity()
 	{
-		if (worldObj.isRemote || hasSpawnedCastle)
+		if (worldObj.isRemote || MagicBeansWorldData.get(worldObj).getHasCastleSpwaned())
 		{
 			return;
 		}
@@ -73,7 +74,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
 			{
 				MagicBeans.structureCastleTalia.shouldGenerate = true;
 				MagicBeans.structureCastleTalia.generateTick(this, 5, -2, 5);
-				hasSpawnedCastle = MagicBeans.structureCastleTalia.finishedPopulatingEntities;
+				MagicBeansWorldData.get(worldObj).setHasCastleSpawned(MagicBeans.structureCastleTalia.finishedPopulatingEntities);
 			}
 		}
 	}
