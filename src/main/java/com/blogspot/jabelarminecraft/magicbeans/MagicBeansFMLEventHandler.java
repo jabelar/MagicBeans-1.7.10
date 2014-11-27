@@ -19,6 +19,10 @@
 
 package com.blogspot.jabelarminecraft.magicbeans;
 
+import net.minecraft.util.ChatComponentText;
+
+import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent.PostConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -117,6 +121,10 @@ public class MagicBeansFMLEventHandler
 			System.out.println("Welcome Master!");
 		}
 		
+		if (event.player.worldObj.isRemote && !MagicBeans.versionChecker.isLatestVersion())
+		{
+			event.player.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("Your Magic Beans Mod is not latest version!")));
+		}
 	}
 
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

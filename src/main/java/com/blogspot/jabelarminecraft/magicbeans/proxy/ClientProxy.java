@@ -108,7 +108,8 @@ public class ClientProxy extends CommonProxy
 		super.fmlLifeCycleEvent(event);
 
 		// do client-specific stuff
-		Thread versionCheckThread = new Thread(new VersionChecker(), "Version Check");
+		MagicBeans.versionChecker = new VersionChecker();
+		Thread versionCheckThread = new Thread(MagicBeans.versionChecker, "Version Check");
 		versionCheckThread.start();
 	}
 

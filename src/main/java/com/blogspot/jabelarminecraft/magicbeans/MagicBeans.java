@@ -121,6 +121,9 @@ public class MagicBeans
     // Says where the client and server 'proxy' code is loaded.
     @SidedProxy(clientSide="com.blogspot.jabelarminecraft.magicbeans.proxy.ClientProxy", serverSide="com.blogspot.jabelarminecraft.magicbeans.proxy.CommonProxy")
     public static CommonProxy proxy;
+    
+    // Version checking instance
+	public static VersionChecker versionChecker;
             
     @EventHandler
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the GameRegistry."

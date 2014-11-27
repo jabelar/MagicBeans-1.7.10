@@ -159,7 +159,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         tasks.addTask(6, aiLookIdle);
         targetTasks.addTask(0, aiHurtByTarget);
         targetTasks.addTask(1, aiNearestAttackableTarget);
-        // targetTasks.addTask(1, aiSeePlayer);
+        targetTasks.addTask(2, aiSeePlayer);
 	}
 
 	/* (non-Javadoc)
