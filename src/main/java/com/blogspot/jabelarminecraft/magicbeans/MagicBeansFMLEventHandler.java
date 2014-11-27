@@ -120,11 +120,6 @@ public class MagicBeansFMLEventHandler
 			// DEBUG
 			System.out.println("Welcome Master!");
 		}
-		
-		if (event.player.worldObj.isRemote && !MagicBeans.versionChecker.isLatestVersion())
-		{
-			event.player.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("Your Magic Beans Mod is not latest version!")));
-		}
 	}
 
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
@@ -156,6 +151,12 @@ public class MagicBeansFMLEventHandler
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(PlayerTickEvent event)
 	{
+		
+		if (!MagicBeans.haveWarnedVersionOutOfDate && event.player.worldObj.isRemote && !MagicBeans.versionChecker.isLatestVersion())
+		{
+			event.player.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("Your Magic Beans Mod is not latest version!")));
+			MagicBeans.haveWarnedVersionOutOfDate = true;
+		}
 		
 	}
 

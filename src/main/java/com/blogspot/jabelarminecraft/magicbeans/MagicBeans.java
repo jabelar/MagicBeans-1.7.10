@@ -124,6 +124,7 @@ public class MagicBeans
     
     // Version checking instance
 	public static VersionChecker versionChecker;
+	public static boolean haveWarnedVersionOutOfDate = false;
             
     @EventHandler
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the GameRegistry."
