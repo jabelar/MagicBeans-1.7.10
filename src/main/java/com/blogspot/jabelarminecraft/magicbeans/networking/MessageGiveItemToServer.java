@@ -38,10 +38,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class MessageGiveItemToServer implements IMessage 
 {
     
-    private ItemStack itemToGive;
-    public String itemName;
+    private static ItemStack itemToGive;
+    private String itemName;
     private EntityCowMagicBeans entityCowMagicBeans;
-    public static int entityID;
+    private static int entityID;
 
     public MessageGiveItemToServer() 
     { 
@@ -63,6 +63,7 @@ public class MessageGiveItemToServer implements IMessage
     	entityID = ByteBufUtils.readVarInt(buf, 4);
     	// DEBUG
     	System.out.println("fromBytes = "+itemName+" from Entity ID = "+entityID);
+    	itemToGive = GameRegistry.findItemStack(MagicBeans.MODID, itemName, 1);
     }
 
     @Override
@@ -85,7 +86,7 @@ public class MessageGiveItemToServer implements IMessage
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
         	// DEBUG
             System.out.println(String.format("Received %s from %s", message.itemName, thePlayer.getDisplayName()));
-            thePlayer.inventory.addItemStackToInventory(new ItemStack(MagicBeans.magicBeans));
+            thePlayer.inventory.addItemStackToInventory(itemToGive);
             Entity theEntity = MagicBeansUtilities.getEntityByID(entityID, thePlayer.worldObj);
             theEntity.setDead();
             return null; // no response in this case

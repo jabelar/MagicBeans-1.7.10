@@ -16,6 +16,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -23,7 +24,6 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
@@ -31,6 +31,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.gui.GuiFamilyCow;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 /**
@@ -139,25 +140,13 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     @Override
 	public boolean interact(EntityPlayer parPlayer)
     {
-        ItemStack itemstack = parPlayer.inventory.getCurrentItem();
-
-        if (itemstack != null && itemstack.getItem() == Items.bucket && !parPlayer.capabilities.isCreativeMode)
-        {
-            if (itemstack.stackSize-- == 1)
-            {
-                parPlayer.inventory.setInventorySlotContents(parPlayer.inventory.currentItem, new ItemStack(Items.milk_bucket));
-            }
-            else if (!parPlayer.inventory.addItemStackToInventory(new ItemStack(Items.milk_bucket)))
-            {
-                parPlayer.dropPlayerItemWithRandomChoice(new ItemStack(Items.milk_bucket, 1, 0), false);
-            }
-
-            return true;
-        }
-        else
-        {
-            return super.interact(parPlayer);
-        }
+    	// Family cow doesn't provide milk (that's why your mother wants you to sell it)
+		this.collideWithNearbyEntities();;
+		if (parPlayer.worldObj.isRemote)
+		{
+			Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow(this));
+		}
+		return false;
     }
     
     @Override
