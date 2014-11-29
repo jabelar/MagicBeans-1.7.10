@@ -41,6 +41,9 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemToServer;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * @author jabelar
  *
@@ -51,10 +54,13 @@ public class GuiMysteriousStranger extends GuiScreen
 	
 	private final int bookImageHeight = 192;
 	private final int bookImageWidth = 192;
-	private final int currPage = 0;
-	private final int bookTotalPages = 1;
-    private static final ResourceLocation bookGuiTextures = new ResourceLocation(MagicBeans.MODID+":textures/gui/book_jack.png");
+	private int currPage = 0;
+	private final int bookTotalPages = 2;
+    private static final ResourceLocation bookGuiTexturePicture = new ResourceLocation(MagicBeans.MODID+":textures/gui/book_jack.png");
+    private static final ResourceLocation bookGuiTextureBlank = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
 	private GuiButton buttonDone;
+    private NextPageButton buttonNextPage;
+    private NextPageButton buttonPreviousPage;
     
 	public GuiMysteriousStranger()
 	{
@@ -87,8 +93,9 @@ public class GuiMysteriousStranger extends GuiScreen
         buttonDone = new GuiButton(0, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.done", new Object[0]));
 		
         buttonList.add(buttonDone);
-//        buttonList.add(new GuiButton(5, width / 2 - 100, 4 + bookImageHeight, 98, 20, I18n.format("book.finalizeButton", new Object[0])));
-//        buttonList.add(new GuiButton(4, width / 2 + 2, 4 + bookImageHeight, 98, 20, I18n.format("gui.cancel", new Object[0])));
+        int offsetFromScreenLeft = (width - bookImageWidth) / 2;
+        buttonList.add(buttonNextPage = new NextPageButton(1, offsetFromScreenLeft + 120, 156, true));
+        buttonList.add(buttonPreviousPage = new NextPageButton(2, offsetFromScreenLeft + 38, 156, false));
 
         updateButtons();
 
@@ -96,14 +103,8 @@ public class GuiMysteriousStranger extends GuiScreen
 
     private void updateButtons()
     {
-//        buttonNextPage.visible = !field_146480_s && (currPage < bookTotalPages - 1 || bookIsUnsigned);
-//        buttonPreviousPage.visible = !field_146480_s && currPage > 0;
-//        buttonDone.visible = !bookIsUnsigned || !field_146480_s;
-//
-//            buttonSign.visible = !field_146480_s;
-//            buttonCancel.visible = field_146480_s;
-//            buttonFinalize.visible = field_146480_s;
-//            buttonFinalize.enabled = bookTitle.trim().length() > 0;
+        buttonNextPage.visible = (currPage < bookTotalPages - 1);
+        buttonPreviousPage.visible = currPage > 0;
     }
 
     /**
@@ -122,44 +123,44 @@ public class GuiMysteriousStranger extends GuiScreen
 	public void drawScreen(int parWidth, int parHeight, float p_73863_3_)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(bookGuiTextures);
-        int k = (width - bookImageWidth ) / 2;
-        byte b0 = 2;
-        drawTexturedModalRect(k, b0, 0, 0, bookImageWidth, bookImageHeight);
-        String s;
-        String s1;
-        int l;
+        if (currPage == 0)
+    	{
+        	mc.getTextureManager().bindTexture(bookGuiTexturePicture);
+    	}
+        else
         {
-            s = I18n.format("book.pageIndicator", new Object[] {Integer.valueOf(currPage + 1), bookTotalPages});
-            s1 = "";
+        	mc.getTextureManager().bindTexture(bookGuiTextureBlank);
+        }
+        int offsetFromScreenLeft = (width - bookImageWidth ) / 2;
+        drawTexturedModalRect(offsetFromScreenLeft, 2, 0, 0, bookImageWidth, bookImageHeight);
+        String stringPageIndicator;
+        String stringPageText;
+        int widthOfString;
+        {
+            stringPageIndicator = I18n.format("book.pageIndicator", new Object[] {Integer.valueOf(currPage + 1), bookTotalPages});
+            stringPageText = "";
+            if (currPage == 1)
+            {
+            	stringPageText = "Here is a story.";
+            }
 
-                if (fontRendererObj.getBidiFlag())
-                {
-                    s1 = s1 + "_";
-                }
-                else
-                {
-                    s1 = s1 + "" + EnumChatFormatting.GRAY + "_";
-                }
+//                if (fontRendererObj.getBidiFlag())
+//                {
+//                    stringPageText = stringPageText + "_";
+//                }
+//                else
+//                {
+//                    stringPageText = stringPageText + "" + EnumChatFormatting.GRAY + "_";
+//                }
 
-            l = fontRendererObj.getStringWidth(s);
-            fontRendererObj.drawString(s, k - l + bookImageWidth - 44, b0 + 16, 0);
-            fontRendererObj.drawSplitString(s1, k + 36, b0 + 16 + 16, 116, 0);
+            widthOfString = fontRendererObj.getStringWidth(stringPageIndicator);
+            fontRendererObj.drawString(stringPageIndicator, offsetFromScreenLeft - widthOfString + bookImageWidth - 44, 18, 0);
+            fontRendererObj.drawSplitString(stringPageText, offsetFromScreenLeft + 36, 34, 116, 0);
         }
 
         super.drawScreen(parWidth, parHeight, p_73863_3_);
 
 //    	drawWorldBackground(0);
-//
-//        for (int k = 0; k < buttonList.size(); ++k)
-//        {
-//            ((GuiButton)buttonList.get(k)).drawButton(mc, parWidth, parHeight);
-//        }
-//
-//        for (int k = 0; k < labelList.size(); ++k)
-//        {
-//            ((GuiLabel)labelList.get(k)).func_146159_a(mc, parWidth, parHeight);
-//        }
     }
 
     @Override
@@ -295,10 +296,24 @@ public class GuiMysteriousStranger extends GuiScreen
     	{
     		// DEBUG
     		System.out.println("actionPerformed() buttonDone");
-    		MagicBeans.network.sendToServer(new MessageGiveItemToServer(new ItemStack(MagicBeans.magicBeans), entityMysteriousStranger.getCowSummonedBy()));
+    		MagicBeans.network.sendToServer(new MessageGiveItemToServer(entityMysteriousStranger.getCowSummonedBy()));
     		mc.displayGuiScreen((GuiScreen)null);
     	}
-    }
+        else if (parButton == buttonNextPage)
+        {
+            if (this.currPage < this.bookTotalPages - 1)
+            {
+                ++this.currPage;
+            }
+        }
+        else if (parButton == buttonPreviousPage)
+        {
+            if (this.currPage > 0)
+            {
+                --this.currPage;
+            }
+        }
+   }
 
     /**
      * Causes the screen to lay out its subcomponents again. This is the equivalent of the Java call
@@ -378,5 +393,45 @@ public class GuiMysteriousStranger extends GuiScreen
 	public boolean doesGuiPauseGame()
     {
         return true;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    static class NextPageButton extends GuiButton
+    {
+        private final boolean isNextButton;
+
+        public NextPageButton(int parButtonId, int parPosX, int parPosY, boolean parIsNextButton)
+        {
+            super(parButtonId, parPosX, parPosY, 23, 13, "");
+            isNextButton = parIsNextButton;
+        }
+
+        /**
+         * Draws this button to the screen.
+         */
+        @Override
+		public void drawButton(Minecraft mc, int parX, int parY)
+        {
+            if (visible)
+            {
+                boolean isButtonPressed = parX >= xPosition && parY >= yPosition && parX < xPosition + width && parY < yPosition + height;
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                mc.getTextureManager().bindTexture(bookGuiTextureBlank);
+                int textureX = 0;
+                int textureY = 192;
+
+                if (isButtonPressed)
+                {
+                    textureX += 23;
+                }
+
+                if (!isNextButton)
+                {
+                    textureY += 13;
+                }
+
+                drawTexturedModalRect(xPosition, yPosition, textureX, textureY, 23, 13);
+            }
+        }
     }
 }

@@ -29,7 +29,6 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * @author jabelar
@@ -38,8 +37,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class MessageGiveItemToServer implements IMessage 
 {
     
-    private static ItemStack itemToGive;
-    private String itemName;
+    private static ItemStack itemToGive = new ItemStack(MagicBeans.magicBeans, 1);
     private EntityCowMagicBeans entityCowMagicBeans;
     private static int entityID;
 
@@ -48,9 +46,8 @@ public class MessageGiveItemToServer implements IMessage
     	// need this constructor
     }
 
-    public MessageGiveItemToServer(ItemStack parItemStack, EntityCowMagicBeans parCowMagicBeans) 
+    public MessageGiveItemToServer(EntityCowMagicBeans parCowMagicBeans) 
     {
-        itemToGive = parItemStack;
         entityCowMagicBeans = parCowMagicBeans;
         // DEBUG
         System.out.println("MessageGiveItemToServer constructor");
@@ -59,22 +56,14 @@ public class MessageGiveItemToServer implements IMessage
     @Override
     public void fromBytes(ByteBuf buf) 
     {
-    	itemName = ByteBufUtils.readUTF8String(buf); // this class is very useful in general for writing more complex objects
     	entityID = ByteBufUtils.readVarInt(buf, 4);
-    	// DEBUG
-    	System.out.println("fromBytes = "+itemName+" from Entity ID = "+entityID);
-    	itemToGive = GameRegistry.findItemStack(MagicBeans.MODID, itemName, 1);
     }
 
     @Override
     public void toBytes(ByteBuf buf) 
     {
-    	itemName = GameRegistry.findUniqueIdentifierFor(itemToGive.getItem()).name;
     	entityID = entityCowMagicBeans.getEntityId();
-    	ByteBufUtils.writeUTF8String(buf, itemName);
     	ByteBufUtils.writeVarInt(buf, entityID, 4);
-        // DEBUG
-        System.out.println("toBytes encoded = "+itemName+" from Entity ID ="+entityID);
     }
 
     public static class Handler implements IMessageHandler<MessageGiveItemToServer, IMessage> 
@@ -83,9 +72,9 @@ public class MessageGiveItemToServer implements IMessage
         @Override
         public IMessage onMessage(MessageGiveItemToServer message, MessageContext ctx) 
         {
-        	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
         	// DEBUG
-            System.out.println(String.format("Received %s from %s", message.itemName, thePlayer.getDisplayName()));
+        	System.out.println("Message received");
+        	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
             thePlayer.inventory.addItemStackToInventory(itemToGive);
             Entity theEntity = MagicBeansUtilities.getEntityByID(entityID, thePlayer.worldObj);
             theEntity.setDead();
