@@ -20,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.input.Keyboard;
@@ -28,7 +27,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
-import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemToServer;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemMagicBeansToServer;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 import cpw.mods.fml.relauncher.Side;
@@ -45,7 +44,7 @@ public class GuiMysteriousStranger extends GuiScreen
 	private final int bookImageHeight = 192;
 	private final int bookImageWidth = 192;
 	private int currPage = 0;
-	private static final int bookTotalPages = 4;
+	private static final int bookTotalPages = 3;
 	private static ResourceLocation[] bookPageTextures = new ResourceLocation[bookTotalPages];
 	private static String[] stringPageText = new String[bookTotalPages];
 	private GuiButton buttonDone;
@@ -65,18 +64,21 @@ public class GuiMysteriousStranger extends GuiScreen
 		// DEBUG
 		System.out.println("GuiMysteriousStranger() constructor");
 		entityMysteriousStranger = parMysteriousStranger;
-	    bookPageTextures[0] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book_jack.png");
+	    bookPageTextures[0] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
 	    bookPageTextures[1] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
 	    bookPageTextures[2] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
-	    bookPageTextures[3] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
-	    stringPageText[0] = "";
-	    stringPageText[1] = "The "+MagicBeansUtilities.stringToRainbow("Mysterious Stranger")
-	    		+EnumChatFormatting.BLACK+ " admired your family cow and asked if it was for sale.\n\nWhen you nodded, he offered to trade some "
-	    		+MagicBeansUtilities.stringToRainbow("magic beans")
-	    		+EnumChatFormatting.BLACK
+	    stringPageText[0] = "The "+MagicBeansUtilities.stringToRainbow("Mysterious Stranger")
+	    		+" admired your family cow and asked if it was for sale.\n\nWhen you nodded, he offered to trade some "
+	    		+MagicBeansUtilities.stringToRainbow("Magic Beans")
 	    		+", that (if planted in tilled dirt) would lead to more wealth than you could imagine.";
-	    stringPageText[2]="So you handed him your cow, and grabbed the beans.\n\nPleased with yourself, you hurried away, looking for tilled dirt in which to plant the beans.\n\nYou couldn't wait to see how proud your mother will be for";
-	    stringPageText[3]="being so shrewd!  Untold wealth in return for an old milkless cow; what a fool that stranger was!\n\nSo off you went, looking for a place to plant the beans with room to grow...";
+	    stringPageText[1]="So you handed him your cow, and grabbed the "
+	    		+MagicBeansUtilities.stringToRainbow("Magic Beans")
+	    		+".\n\nPleased with yourself, you hurried away, looking for tilled dirt in which to plant the "
+	    		+MagicBeansUtilities.stringToRainbow("Magic Beans")
+	    		+".\n\nYou couldn't wait to see how proud your mother would be for";
+	    stringPageText[2]="being so shrewd!  Untold wealth in return for an old, milkless cow; what a good deal you made!\n\nSo off you went, looking for a place to plant the "
+	    		+MagicBeansUtilities.stringToRainbow("Magic Beans")
+	    		+" with room to grow...";
 	}
 
     /**
@@ -155,7 +157,10 @@ public class GuiMysteriousStranger extends GuiScreen
     	{
     		// DEBUG
     		System.out.println("actionPerformed() buttonDone");
-    		MagicBeans.network.sendToServer(new MessageGiveItemToServer(entityMysteriousStranger.getCowSummonedBy()));
+    		if (entityMysteriousStranger.getCowSummonedBy() != null)
+    		{
+    			MagicBeans.network.sendToServer(new MessageGiveItemMagicBeansToServer(entityMysteriousStranger.getCowSummonedBy()));
+       		}
     		mc.displayGuiScreen((GuiScreen)null);
     	}
         else if (parButton == buttonNextPage)

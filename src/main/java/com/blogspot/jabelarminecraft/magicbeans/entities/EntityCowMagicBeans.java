@@ -144,7 +144,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		this.collideWithNearbyEntities();;
 		if (parPlayer.worldObj.isRemote)
 		{
-			Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow(this));
+			Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow());
 		}
 		return false;
     }

@@ -54,6 +54,7 @@ public class MagicBeansUtilities
 		{
 			outputString = outputString+colorChar[i%8]+parString.substring(i, i+1);
 		}
+		outputString = outputString+EnumChatFormatting.BLACK; // good to return color to common one
 		return outputString;
 	}
 
@@ -84,6 +85,7 @@ public class MagicBeansUtilities
 				outputString = outputString+EnumChatFormatting.GOLD+parString.substring(i, i+1);								
 			}
 		}
+		outputString = outputString+EnumChatFormatting.BLACK; // good to return color to common one
 		return outputString;
 	}
 
