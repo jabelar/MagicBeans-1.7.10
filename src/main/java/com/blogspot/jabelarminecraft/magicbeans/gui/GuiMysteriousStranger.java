@@ -45,7 +45,7 @@ public class GuiMysteriousStranger extends GuiScreen
 	private final int bookImageHeight = 192;
 	private final int bookImageWidth = 192;
 	private int currPage = 0;
-	private static final int bookTotalPages = 2;
+	private static final int bookTotalPages = 4;
 	private static ResourceLocation[] bookPageTextures = new ResourceLocation[bookTotalPages];
 	private static String[] stringPageText = new String[bookTotalPages];
 	private GuiButton buttonDone;
@@ -64,14 +64,19 @@ public class GuiMysteriousStranger extends GuiScreen
 	{
 		// DEBUG
 		System.out.println("GuiMysteriousStranger() constructor");
-		// Don't need to do anything in constructor because the init() function is 
-		// also directly called.
 		entityMysteriousStranger = parMysteriousStranger;
 	    bookPageTextures[0] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book_jack.png");
 	    bookPageTextures[1] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
+	    bookPageTextures[2] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
+	    bookPageTextures[3] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
 	    stringPageText[0] = "";
 	    stringPageText[1] = "The "+MagicBeansUtilities.stringToRainbow("Mysterious Stranger")
-	    		+EnumChatFormatting.BLACK+ " admired your family cow and asked if it was for sale.\n\nWhen you nodded, he offered to trade some magic beans, that if planted in tilled ground would lead to more wealth than you could imagine.";
+	    		+EnumChatFormatting.BLACK+ " admired your family cow and asked if it was for sale.\n\nWhen you nodded, he offered to trade some "
+	    		+MagicBeansUtilities.stringToRainbow("magic beans")
+	    		+EnumChatFormatting.BLACK
+	    		+", that (if planted in tilled dirt) would lead to more wealth than you could imagine.";
+	    stringPageText[2]="So you handed him your cow, and grabbed the beans.\n\nPleased with yourself, you hurried away, looking for tilled dirt in which to plant the beans.\n\nYou couldn't wait to see how proud your mother will be for";
+	    stringPageText[3]="being so shrewd!  Untold wealth in return for an old milkless cow; what a fool that stranger was!\n\nSo off you went, looking for a place to plant the beans with room to grow...";
 	}
 
     /**
