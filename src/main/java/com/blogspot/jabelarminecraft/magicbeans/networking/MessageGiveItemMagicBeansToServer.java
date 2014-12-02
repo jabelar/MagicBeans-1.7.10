@@ -84,7 +84,8 @@ public class MessageGiveItemMagicBeansToServer implements IMessage
         	}
         	else
         	{
-    			thePlayer.addChatMessage(new ChatComponentText("Your inventory is full!  Come back for your magic beans later."));
+    			thePlayer.addChatMessage(new ChatComponentText("Your inventory is full!  Come back for your "
+    					+MagicBeansUtilities.stringToRainbow("Magic Beans")+" later."));
         	}
             return null; // no response in this case
         }

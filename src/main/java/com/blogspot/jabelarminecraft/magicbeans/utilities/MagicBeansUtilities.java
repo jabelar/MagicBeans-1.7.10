@@ -31,7 +31,7 @@ import com.blogspot.jabelarminecraft.magicbeans.networking.MessageSyncEntityToCl
  */
 public class MagicBeansUtilities 
 {
-	public static String stringToRainbow(String parString)
+	public static String stringToRainbow(String parString, boolean parReturnToBlack)
 	{
 		int stringLength = parString.length();
 		if (stringLength < 1)
@@ -54,11 +54,21 @@ public class MagicBeansUtilities
 		{
 			outputString = outputString+colorChar[i%8]+parString.substring(i, i+1);
 		}
-		outputString = outputString+EnumChatFormatting.BLACK; // good to return color to common one
-		return outputString;
+		// return color to a common one after (most chat is white, but for other GUI might want black)
+		if (parReturnToBlack)
+		{
+			return outputString+EnumChatFormatting.BLACK;
+		}
+		return outputString+EnumChatFormatting.WHITE;
 	}
 
-	public static String stringToGolden(String parString, int parShineLocation)
+	// by default return to white (for chat formatting).
+	public static String stringToRainbow(String parString)
+	{
+		return stringToRainbow(parString, false);
+	}
+	
+	public static String stringToGolden(String parString, int parShineLocation, boolean parReturnToBlack)
 	{
 		int stringLength = parString.length();
 		if (stringLength < 1)
@@ -85,8 +95,18 @@ public class MagicBeansUtilities
 				outputString = outputString+EnumChatFormatting.GOLD+parString.substring(i, i+1);								
 			}
 		}
-		outputString = outputString+EnumChatFormatting.BLACK; // good to return color to common one
-		return outputString;
+		// return color to a common one after (most chat is white, but for other GUI might want black)
+		if (parReturnToBlack)
+		{
+			return outputString+EnumChatFormatting.BLACK;
+		}
+		return outputString+EnumChatFormatting.WHITE;
+	}
+
+	// by default return to white (for chat formatting).
+	public static String stringToGolden(String parString, int parShineLocation)
+	{
+		return stringToGolden(parString, parShineLocation, false);
 	}
 
 	public static Entity getEntityByID(int entityID, World world)        

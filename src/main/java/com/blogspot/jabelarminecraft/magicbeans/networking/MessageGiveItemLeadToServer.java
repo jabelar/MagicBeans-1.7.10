@@ -20,8 +20,10 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -64,7 +66,16 @@ public class MessageGiveItemLeadToServer implements IMessage
         	// DEBUG
         	System.out.println("Message received");
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
-            thePlayer.inventory.addItemStackToInventory(itemToGive);
+        	if (thePlayer.inventory.getFirstEmptyStack() != -1) // check for room in inventory
+        	{
+	            thePlayer.inventory.addItemStackToInventory(itemToGive);
+        	}
+        	else if (! thePlayer.inventory.hasItem(Items.lead)) // full but doesn't already have a lead         		
+        	{
+    			thePlayer.addChatMessage(new ChatComponentText("Your inventory is full!  Interact again with the "
+    					+MagicBeansUtilities.stringToRainbow("Family Cow")
+    					+" later when you have room in your inventory to get a lead."));
+        	}
             return null; // no response in this case
         }
     }

@@ -55,7 +55,7 @@ public class GuiFamilyCow extends GuiScreen
 		// Don't need to do everything in constructor because the init() function is 
 		// also directly called.
 	    bookPageTextures[0] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
-	    stringPageText[0] = "This is your "+MagicBeansUtilities.stringToRainbow("Family Cow")
+	    stringPageText[0] = "This is your "+MagicBeansUtilities.stringToRainbow("Family Cow", true)
 	    		+". but she no longer produces any milk.\n\nSo you mother told you that you had to take the cow and find a villager to sell her to.\n\nShe handed you a lead and said 'Take the cow to town.  And make sure you get a good deal!'.";
 	}
 
