@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -66,9 +67,16 @@ public class MessageGiveItemLeadToServer implements IMessage
         	// DEBUG
         	System.out.println("Message received");
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
+        	if (MagicBeansWorldData.get(thePlayer.worldObj).getFamilyCowHasGivenLead())
+        	{
+        		// DEBUG
+        		System.out.println("Player already got one free lead, so not giving another");
+        		return null; // no responding message
+        	}
         	if (thePlayer.inventory.getFirstEmptyStack() != -1) // check for room in inventory
         	{
 	            thePlayer.inventory.addItemStackToInventory(itemToGive);
+	            MagicBeansWorldData.get(thePlayer.worldObj).setFamilyCowHasGivenLead(true);
         	}
         	else if (! thePlayer.inventory.hasItem(Items.lead)) // full but doesn't already have a lead         		
         	{

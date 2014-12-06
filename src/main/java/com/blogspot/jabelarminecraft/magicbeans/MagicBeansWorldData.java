@@ -10,6 +10,7 @@ public class MagicBeansWorldData extends WorldSavedData
 	private static final String IDENTIFIER = MagicBeans.MODID;
 	
 	private boolean hasCastleSpawned = false;
+	private boolean familyCowHasGivenLead = false;
 	
 	public MagicBeansWorldData() 
 	{
@@ -25,11 +26,14 @@ public class MagicBeansWorldData extends WorldSavedData
 	public void readFromNBT(NBTTagCompound nbt) 
 	{
 		hasCastleSpawned = nbt.getBoolean("hasCastleSpawned");
+		familyCowHasGivenLead = nbt.getBoolean("familyCowHasGivenLead");
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writeToNBT(NBTTagCompound nbt) 
+	{
 		nbt.setBoolean("hasCastleSpawned", hasCastleSpawned);
+		nbt.setBoolean("familyCowHasGivenLead", familyCowHasGivenLead);
 	}
 	
 	public boolean getHasCastleSpwaned() 
@@ -44,6 +48,23 @@ public class MagicBeansWorldData extends WorldSavedData
 		if (!hasCastleSpawned) 
 		{
 			hasCastleSpawned = true;
+			markDirty();
+			// new PacketWorldData(this).sendToAll(); shouldn't need to send packet as this field is only used on server side
+		}
+	}
+	
+	public boolean getFamilyCowHasGivenLead() 
+	{
+		return familyCowHasGivenLead;
+	}
+	
+	public void setFamilyCowHasGivenLead(boolean parFamilyCowHasGivenLead) 
+	{
+		// DEBUG
+		System.out.println("World Data familyCowHasGivenLead = "+parFamilyCowHasGivenLead);
+		if (!familyCowHasGivenLead) 
+		{
+			familyCowHasGivenLead = true;
 			markDirty();
 			// new PacketWorldData(this).sendToAll(); shouldn't need to send packet as this field is only used on server side
 		}
