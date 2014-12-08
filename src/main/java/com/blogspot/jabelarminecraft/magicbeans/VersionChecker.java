@@ -57,7 +57,7 @@ public class VersionChecker implements Runnable
 
         try 
         {
-            latestVersion = IOUtils.toString(in);
+            latestVersion = IOUtils.readLines(in).get(0); // toString(in);
         } 
         catch (IOException e) 
         {
