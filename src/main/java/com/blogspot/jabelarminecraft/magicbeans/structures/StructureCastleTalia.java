@@ -16,17 +16,21 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.structures;
 
+import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
@@ -56,20 +60,17 @@ public class StructureCastleTalia extends Structure
 		if (theBlock == Blocks.chest)
 		{
 			TileEntityChest theTileEntity = (TileEntityChest) theWorld.getTileEntity(parX, parY, parZ);
-			int inventorySize = theTileEntity.getSizeInventory();
-			for (int i=0; i < inventorySize; i++)
-			{
-				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.emerald, 5));
-			}
+//			theTileEntity.setInventorySlotContents(0, new ItemStack(Items.emerald, 5));
+//			theTileEntity.setInventorySlotContents(1, new ItemStack(Items.lead, 1));
+			// populate regular dungeon chest items
+            WeightedRandomChestContent.generateChestContents(theTileEntity.getWorldObj().rand, ChestGenHooks.getItems(DUNGEON_CHEST, theTileEntity.getWorldObj().rand), theTileEntity, ChestGenHooks.getCount(DUNGEON_CHEST, theTileEntity.getWorldObj().rand));
+
 		}
 		if (theBlock == Blocks.furnace)
 		{
 			TileEntityFurnace theTileEntity = (TileEntityFurnace) theWorld.getTileEntity(parX, parY, parZ);
-			int inventorySize = theTileEntity.getSizeInventory();
-			for (int i=0; i < inventorySize; i++)
-			{
-				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.gold_ingot, 5));
-			}
+			theTileEntity.setInventorySlotContents(0, new ItemStack(Items.chicken, 5));
+			theTileEntity.setInventorySlotContents(1, new ItemStack(Items.coal, 1)); 
 		}
 		if (theBlock == Blocks.dispenser)
 		{
@@ -83,11 +84,10 @@ public class StructureCastleTalia extends Structure
 		if (theBlock == Blocks.brewing_stand)
 		{
 			TileEntityBrewingStand theTileEntity = (TileEntityBrewingStand) theWorld.getTileEntity(parX, parY, parZ);
-			int inventorySize = theTileEntity.getSizeInventory();
-			for (int i=0; i < inventorySize; i++)
-			{
-				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.bone, 5));
-			}
+			ItemPotion potionFireResistance = (ItemPotion) new ItemPotion().setPotionEffect("fireResistance");
+			
+			theTileEntity.setInventorySlotContents(0, new ItemStack(potionFireResistance, 1));
+			
 		}
 	}
 
