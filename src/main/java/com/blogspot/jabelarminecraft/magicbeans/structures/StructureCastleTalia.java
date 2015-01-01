@@ -22,7 +22,6 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityChest;
@@ -84,9 +83,10 @@ public class StructureCastleTalia extends Structure
 		if (theBlock == Blocks.brewing_stand)
 		{
 			TileEntityBrewingStand theTileEntity = (TileEntityBrewingStand) theWorld.getTileEntity(parX, parY, parZ);
-			ItemPotion potionFireResistance = (ItemPotion) new ItemPotion().setPotionEffect("fireResistance");
 			
-			theTileEntity.setInventorySlotContents(0, new ItemStack(potionFireResistance, 1));
+			// got potion damage values from http://minecraft.gamepedia.com/Potion#Data_value_table
+			// fire resistance
+			theTileEntity.setInventorySlotContents(0, new ItemStack(Items.potionitem, 3, 8259));
 			
 		}
 	}
