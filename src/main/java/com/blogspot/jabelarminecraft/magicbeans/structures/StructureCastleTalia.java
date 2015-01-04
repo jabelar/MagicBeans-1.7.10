@@ -78,7 +78,7 @@ public class StructureCastleTalia extends Structure
 			int inventorySize = theTileEntity.getSizeInventory();
 			for (int i=0; i < inventorySize; i++)
 			{
-				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.arrow, theTileEntity.getInventoryStackLimit()));
+				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.arrow, 5));
 			}
 		}
 		if (theBlock == Blocks.brewing_stand)

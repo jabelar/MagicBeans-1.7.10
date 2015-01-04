@@ -119,6 +119,9 @@ public class MagicBeansFMLEventHandler
 			// DEBUG
 			System.out.println("Welcome Master!");
 		}
+		
+		// DEBUG
+		System.out.println("MagicBeansWorldData hasCastleSpawned ="+MagicBeansWorldData.get(event.player.worldObj).getHasCastleSpwaned());
 	}
 
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

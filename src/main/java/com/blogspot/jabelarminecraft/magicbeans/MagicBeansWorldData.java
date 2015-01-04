@@ -20,11 +20,15 @@ public class MagicBeansWorldData extends WorldSavedData
 	public MagicBeansWorldData(String parIdentifier) 
 	{
 		super(parIdentifier);
+		markDirty();
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) 
 	{
+		// DEBUG
+		System.out.println("MagicBeansWorldData readFromNBT");
+		
 		hasCastleSpawned = nbt.getBoolean("hasCastleSpawned");
 		familyCowHasGivenLead = nbt.getBoolean("familyCowHasGivenLead");
 	}
@@ -32,6 +36,9 @@ public class MagicBeansWorldData extends WorldSavedData
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) 
 	{
+		// DEBUG
+		System.out.println("MagicBeansWorldData writeToNBT");
+		
 		nbt.setBoolean("hasCastleSpawned", hasCastleSpawned);
 		nbt.setBoolean("familyCowHasGivenLead", familyCowHasGivenLead);
 	}
@@ -73,7 +80,11 @@ public class MagicBeansWorldData extends WorldSavedData
 	public static MagicBeansWorldData get(World world) 
 	{
 		MagicBeansWorldData data = (MagicBeansWorldData)world.loadItemData(MagicBeansWorldData.class, IDENTIFIER);
-		if (data == null) {
+		if (data == null) 
+		{
+			// DEBUG
+			System.out.println("MagicBeansWorldData didn't exist so creating it");
+			
 			data = new MagicBeansWorldData();
 			world.setItemData(IDENTIFIER, data);
 		}

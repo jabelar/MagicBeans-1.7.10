@@ -156,9 +156,10 @@ public class Structure implements IStructure
 	public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
 		// DEBUG
-		System.out.println("Structure generateTick, finishedPopulatingEntities ="+finishedPopulatingEntities);
-		// exit if generating not started or if finished
-		if (!shouldGenerate || finishedPopulatingEntities)
+		//System.out.println("Structure generateTick, finishedPopulatingEntities ="+finishedPopulatingEntities);
+		
+		// exit if generating not started
+		if (!shouldGenerate)
 		{
 			return;
 		}
@@ -171,8 +172,11 @@ public class Structure implements IStructure
 			return;
 		}
 
+		// exit if finished
 		if (MagicBeansWorldData.get(theWorld).getHasCastleSpwaned())
 		{
+			// DEBUG
+			System.out.println("Castle has already spawned");
 			return;
 		}
 
@@ -209,7 +213,9 @@ public class Structure implements IStructure
 		}
 		else
 		{
-			MagicBeansWorldData.get(theWorld).setHasCastleSpawned(MagicBeans.structureCastleTalia.finishedPopulatingEntities);
+			// DEBUG
+			System.out.println("Structure setting MagicBeansWorldData hasCastleBeenSpawned to true");
+			MagicBeansWorldData.get(theWorld).setHasCastleSpawned(true);
 		}
 	}
 	
