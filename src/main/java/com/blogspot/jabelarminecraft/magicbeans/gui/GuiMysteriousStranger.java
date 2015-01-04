@@ -67,7 +67,7 @@ public class GuiMysteriousStranger extends GuiScreen
 	    bookPageTextures[0] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
 	    bookPageTextures[1] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
 	    bookPageTextures[2] = new ResourceLocation(MagicBeans.MODID+":textures/gui/book.png");
-	    stringPageText[0] = "The "+MagicBeansUtilities.stringToRainbow("Mysterious Stranger")
+	    stringPageText[0] = "The "+MagicBeansUtilities.stringToRainbow("Mysterious Stranger", true)
 	    		+" admired your family cow and asked if it was for sale.\n\nWhen you nodded, he offered to trade some "
 	    		+MagicBeansUtilities.stringToRainbow("Magic Beans", true)
 	    		+", that (if planted in tilled dirt) would lead to more wealth than you could imagine.";

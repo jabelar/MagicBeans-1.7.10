@@ -39,6 +39,9 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
  */
 public class StructureCastleTalia extends Structure
 {
+
+	public boolean hasSpawnedCastle = false;
+
 	public StructureCastleTalia()
 	{
 		super("taliaCastle");
@@ -59,8 +62,6 @@ public class StructureCastleTalia extends Structure
 		if (theBlock == Blocks.chest)
 		{
 			TileEntityChest theTileEntity = (TileEntityChest) theWorld.getTileEntity(parX, parY, parZ);
-//			theTileEntity.setInventorySlotContents(0, new ItemStack(Items.emerald, 5));
-//			theTileEntity.setInventorySlotContents(1, new ItemStack(Items.lead, 1));
 			// populate regular dungeon chest items
             WeightedRandomChestContent.generateChestContents(theTileEntity.getWorldObj().rand, ChestGenHooks.getItems(DUNGEON_CHEST, theTileEntity.getWorldObj().rand), theTileEntity, ChestGenHooks.getCount(DUNGEON_CHEST, theTileEntity.getWorldObj().rand));
 
@@ -102,7 +103,7 @@ public class StructureCastleTalia extends Structure
 	        {
 	            EntityLiving entityToSpawn = (EntityLiving) EntityList
 	                  .createEntityByName(entityToSpawnNameFull, theWorld);
-	            entityToSpawn.setLocationAndAngles(startX-3, startY+2, startZ-3, 
+	            entityToSpawn.setLocationAndAngles(startX+15, startY+9, startZ+13, 
 	                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
 	                  * 360.0F), 0.0F);
 	            theWorld.spawnEntityInWorld(entityToSpawn);
@@ -120,7 +121,7 @@ public class StructureCastleTalia extends Structure
 	        {
 	            EntityLiving entityToSpawn = (EntityLiving) EntityList
 	                  .createEntityByName(entityToSpawnNameFull, theWorld);
-	            entityToSpawn.setLocationAndAngles(startX-10, startY+2, startZ-10, 
+	            entityToSpawn.setLocationAndAngles(startX+15, startY+2, startZ+13, 
 	                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
 	                  * 360.0F), 0.0F);
 	            theWorld.spawnEntityInWorld(entityToSpawn);

@@ -70,10 +70,6 @@ public class ItemGoldenEgg extends Item
         {
             entityEgg = new EntityGoldenEggThrown(par2World, par3EntityPlayer);
             par2World.spawnEntityInWorld(entityEgg);
-            // DEBUG
-//            System.out.println("Spawning on client side ="+par2World.isRemote);
-//            System.out.println("On spawn: Thrown egg entity position ="+entityEgg.posX+", "+entityEgg.posY+", "+entityEgg.posZ);
-//            System.out.println("On spawn: Thrown egg entity motion ="+entityEgg.motionX+", "+entityEgg.motionY+", "+entityEgg.motionZ);
         }
 
         return par1ItemStack;

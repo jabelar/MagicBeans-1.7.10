@@ -38,7 +38,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 public class MessageGiveItemMagicBeansToServer implements IMessage 
 {
     
-    private static ItemStack itemToGive = new ItemStack(MagicBeans.magicBeans, 1);
     private EntityCowMagicBeans entityCowMagicBeans;
     private static int entityID;
 
@@ -78,7 +77,7 @@ public class MessageGiveItemMagicBeansToServer implements IMessage
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
         	if (thePlayer.inventory.getFirstEmptyStack() != -1) // check for room in inventory
         	{
-	            thePlayer.inventory.addItemStackToInventory(itemToGive);
+	            thePlayer.inventory.addItemStackToInventory(new ItemStack(MagicBeans.magicBeans, 1));
 	            Entity theEntity = MagicBeansUtilities.getEntityByID(entityID, thePlayer.worldObj);
 	            theEntity.setDead();       		
         	}

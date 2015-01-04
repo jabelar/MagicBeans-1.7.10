@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
 
 public class Structure implements IStructure
 {
@@ -154,6 +155,8 @@ public class Structure implements IStructure
 	@Override
 	public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
 	{
+		// DEBUG
+		System.out.println("Structure generateTick, finishedPopulatingEntities ="+finishedPopulatingEntities);
 		// exit if generating not started or if finished
 		if (!shouldGenerate || finishedPopulatingEntities)
 		{
@@ -164,6 +167,11 @@ public class Structure implements IStructure
 		theWorld = theTileEntity.getWorldObj();
 
 		if (theWorld.isRemote)
+		{
+			return;
+		}
+
+		if (MagicBeansWorldData.get(theWorld).getHasCastleSpwaned())
 		{
 			return;
 		}
@@ -198,6 +206,10 @@ public class Structure implements IStructure
 		else if (!finishedPopulatingEntities)
 		{
 			populateEntities();
+		}
+		else
+		{
+			MagicBeansWorldData.get(theWorld).setHasCastleSpawned(MagicBeans.structureCastleTalia.finishedPopulatingEntities);
 		}
 	}
 	

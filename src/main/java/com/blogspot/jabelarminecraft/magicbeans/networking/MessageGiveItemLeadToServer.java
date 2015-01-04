@@ -37,8 +37,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 public class MessageGiveItemLeadToServer implements IMessage 
 {
     
-    private static ItemStack itemToGive = new ItemStack(Items.lead, 1);
-
     public MessageGiveItemLeadToServer() 
     { 
     	// need this constructor
@@ -75,7 +73,7 @@ public class MessageGiveItemLeadToServer implements IMessage
         	}
         	if (thePlayer.inventory.getFirstEmptyStack() != -1) // check for room in inventory
         	{
-	            thePlayer.inventory.addItemStackToInventory(itemToGive);
+	            thePlayer.inventory.addItemStackToInventory(new ItemStack(Items.lead, 1));
 	            MagicBeansWorldData.get(thePlayer.worldObj).setFamilyCowHasGivenLead(true);
         	}
         	else if (! thePlayer.inventory.hasItem(Items.lead)) // full but doesn't already have a lead         		
