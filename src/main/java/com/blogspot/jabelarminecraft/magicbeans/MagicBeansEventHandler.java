@@ -21,6 +21,7 @@ package com.blogspot.jabelarminecraft.magicbeans;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -265,6 +266,16 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(LivingFallEvent event)
     {
+    	if (!event.entityLiving.worldObj.isRemote && event.entityLiving instanceof EntityPlayer)
+    	{
+    		EntityPlayer thePlayer = (EntityPlayer) event.entityLiving;
+    		if (thePlayer.getCurrentArmor(0) != null && thePlayer.getCurrentArmor(0).getItem().equals(MagicBeans.bootsOfSafeFalling));
+    		{
+    			// DEBUG
+    			System.out.println("LivingFallEvent handled due to having boots of safe falling equipped");
+    			event.distance = 0.0F ;
+    		}
+    	}
         
     }
 
