@@ -35,6 +35,9 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
@@ -430,6 +433,19 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 	public boolean allowLeashing()
     {
     	return false;
+    }
+    
+    @Override
+	public boolean canBePushed()
+    {
+    	return false;
+    }
+    
+    @Override
+	public Item getDropItem()
+    {
+    	ItemArmor itemToDrop = Items.chainmail_boots;
+		return itemToDrop;    	
     }
 
 

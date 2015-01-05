@@ -23,6 +23,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -46,6 +47,7 @@ import com.blogspot.jabelarminecraft.magicbeans.networking.MessageSyncEntityToCl
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 import com.blogspot.jabelarminecraft.magicbeans.villagertrading.VillageTradeHandlerMagicBeans;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
@@ -195,21 +197,21 @@ public class CommonProxy
     public void syncConfig()
     {
     	config.load();
-        MagicBeans.configGiantIsHostile = config.get(Configuration.CATEGORY_GENERAL, "GiantIsHostile", true).getBoolean(true);
+        MagicBeans.configGiantIsHostile = config.get(Configuration.CATEGORY_GENERAL, "GiantIsHostile", true, "A friendly "+MagicBeansUtilities.stringToRainbow("Giant")+EnumChatFormatting.YELLOW+" is no challenge").getBoolean(true);
         System.out.println("Giant is hostile = "+MagicBeans.configGiantIsHostile);
-        MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "GiantHealth", 10).getInt(10);
+        MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "GiantHealth", 10, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getInt(10);
         System.out.println("Giant health = "+MagicBeans.configGiantHealth);
-        MagicBeans.configGiantAttackDamage = config.get(Configuration.CATEGORY_GENERAL, "GiantAttackDamage", 4).getInt(4);
+        MagicBeans.configGiantAttackDamage = config.get(Configuration.CATEGORY_GENERAL, "GiantAttackDamage", 4, "He's a heavy hitter").getInt(4);
         System.out.println("Giant Attack Damage = "+MagicBeans.configGiantAttackDamage);
-        MagicBeans.configGoldForBeans = config.get(Configuration.CATEGORY_GENERAL, "GoldForBeans", 100).getInt(100);
+        MagicBeans.configGoldForBeans = config.get(Configuration.CATEGORY_GENERAL, "GoldForBeans", 100, MagicBeansUtilities.stringToRainbow("Magic beans")+EnumChatFormatting.YELLOW+" are priceless!").getInt(100);
         System.out.println("Gold for beans = "+MagicBeans.configGoldForBeans);
-        MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.1D, "Chance that a cow spawns as magic cow", 0.0D, 1.0D).getDouble(0.1D);
+        MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.1D, "Chance that a cow spawns as "+MagicBeansUtilities.stringToRainbow("Family Cow"), 0.0D, 1.0D).getDouble(0.1D);
         System.out.println("Chance cow is magic = "+MagicBeans.configChanceCowIsMagic);
-        MagicBeans.configMaxStalkHeight = config.get(Configuration.CATEGORY_GENERAL, "MaxStalkHeight", 133).getInt(133);
+        MagicBeans.configMaxStalkHeight = config.get(Configuration.CATEGORY_GENERAL, "MaxStalkHeight", 133, "Cloud level is 133", 40, 150).getInt(133);
         System.out.println("Maximum stalk height = "+MagicBeans.configMaxStalkHeight);
-        MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "TicksPerGrowStage", 20).getInt(20);
+        MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "TicksPerGrowStage", 20, "Patience is a virtue", 1, 1200).getInt(20);
         System.out.println("Ticks per grow stage = "+MagicBeans.configTicksPerGrowStage);
-        MagicBeans.configTimeUntilNextEgg = config.get(Configuration.CATEGORY_GENERAL, "TimeUntilNextEgg", 600).getInt(600);
+        MagicBeans.configTimeUntilNextEgg = config.get(Configuration.CATEGORY_GENERAL, "TimeUntilNextEgg", 600, "Don't be greedy!", 200, 1800).getInt(600);
         System.out.println("Time until next egg = "+MagicBeans.configTimeUntilNextEgg);
         
         // save is useful for the first run where config might not exist
