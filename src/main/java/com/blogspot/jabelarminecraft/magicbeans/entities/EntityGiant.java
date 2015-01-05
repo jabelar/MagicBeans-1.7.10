@@ -35,7 +35,6 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,6 +44,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
@@ -444,10 +444,15 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
     @Override
 	public Item getDropItem()
     {
-    	ItemArmor itemToDrop = Items.chainmail_boots;
+    	ItemArmor itemToDrop = MagicBeans.bootsOfSafeFalling;
 		return itemToDrop;    	
     }
 
+    @Override
+	protected void dropFewItems(boolean parRecentlyHitByPlayer, int parlootingLevel)
+    {
+    	dropItem(this.getDropItem(), 1);
+    }
 
     @Override
 	public float getEyeHeight()

@@ -25,6 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
@@ -100,7 +101,8 @@ public class MagicBeans
 	// important to do this after blocks where item is associate with custom block
     public final static ItemGoldenEgg itemGoldenEgg = (ItemGoldenEgg) new ItemGoldenEgg().setUnlocalizedName("golden_egg").setTextureName("magicbeans:golden_egg");;
     public final static Item magicBeans = new ItemMagicBeans();
- 
+    public final static ItemArmor bootsOfSafeFalling = (ItemArmor) new ItemArmor(ItemArmor.ArmorMaterial.CHAIN, 1, 3).setUnlocalizedName("bootsChain").setTextureName("chainmail_boots");
+    
     // instantiate structures
     // important to do this after blocks in case structure uses custom block
     public final static StructureCastleTalia structureCastleTalia = new StructureCastleTalia();
@@ -143,7 +145,7 @@ public class MagicBeans
         proxy.fmlLifeCycleEvent(event);
     }
 
-    @EventHandler
+	@EventHandler
     // Do your mod setup. Build whatever data structures you care about. Register recipes."
     // Register network handlers
     public void fmlLifeCycleEvent(FMLInitializationEvent event) 
