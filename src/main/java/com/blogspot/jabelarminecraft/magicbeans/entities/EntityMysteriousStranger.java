@@ -84,6 +84,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		this.collideWithNearbyEntities();;
 		if (parPlayer.worldObj.isRemote)
 		{
+			playSound("mob.villager.haggle", 1.0F, 1.0F);
 			Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger(this));
 		}
 		return false;
@@ -108,6 +109,42 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		tasks.taskEntries.clear();
 		targetTasks.taskEntries.clear();
 	}
+
+    /**
+     * Get number of ticks, at least during which the living entity will be silent.
+     */
+    @Override
+	public int getTalkInterval()
+    {
+        return 20*15; // quiet for at least 15 seconds
+    }
+
+    /**
+     * Returns the sound this mob makes while it's alive.
+     */
+    @Override
+	protected String getLivingSound()
+    {
+        return "mob.villager.idle";
+    }
+
+    /**
+     * Returns the sound this mob makes when it is hurt.
+     */
+    @Override
+	protected String getHurtSound()
+    {
+        return "mob.villager.hit";
+    }
+
+    /**
+     * Returns the sound this mob makes on death.
+     */
+    @Override
+	protected String getDeathSound()
+    {
+        return "mob.villager.death";
+    }
 	
     @Override
     public void readEntityFromNBT(NBTTagCompound parCompound)

@@ -196,6 +196,11 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         // System.out.println("Damage was done ="+wasDamageDone+", damage amount ="+attackDamage);
         if (wasDamageDone)
         {
+            if (rand.nextInt(10) < 2)
+            {
+            	playSound(MagicBeans.MODID+":mob.giant.attack", getSoundVolume(), getSoundPitch());
+            }
+
             if (knockback > 0)
             {
             	entityAttacked.addVelocity(-MathHelper.sin(rotationYaw * (float)Math.PI / 180.0F) * knockback * 0.5F, 0.1D, MathHelper.cos(rotationYaw * (float)Math.PI / 180.0F) * knockback * 0.5F);
@@ -217,7 +222,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
 
             EnchantmentHelper.func_151385_b(this, entityAttacked);
         }
-
+                
         return wasDamageDone;
     }
 
@@ -350,6 +355,52 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
             playSound(soundName, getSoundVolume(), getSoundPitch());
         }
 	}
+	
+    /**
+     * Gets the pitch of living sounds in living entities.
+     */
+    @Override
+	protected float getSoundPitch()
+    {
+        return (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.75F;  // makes sound lower than asset
+    }
+
+
+    /**
+     * Get number of ticks, at least during which the living entity will be silent.
+     */
+    @Override
+	public int getTalkInterval()
+    {
+        return 20*15; // quiet for at least 15 seconds
+    }
+
+    /**
+     * Returns the sound this mob makes while it's alive.
+     */
+    @Override
+	protected String getLivingSound()
+    {
+        return MagicBeans.MODID+":mob.giant.living";
+    }
+
+    /**
+     * Returns the sound this mob makes when it is hurt.
+     */
+    @Override
+	protected String getHurtSound()
+    {
+        return MagicBeans.MODID+":mob.giant.hurt";
+    }
+
+    /**
+     * Returns the sound this mob makes on death.
+     */
+    @Override
+	protected String getDeathSound()
+    {
+        return MagicBeans.MODID+":mob.giant.death";
+    }
 
 	/**
 	 * @param parDamageSource

@@ -8,13 +8,19 @@
       "mob/giant/fi_fi_fo_fum2",
       "mob/giant/fi_fi_fo_fum3",
       "mob/giant/fi_fi_fo_fum4",
-      "mob/giant/smell_blood",
       "mob/giant/groan1",
-      "mob/giant/groan2",
-      "mob/giant/groan3"
+      "mob/giant/groan2"
     ]
   },
   "mob.giant.death": 
+ {
+    "category": "neutral",
+    "sounds": 
+    [
+      "mob/giant/groan3"
+    ]
+  },
+  "mob.giant.hurt": 
  {
     "category": "neutral",
     "sounds": 
