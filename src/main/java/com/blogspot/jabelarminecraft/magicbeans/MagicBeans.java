@@ -109,6 +109,7 @@ public class MagicBeans
     
     // instantiate the mod
     @Instance(MODID)
+    
     public static MagicBeans instance;
     
     // create custom creativetab for mod items
