@@ -108,6 +108,9 @@ public class MagicBeans
     public final static ItemGoldenEgg itemGoldenEgg = (ItemGoldenEgg) new ItemGoldenEgg().setTextureName("magicbeans:golden_egg");;
     public final static Item magicBeans = new ItemMagicBeans();
     // public final static ItemArmor bootsOfSafeFalling = (ItemArmor) new ItemArmor(ItemArmor.ArmorMaterial.CLOTH, 1, 3).setUnlocalizedName("bootsofsafefalling").setTextureName("minecraft:chainmail_boots");
+    public final static ItemArmor helmetOfSafeFalling = new ItemArmorSafeFalling("helmet_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 0);
+    public final static ItemArmor chestplateOfSafeFalling = new ItemArmorSafeFalling("chestplate_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 1);
+    public final static ItemArmor leggingsOfSafeFalling = new ItemArmorSafeFalling("leggings_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 2);
     public final static ItemArmor bootsOfSafeFalling = new ItemArmorSafeFalling("boots_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 3);
     
     // instantiate structures

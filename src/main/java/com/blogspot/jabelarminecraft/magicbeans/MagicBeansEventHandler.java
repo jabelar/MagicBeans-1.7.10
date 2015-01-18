@@ -267,15 +267,45 @@ public class MagicBeansEventHandler
     public void onEvent(LivingFallEvent event)
     {
     	if (!event.entityLiving.worldObj.isRemote && event.entityLiving instanceof EntityPlayer)
-    	{
-    		EntityPlayer thePlayer = (EntityPlayer) event.entityLiving;
-    		if (thePlayer.getCurrentArmor(0) != null && thePlayer.getCurrentArmor(0).getItem().equals(MagicBeans.bootsOfSafeFalling));
-    		{
-    			// DEBUG
-    			System.out.println("LivingFallEvent handled due to having safe falling armor equipped");
-    			event.distance = 0.0F ;
-    		}
-    	}
+    	{    		
+	    	EntityPlayer thePlayer = (EntityPlayer) event.entityLiving;
+			if (thePlayer.getCurrentArmor(0) != null&& thePlayer.getCurrentArmor(0).getItem() == MagicBeans.bootsOfSafeFalling)
+				// DEBUG
+				System.out.println("LivingFallEvent handled due to having safe falling armor equipped");
+				event.distance = 0.0F ;
+			}
+//
+//    		EntityPlayer thePlayer = (EntityPlayer) event.entityLiving;
+//    		if (thePlayer.getCurrentArmor(0) != null && thePlayer.getCurrentArmor(0) != null && thePlayer.getCurrentArmor(0) != null && thePlayer.getCurrentArmor(0) != null)
+//			{
+//    			// DEBUG
+//    			System.out.println("All armor slots have something in them");
+//    			
+//				//&& false) // thePlayer.getCurrentArmor(0).getUnlocalizedName().equals(MagicBeans.bootsOfSafeFalling.getUnlocalizedName()));
+//			}
+//    		{
+//    			// DEBUG
+//    			System.out.println(MagicBeans.bootsOfSafeFalling.getUnlocalizedName()+" equipped.");
+//        		if (thePlayer.getCurrentArmor(1) != null && thePlayer.getCurrentArmor(1).getItem() != null && thePlayer.getCurrentArmor(1).getItem() instanceof ItemArmorSafeFalling);
+//        		{
+//        			// DEBUG
+//        			System.out.println("Leggings of safe falling equipped.");
+//            		if (thePlayer.getCurrentArmor(1) != null && thePlayer.getCurrentArmor(1).getItem() != null && thePlayer.getCurrentArmor(2).getItem() == MagicBeans.chestplateOfSafeFalling);
+//            		{
+//            			// DEBUG
+//            			System.out.println("Chestplate of safe falling equipped.");
+//            			if (thePlayer.getCurrentArmor(3) != null && thePlayer.getCurrentArmor(3).getItem() != null && thePlayer.getCurrentArmor(3).getItem() == MagicBeans.helmetOfSafeFalling);
+//                		{
+//                			// DEBUG
+//                			System.out.println("Helmet of safe falling equipped.");
+//                			// DEBUG
+//                			System.out.println("LivingFallEvent handled due to having safe falling armor equipped");
+//                			event.distance = 0.0F ;
+//                		}
+//            		}
+//        		}
+//    		}
+//    	}
         
     }
 
