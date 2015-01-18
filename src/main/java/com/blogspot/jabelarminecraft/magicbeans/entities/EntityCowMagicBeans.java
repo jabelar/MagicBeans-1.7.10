@@ -54,11 +54,6 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		initSyncDataCompound();
 	}
 	
-    @Override
-	protected Item getDropItem()
-    {
-        return Items.leather;
-    }
     
     @Override
 	public void onUpdate()
@@ -104,6 +99,12 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     	}
     }
 
+    @Override
+	protected Item getDropItem()
+    {
+        return null;
+    }
+ 
     /**
      * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
      * par2 - Level of Looting used to kill this mob.
@@ -114,13 +115,8 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
         int j = rand.nextInt(3) + rand.nextInt(1 + parLootingLevel);
         int k;
 
-        for (k = 0; k < j; ++k)
-        {
-            dropItem(Items.leather, 1);
-        }
-
-        j = rand.nextInt(3) + 1 + rand.nextInt(1 + parLootingLevel);
-
+        dropItem(getDropItem(), 1);
+ 
         for (k = 0; k < j; ++k)
         {
             if (isBurning())
