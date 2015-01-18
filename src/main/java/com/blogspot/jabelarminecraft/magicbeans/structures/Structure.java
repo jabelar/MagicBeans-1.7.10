@@ -236,8 +236,16 @@ public class Structure implements IStructure
 					String blockName = blockNameArray[indX][indY][indZ];
 					if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
 					{
-						theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-								Block.getBlockFromName(blockName), 0, 2);
+						if (!(blockName.equals("minecraft:dirt")) && !(blockName.equals("minecraft:grass")))
+						{
+							theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
+									Block.getBlockFromName(blockName), 0, 2);
+						}
+						else
+						{
+							theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
+									MagicBeans.blockCloud, 0, 2);
+						}
 					}
 				}
 			}
