@@ -61,12 +61,12 @@ public class MagicBeans
 {
     public static final String MODID = "magicbeans";
     public static final String MODNAME = "Magic Beans";
-    public static final String MODVERSION = "1.0.1";
+    public static final String MODVERSION = "1.0.0";
     public static final String MODDESCRIPTION = "These beans are worth selling the family cow for!";
     public static final String MODAUTHOR = "jabelar";
-    public static final String MODCREDITS = "Texture art by taliaailat, creative direction by taliaailat and jnaejnae.";
+    public static final String MODCREDITS = "Art: taliaailat, Creative: taliaailat and jnaejnae";
     public static final String MODURL = "www.jabelarminecraft.blogspot.com";
-    public static final String MODLOGO = "/beans_logo.jpg";
+    public static final String MODLOGO = "/assets/magicbeans/jackandbeanstalk.png";
 
     // this is tag used for sub-compound in extended properties and packet syncing
 	public final static String EXT_PROPS_NAME = "extendedPropertiesMagicBeans";
