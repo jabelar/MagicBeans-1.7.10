@@ -22,6 +22,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
@@ -75,6 +76,19 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 			double var8 = rand.nextGaussian() * 0.02D;
 			EntityFX particleMysterious = new EntityParticleFXMysterious(worldObj, posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
 			Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
+		}
+		
+		// check if cow happened to get killed
+		if (getCowSummonedBy() == null)
+		{
+			if (worldObj.isRemote)
+			{
+				getPlayerSummonedBy().addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("When your family cow died, the mysterious stranger vanished as quickly as he appeared!")));				
+			}
+			else
+			{
+				setDead();
+			}
 		}
 	}
 	
