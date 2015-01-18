@@ -3,13 +3,13 @@
   "modid": "magicbeans",
   "name": "Magic Beans",
   "description": "",
-  "version": "$version",
-  "mcversion": "$mcversion", 
+  "version": "1.0.0",
+  "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
   "authorList": [],
   "credits": "",
-  "logoFile": "",
+  "logoFile": "jackandbeanstalk.png",
   "screenshots": [],
   "dependencies": []
 }

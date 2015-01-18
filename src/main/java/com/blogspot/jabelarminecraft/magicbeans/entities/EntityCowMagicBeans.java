@@ -63,7 +63,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     	if (getLeashed() && !worldObj.isRemote && !getHasSpawnedMysteriousStranger())
     	{
     		// chance mysterious stranger will appear
-    		if (rand.nextFloat() < (1.0F / (30 * 20)))
+    		if (!getHasSpawnedMysteriousStranger() && (rand.nextFloat() < (1.0F / (30 * 20))))
     		{
         		// DEBUG
         		System.out.println("A mysterious stranger appears");

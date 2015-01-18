@@ -25,9 +25,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.EnumHelper;
 
+import com.blogspot.jabelarminecraft.magicbeans.armor.ItemArmorSafeFalling;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockCloud;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeanStalk;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeansVine;
@@ -64,9 +67,9 @@ public class MagicBeans
     public static final String MODVERSION = "1.0.0";
     public static final String MODDESCRIPTION = "These beans are worth selling the family cow for!";
     public static final String MODAUTHOR = "jabelar";
-    public static final String MODCREDITS = "Art: taliaailat, Creative: taliaailat and jnaejnae";
+    public static final String MODCREDITS = "Art: Taliaailat, Creative: Taliaailat, jnaejnae";
     public static final String MODURL = "www.jabelarminecraft.blogspot.com";
-    public static final String MODLOGO = "/assets/magicbeans/jackandbeanstalk.png";
+    public static final String MODLOGO = "jackandbeanstalk.png";
 
     // this is tag used for sub-compound in extended properties and packet syncing
 	public final static String EXT_PROPS_NAME = "extendedPropertiesMagicBeans";
@@ -91,6 +94,8 @@ public class MagicBeans
     
     // instantiate materials
     public final static Material materialCloud = new MaterialCloud();
+    // see custom armor tutorial at: http://bedrockminer.jimdo.com/modding-tutorials/basic-modding/custom-armor/
+    public static ArmorMaterial SAFEFALLINGLEATHER = EnumHelper.addArmorMaterial("SAFEFALLINGLEATHER", 5, new int[]{1, 3, 2, 1}, 15);
     
     // instantiate blocks
     // need to instantiate beanstalk block before item as the item constructor associates with block
@@ -102,8 +107,9 @@ public class MagicBeans
 	// important to do this after blocks where item is associate with custom block
     public final static ItemGoldenEgg itemGoldenEgg = (ItemGoldenEgg) new ItemGoldenEgg().setTextureName("magicbeans:golden_egg");;
     public final static Item magicBeans = new ItemMagicBeans();
-    public final static ItemArmor bootsOfSafeFalling = (ItemArmor) new ItemArmor(ItemArmor.ArmorMaterial.CLOTH, 1, 3).setUnlocalizedName("bootsofsafefalling").setTextureName("minecraft:chainmail_boots");
-	
+    // public final static ItemArmor bootsOfSafeFalling = (ItemArmor) new ItemArmor(ItemArmor.ArmorMaterial.CLOTH, 1, 3).setUnlocalizedName("bootsofsafefalling").setTextureName("minecraft:chainmail_boots");
+    public final static ItemArmor bootsOfSafeFalling = new ItemArmorSafeFalling("boots_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 3);
+    
     // instantiate structures
     // important to do this after blocks in case structure uses custom block
     public final static StructureCastleTalia structureCastleTalia = new StructureCastleTalia();

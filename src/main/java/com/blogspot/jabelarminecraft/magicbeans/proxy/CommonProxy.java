@@ -252,7 +252,7 @@ public class CommonProxy
  
         GameRegistry.registerItem(MagicBeans.itemGoldenEgg, "goldenEgg");
         GameRegistry.registerItem(MagicBeans.magicBeans, "magicbeans");
-        GameRegistry.registerItem(MagicBeans.bootsOfSafeFalling, "bootsOfSafeFalling");
+        GameRegistry.registerItem(MagicBeans.bootsOfSafeFalling, "boots_safe_falling");
         
         // example: GameRegistry.registerCustomItemStack(name, itemStack);
     }

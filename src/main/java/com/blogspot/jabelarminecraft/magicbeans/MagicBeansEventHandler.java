@@ -272,7 +272,7 @@ public class MagicBeansEventHandler
     		if (thePlayer.getCurrentArmor(0) != null && thePlayer.getCurrentArmor(0).getItem().equals(MagicBeans.bootsOfSafeFalling));
     		{
     			// DEBUG
-    			System.out.println("LivingFallEvent handled due to having boots of safe falling equipped");
+    			System.out.println("LivingFallEvent handled due to having safe falling armor equipped");
     			event.distance = 0.0F ;
     		}
     	}
