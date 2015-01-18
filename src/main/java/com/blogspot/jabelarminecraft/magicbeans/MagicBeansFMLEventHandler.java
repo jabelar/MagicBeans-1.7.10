@@ -114,7 +114,7 @@ public class MagicBeansFMLEventHandler
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(PlayerLoggedInEvent event)
 	{
-		if (event.player.getDisplayName()=="MistMaestro")
+		if (event.player.getDisplayName().equals("MistMaestro"))
 		{
 			// DEBUG
 			System.out.println("Welcome Master!");

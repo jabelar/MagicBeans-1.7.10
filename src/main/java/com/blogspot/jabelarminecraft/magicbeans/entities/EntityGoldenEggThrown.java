@@ -62,8 +62,8 @@ public class EntityGoldenEggThrown extends EntityThrowable
         {
     	    // should sometimes give gold ingot
             // should sometimes (very rarely) give baby golden goose
-        	int dropItem = MathHelper.getRandomIntegerInRange(rand, 0, 8);
-        	if (dropItem == 0) // 1in8 chance of spawning entity, like chicken egg
+        	int dropItem = MathHelper.getRandomIntegerInRange(rand, 0, 12);
+        	if (dropItem == 0) // 1 in 12 chance of spawning entity, (chicken egg is 1 in 8)
         	{
                 EntityAnimal entityToSpawn = (EntityAnimal) EntityList.createEntityByName("magicbeans.Golden Goose", worldObj);
                 entityToSpawn.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);

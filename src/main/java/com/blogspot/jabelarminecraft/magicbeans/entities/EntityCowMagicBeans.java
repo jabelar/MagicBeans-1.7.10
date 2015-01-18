@@ -104,7 +104,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     @Override
 	protected Item getDropItem()
     {
-        return null;
+        return Items.leather;
     }
  
     /**

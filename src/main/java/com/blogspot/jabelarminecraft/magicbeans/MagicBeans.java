@@ -102,7 +102,7 @@ public class MagicBeans
 	// important to do this after blocks where item is associate with custom block
     public final static ItemGoldenEgg itemGoldenEgg = (ItemGoldenEgg) new ItemGoldenEgg().setTextureName("magicbeans:golden_egg");;
     public final static Item magicBeans = new ItemMagicBeans();
-    public final static ItemArmor bootsOfSafeFalling = (ItemArmor) new ItemArmor(ItemArmor.ArmorMaterial.CLOTH, 1, 3).setUnlocalizedName("item.bootsofsafefalling").setTextureName("minecraft:chainmail_boots");
+    public final static ItemArmor bootsOfSafeFalling = (ItemArmor) new ItemArmor(ItemArmor.ArmorMaterial.CLOTH, 1, 3).setUnlocalizedName("bootsofsafefalling").setTextureName("minecraft:chainmail_boots");
 	
     // instantiate structures
     // important to do this after blocks in case structure uses custom block

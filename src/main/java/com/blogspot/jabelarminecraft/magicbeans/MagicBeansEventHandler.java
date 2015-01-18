@@ -389,7 +389,7 @@ public class MagicBeansEventHandler
         {
             event.displayname = event.username+" the Wise";
         }    
-        else if (event.username.equalsIgnoreCase("taliaailat"))
+        else if (event.username.equalsIgnoreCase("Taliaailat"))
         {
             event.displayname = event.username+" the Beautiful";
         }    

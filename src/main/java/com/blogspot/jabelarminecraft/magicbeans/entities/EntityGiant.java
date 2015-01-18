@@ -35,6 +35,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.nbt.NBTTagCompound;
@@ -479,6 +480,60 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
         
 		return false;
 	}
+
+    /**
+     * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health
+     * second with the reduced value. Args: damageAmount
+     */
+    @Override
+	protected void damageEntity(DamageSource parDamageSource, float parDamageAmount)
+    {
+        if (!this.isEntityInvulnerable())
+        {
+            parDamageAmount = ForgeHooks.onLivingHurt(this, parDamageSource, parDamageAmount);
+            if (parDamageAmount <= 0) return;
+            parDamageAmount = this.applyArmorCalculations(parDamageSource, parDamageAmount);
+            parDamageAmount = this.applyPotionDamageCalculations(parDamageSource, parDamageAmount);
+            float f1 = parDamageAmount;
+            parDamageAmount = Math.max(parDamageAmount - this.getAbsorptionAmount(), 0.0F);
+            this.setAbsorptionAmount(this.getAbsorptionAmount() - (f1 - parDamageAmount));
+
+            if (parDamageAmount != 0.0F)
+            {
+                float f2 = this.getHealth();
+                this.setHealth(f2 - parDamageAmount);
+                this.func_110142_aN().func_94547_a(parDamageSource, f2, parDamageAmount);
+                this.setAbsorptionAmount(this.getAbsorptionAmount() - parDamageAmount);
+            }
+        }
+    }
+
+    /**
+     * Reduces damage, depending on armor
+     */
+    @Override
+	protected float applyArmorCalculations(DamageSource parDamageSource, float parDamageAmount)
+    {
+        if (!parDamageSource.isUnblockable())
+        {
+            int i = 25 - getTotalArmorValue();
+            float f1 = parDamageAmount * i;
+            this.damageArmor(parDamageAmount);
+            parDamageAmount = f1 / 25.0F;
+        }
+
+        return parDamageAmount;
+    }
+
+    /**
+     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
+     */
+    @Override
+	public int getTotalArmorValue() // like he's wearing set of iron armor
+    {
+        int totalArmorValue = Items.iron_chestplate.damageReduceAmount+Items.iron_helmet.damageReduceAmount+Items.iron_leggings.damageReduceAmount+Items.iron_boots.damageReduceAmount;
+        return totalArmorValue;
+    }
     
     @Override
 	public boolean allowLeashing()

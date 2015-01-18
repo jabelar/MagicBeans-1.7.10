@@ -69,8 +69,22 @@ public class StructureCastleTalia extends Structure
 		if (theBlock == Blocks.furnace)
 		{
 			TileEntityFurnace theTileEntity = (TileEntityFurnace) theWorld.getTileEntity(parX, parY, parZ);
-			theTileEntity.setInventorySlotContents(0, new ItemStack(Items.chicken, 5));
-			theTileEntity.setInventorySlotContents(1, new ItemStack(Items.coal, 1)); 
+			int chanceOfMeatType = theWorld.rand.nextInt(10);
+			if (chanceOfMeatType <= 3) // randomize meat
+			{
+				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.beef, 5));
+				theTileEntity.setInventorySlotContents(1, new ItemStack(Items.coal, 1)); 
+			}
+			else if (chanceOfMeatType <=8)
+			{
+				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.chicken, 5));
+				theTileEntity.setInventorySlotContents(1, new ItemStack(Items.coal, 1)); 
+			}
+			else
+			{
+				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.porkchop, 5));
+				theTileEntity.setInventorySlotContents(1, new ItemStack(Items.coal, 1)); 
+			}
 		}
 		if (theBlock == Blocks.dispenser)
 		{
@@ -86,9 +100,23 @@ public class StructureCastleTalia extends Structure
 			TileEntityBrewingStand theTileEntity = (TileEntityBrewingStand) theWorld.getTileEntity(parX, parY, parZ);
 			
 			// got potion damage values from http://minecraft.gamepedia.com/Potion#Data_value_table
-			// fire resistance
-			theTileEntity.setInventorySlotContents(0, new ItemStack(Items.potionitem, 3, 8259));
-			
+			int chanceOfPotionType = theWorld.rand.nextInt(10);
+			if (chanceOfPotionType <= 3) // randomize potion
+			{
+				// fire resistance
+				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.potionitem, 3, 8259));
+			}
+			else if (chanceOfPotionType <= 8) 
+			{
+				// regeneration
+				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.potionitem, 3, 8257));
+			}
+			else
+			{
+				// water breathing
+				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.potionitem, 3, 8269));
+			}
+
 		}
 	}
 
