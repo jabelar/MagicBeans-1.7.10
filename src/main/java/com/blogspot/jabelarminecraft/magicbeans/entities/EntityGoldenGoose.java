@@ -140,6 +140,16 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     @Override
 	protected void fall(float par1) {}
 
+
+    /**
+     * Get number of ticks, at least during which the living entity will be silent.
+     */
+    @Override
+	public int getTalkInterval()
+    {
+        return 20*15; // quiet for at least 15 seconds
+    }
+
     /**
      * Returns the sound this mob makes while it's alive.
      */

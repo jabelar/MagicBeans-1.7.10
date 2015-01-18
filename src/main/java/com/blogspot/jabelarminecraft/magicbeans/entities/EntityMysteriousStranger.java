@@ -81,13 +81,16 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		// check if cow happened to get killed
 		if (getCowSummonedBy() == null)
 		{
-			if (worldObj.isRemote)
+			if (getPlayerSummonedBy()!=null) // handle case of creative mode creating mysterious stranger
 			{
-				getPlayerSummonedBy().addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("When your family cow died, the mysterious stranger vanished as quickly as he appeared!")));				
-			}
-			else
-			{
-				setDead();
+				if (worldObj.isRemote)
+				{
+					getPlayerSummonedBy().addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("When your family cow died, the mysterious stranger vanished as quickly as he appeared!")));				
+				}
+				else
+				{
+					setDead();
+				}
 			}
 		}
 	}
@@ -237,7 +240,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		int cowSummonedById = syncDataCompound.getInteger("cowSummonedById");
 
 		// DEBUG
-		System.out.println("EntityMysteriousStranger getCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
+		// System.out.println("EntityMysteriousStranger getCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
 		return (EntityCowMagicBeans) MagicBeansUtilities.getEntityByID(cowSummonedById, worldObj);
 	}
 	
@@ -259,7 +262,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		int playerSummonedById = syncDataCompound.getInteger("playerSummonedById");
 
 		// DEBUG
-		System.out.println("EntityMysteriousStranger getPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
+		// System.out.println("EntityMysteriousStranger getPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
 		return (EntityPlayer) MagicBeansUtilities.getEntityByID(playerSummonedById, worldObj);
 	}
 

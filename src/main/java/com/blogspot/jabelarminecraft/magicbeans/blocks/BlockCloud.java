@@ -84,7 +84,7 @@ public class BlockCloud extends Block
 //    {
 //        return blockMaterial.isOpaque() && renderAsNormalBlock() && !canProvidePower();
 //    }
-//
+
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
@@ -143,7 +143,7 @@ public class BlockCloud extends Block
 //    {
 //        return blockHardness;
 //    }
-
+//
 //
 //    @Override
 //	@Deprecated //Forge: New Metadata sensitive version.
@@ -152,28 +152,28 @@ public class BlockCloud extends Block
 //        return hasTileEntity(0);
 //    }
 //
-    /**
-     * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
-     */
-    @Override
-	@SideOnly(Side.CLIENT)
-    public int getMixedBrightnessForBlock(IBlockAccess parBlockAccess, int parX, int parY, int parZ)
-    {
-        Block block = parBlockAccess.getBlock(parX, parY, parZ);
-        int l = parBlockAccess.getLightBrightnessForSkyBlocks(parX, parY, parZ, block.getLightValue(parBlockAccess, parX, parY, parZ));
-        return l;
-    }
-
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
-    @Override
-	@SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
-    {
-    	return true;
-    }
+//    /**
+//     * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
+//     */
+//    @Override
+//	@SideOnly(Side.CLIENT)
+//    public int getMixedBrightnessForBlock(IBlockAccess parBlockAccess, int parX, int parY, int parZ)
+//    {
+//        Block block = parBlockAccess.getBlock(parX, parY, parZ);
+//        int l = parBlockAccess.getLightBrightnessForSkyBlocks(parX, parY, parZ, block.getLightValue(parBlockAccess, parX, parY, parZ));
+//        return l;
+//    }
+//
+//    /**
+//     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
+//     * coordinates.  Args: blockAccess, x, y, z, side
+//     */
+//    @Override
+//	@SideOnly(Side.CLIENT)
+//    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+//    {
+//    	return true;
+//    }
 
     /**
      * Returns true if the given side of this block type should be rendered (if it's solid or not), if the adjacent

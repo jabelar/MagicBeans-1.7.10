@@ -51,7 +51,7 @@ public class MaterialCloud extends Material
 		setAdventureModeExempt();
 		setNoPushMobility();
 		setRequiresTool();
-		setTranslucent();
+		setTranslucent(true);
 	}
 
     /**
@@ -90,9 +90,9 @@ public class MaterialCloud extends Material
     /**
      * Marks the material as translucent
      */
-    private Material setTranslucent()
+    private Material setTranslucent(boolean parIsTranslucent)
     {
-        isTranslucent = true;
+        isTranslucent = parIsTranslucent;
         return this;
     }
 

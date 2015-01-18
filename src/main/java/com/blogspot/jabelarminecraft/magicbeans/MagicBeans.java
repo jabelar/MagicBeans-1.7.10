@@ -22,7 +22,6 @@ package com.blogspot.jabelarminecraft.magicbeans;
 import java.io.File;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -34,6 +33,7 @@ import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeanStalk;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeansVine;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemGoldenEgg;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.materials.MaterialCloud;
 import com.blogspot.jabelarminecraft.magicbeans.proxy.CommonProxy;
 import com.blogspot.jabelarminecraft.magicbeans.structures.StructureCastleTalia;
 
@@ -90,7 +90,7 @@ public class MagicBeans
 	public static int configTimeUntilNextEgg = 600;
     
     // instantiate materials
-    public final static Material materialCloud = new Material(MapColor.snowColor);
+    public final static Material materialCloud = new MaterialCloud();
     
     // instantiate blocks
     // need to instantiate beanstalk block before item as the item constructor associates with block
