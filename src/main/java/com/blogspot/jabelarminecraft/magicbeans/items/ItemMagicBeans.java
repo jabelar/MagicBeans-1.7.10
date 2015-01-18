@@ -43,6 +43,5 @@ public class ItemMagicBeans extends ItemSeedFoodMagicBeans
     public String getItemStackDisplayName(ItemStack parItemStack) 
     {
         return (MagicBeansUtilities.stringToRainbow(StatCollector.translateToLocal(getUnlocalizedNameInefficiently(p_77653_1_) + ".name")).trim());
-//        return (""+EnumChatFormatting.DARK_AQUA+StatCollector.translateToLocal(getUnlocalizedNameInefficiently(p_77653_1_) + ".name")).trim();
     }
 }
