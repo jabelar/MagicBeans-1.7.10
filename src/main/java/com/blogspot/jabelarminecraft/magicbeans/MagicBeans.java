@@ -61,11 +61,12 @@ public class MagicBeans
 {
     public static final String MODID = "magicbeans";
     public static final String MODNAME = "Magic Beans";
-    public static final String MODVERSION = "0.0.1";
+    public static final String MODVERSION = "1.0.1";
     public static final String MODDESCRIPTION = "These beans are worth selling the family cow for!";
     public static final String MODAUTHOR = "jabelar";
-    public static final String MODCREDITS = "Dedicated to jnaejnae.";
+    public static final String MODCREDITS = "Texture art by taliaailat, creative direction by taliaailat and jnaejnae.";
     public static final String MODURL = "www.jabelarminecraft.blogspot.com";
+    public static final String MODLOGO = "/beans_logo.jpg";
 
     // this is tag used for sub-compound in extended properties and packet syncing
 	public final static String EXT_PROPS_NAME = "extendedPropertiesMagicBeans";
@@ -142,6 +143,7 @@ public class MagicBeans
         event.getModMetadata().authorList.add(EnumChatFormatting.RED+MODAUTHOR);
         event.getModMetadata().description = EnumChatFormatting.YELLOW+MODDESCRIPTION;
         event.getModMetadata().url = MODURL;
+        event.getModMetadata().logoFile = MODLOGO;
         
         proxy.fmlLifeCycleEvent(event);
     }
