@@ -26,7 +26,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -73,7 +72,6 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
         			EntityPlayer playerLeashedTo = (EntityPlayer) entityLeashedTo;
         			Vec3 playerLookVector = playerLeashedTo.getLookVec();
         			playerLeashedTo.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("A mysterious stranger appears!")));
-        			playerLeashedTo.addChatMessage(new ChatComponentTranslation(MagicBeansUtilities.stringToRainbow("A mysterious stranger appears!")));
 		            String entityToSpawnNameFull = MagicBeans.MODID+".Mysterious Stranger";
 		            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
 		            {
@@ -139,11 +137,19 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 	public boolean interact(EntityPlayer parPlayer)
     {
     	// Family cow doesn't provide milk (that's why your mother wants you to sell it)
-		this.collideWithNearbyEntities();;
-		if (parPlayer.worldObj.isRemote)
-		{
-			Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow());
-		}
+    	// don't open gui if holding items, e.g. wheat that should incite mating instead
+    	if (parPlayer.getCurrentEquippedItem().getItem() == null || parPlayer.getCurrentEquippedItem().getItem() == Items.bucket)
+    	{
+			collideWithNearbyEntities();
+			if (parPlayer.worldObj.isRemote)
+			{
+				Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow());
+			}
+    	}
+    	else // act like normal cow
+    	{
+    		super.interact(parPlayer);
+    	}
 		return false;
     }
     
