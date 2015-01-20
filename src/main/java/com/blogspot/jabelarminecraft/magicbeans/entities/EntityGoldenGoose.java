@@ -33,9 +33,9 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -140,7 +140,108 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     @Override
 	protected void fall(float par1) {}
 
+    @Override
+	public boolean interact(EntityPlayer parPlayer) 
+    {
+    	if (parPlayer.getCurrentEquippedItem() == null)
+		{
+			return false; 
+		}
+    	
+    	Item theItem = parPlayer.getCurrentEquippedItem().getItem(); 
+    	float healAmount = 0.0F;
+        short growAmount = 0; // this is multiplied by 20 for actual age change
+        boolean usedItem = false;
 
+        if (theItem == Items.gold_ingot)
+        {
+            healAmount = 2.0F;
+            growAmount = 60;
+        }
+        else if (theItem == Items.gold_nugget)
+        {
+            healAmount = 1.0F;
+            growAmount = 30;
+        }
+        else if (Block.getBlockFromItem(theItem) == Blocks.gold_block)
+        {
+            healAmount = 7.0F;
+            growAmount = 180;
+        }
+        else if (Block.getBlockFromItem(theItem) == Blocks.hay_block)
+        {
+            healAmount = 20.0F;
+            growAmount = 180;
+        }
+        else if (theItem == Items.apple)
+        {
+            healAmount = 3.0F;
+            growAmount = 60;
+        }
+        else if (theItem == Items.golden_carrot)
+        {
+            healAmount = 4.0F;
+            growAmount = 60;
+
+            if (getGrowingAge() >= 0)
+            {
+                func_146082_f(parPlayer); // mating item
+            }
+        }
+        else if (theItem == Items.golden_apple)
+        {
+            healAmount = 10.0F;
+            growAmount = 240;
+
+            if (getGrowingAge() >= 0)
+            {
+                func_146082_f(parPlayer); // mating item
+            }
+        }
+
+        if (this.getHealth() < this.getMaxHealth() && healAmount > 0.0F)
+        {
+            heal(healAmount);
+            usedItem = true;
+        }
+        
+        if (isChild())
+        {
+            addGrowth(growAmount);
+            usedItem = true;
+        }
+
+        if (usedItem)
+        {
+            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+        }
+
+        if (usedItem)
+        {
+            if (!parPlayer.capabilities.isCreativeMode && --parPlayer.getCurrentEquippedItem().stackSize == 0)
+            {
+                parPlayer.inventory.setInventorySlotContents(parPlayer.inventory.currentItem, (ItemStack)null);
+            }
+
+            return true;
+        }
+
+        return super.interact(parPlayer);
+    }
+
+    @Override
+	public boolean isBreedingItem(ItemStack parItemStack)
+    {
+    	if (parItemStack != null)
+    	{
+    		if (parItemStack.getItem() == Items.golden_apple || parItemStack.getItem() == Items.golden_carrot)
+    		{
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
     /**
      * Get number of ticks, at least during which the living entity will be silent.
      */
@@ -203,16 +304,6 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 	public EntityChicken createChild(EntityAgeable par1EntityAgeable)
     {
         return new EntityChicken(worldObj);
-    }
-
-    /**
-     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
-     * the animal type)
-     */
-    @Override
-	public boolean isBreedingItem(ItemStack par1ItemStack)
-    {
-        return par1ItemStack != null && par1ItemStack.getItem() instanceof ItemSeeds;
     }
 
 	@Override

@@ -22,7 +22,9 @@ package com.blogspot.jabelarminecraft.magicbeans.proxy;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
@@ -84,6 +86,7 @@ public class CommonProxy
         registerBlocks();
         registerItems();
         registerTileEntities();
+        registerRecipes();
         registerModEntities();
         registerEntitySpawns();
         registerFuelHandlers();
@@ -286,6 +289,14 @@ public class CommonProxy
         //        GameRegistry.addShapedRecipe(output, params);
         //        GameRegistry.addShapelessRecipe(output, params);
         //        GameRegistry.addSmelting(input, output, xp);
+        GameRegistry.addShapedRecipe(new ItemStack(MagicBeans.goldenGooseMeat, 1), 
+        		new Object[]
+        		{
+        			"AAA",
+        			"ABA",
+        			"AAA",
+        			'A', Items.gold_ingot, 'B', Items.chicken
+        		});
     }
 
     /*
