@@ -349,7 +349,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         }
         else
         {
-        	soundName = getHurtSound();
+        	if (rand.nextInt(10) <= 1) // annoying if he grunts on every hit
+        	{
+            	soundName = getHurtSound();
+        	}
+        	else
+        	{
+        		soundName = null;
+        	}
         }
 
         if (wasDamageDoneOutsideResistancePeriod && soundName != null)
