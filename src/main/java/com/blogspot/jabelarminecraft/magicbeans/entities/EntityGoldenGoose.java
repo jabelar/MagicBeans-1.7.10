@@ -186,7 +186,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     @Override
 	protected Item getDropItem()
     {
-        return Items.feather;
+        return MagicBeans.goldenGooseMeat;
     }
 
     /**
@@ -196,21 +196,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     @Override
 	protected void dropFewItems(boolean par1, int par2)
     {
-        int j = rand.nextInt(3) + rand.nextInt(1 + par2);
-
-        for (int k = 0; k < j; ++k)
-        {
-            dropItem(Items.feather, 1);
-        }
-
-        if (isBurning())
-        {
-            dropItem(Items.cooked_chicken, 1);
-        }
-        else
-        {
-            dropItem(Items.chicken, 1);
-        }
+    	dropItem(getDropItem(), 1);
     }
 
     @Override

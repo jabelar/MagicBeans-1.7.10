@@ -92,10 +92,10 @@ public class ItemGoldenEgg extends Item
     @Override
     // Doing this override means that there is no localization for language
     // unless you specifically check for localization here and convert
-       public String getItemStackDisplayName(ItemStack par1ItemStack)
-       {
-           return MagicBeansUtilities.stringToGolden("Golden Egg", 4);
-       }  
+	public String getItemStackDisplayName(ItemStack par1ItemStack)
+    {
+    	return MagicBeansUtilities.stringToGolden("Golden Egg", 4);
+	}  
 
 
     @Override

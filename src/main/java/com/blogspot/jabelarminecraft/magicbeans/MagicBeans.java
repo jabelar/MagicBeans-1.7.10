@@ -35,6 +35,7 @@ import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockCloud;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeanStalk;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeansVine;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemGoldenEgg;
+import com.blogspot.jabelarminecraft.magicbeans.items.ItemGoldenGooseMeat;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.materials.MaterialCloud;
 import com.blogspot.jabelarminecraft.magicbeans.proxy.CommonProxy;
@@ -112,6 +113,7 @@ public class MagicBeans
     // public final static ItemArmor chestplateOfSafeFalling = new ItemArmorSafeFalling("chestplate_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 1);
     // public final static ItemArmor leggingsOfSafeFalling = new ItemArmorSafeFalling("leggings_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 2);
     public final static ItemArmor bootsOfSafeFalling = new ItemArmorSafeFalling("boots_safe_falling", SAFEFALLINGLEATHER, "safe_falling", 3);
+    public final static ItemGoldenGooseMeat goldenGooseMeat = new ItemGoldenGooseMeat(4, 1.2F, false);
     
     // instantiate structures
     // important to do this after blocks in case structure uses custom block
