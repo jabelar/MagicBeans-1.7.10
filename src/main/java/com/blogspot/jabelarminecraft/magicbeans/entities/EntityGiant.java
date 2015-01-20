@@ -557,7 +557,10 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans
     @Override
 	protected void dropFewItems(boolean parRecentlyHitByPlayer, int parlootingLevel)
     {
-    	dropItem(this.getDropItem(), 1);
+    	dropItem(MagicBeans.bootsOfSafeFalling, 1);
+    	dropItem(MagicBeans.leggingsOfSafeFalling, 1);
+    	dropItem(MagicBeans.chestplateOfSafeFalling, 1);
+    	dropItem(MagicBeans.helmetOfSafeFalling, 1);
     }
 
     @Override

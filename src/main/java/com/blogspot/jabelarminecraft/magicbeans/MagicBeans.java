@@ -95,7 +95,7 @@ public class MagicBeans
     // instantiate materials
     public final static Material materialCloud = new MaterialCloud();
     // see custom armor tutorial at: http://bedrockminer.jimdo.com/modding-tutorials/basic-modding/custom-armor/
-    public static ArmorMaterial SAFEFALLINGLEATHER = EnumHelper.addArmorMaterial("SAFEFALLINGLEATHER", 5, new int[]{1, 3, 2, 1}, 15);
+    public final static ArmorMaterial SAFEFALLINGLEATHER = EnumHelper.addArmorMaterial("SAFEFALLINGLEATHER", 5, new int[]{2, 6, 5, 2}, 15);
     
     // instantiate blocks
     // need to instantiate beanstalk block before item as the item constructor associates with block

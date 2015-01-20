@@ -138,7 +138,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     {
     	// Family cow doesn't provide milk (that's why your mother wants you to sell it)
     	// don't open gui if holding items, e.g. wheat that should incite mating instead
-    	if (parPlayer.getCurrentEquippedItem().getItem() == null || parPlayer.getCurrentEquippedItem().getItem() == Items.bucket)
+    	if (parPlayer.getCurrentEquippedItem() == null || parPlayer.getCurrentEquippedItem().getItem() == Items.bucket)
     	{
 			collideWithNearbyEntities();
 			if (parPlayer.worldObj.isRemote)
