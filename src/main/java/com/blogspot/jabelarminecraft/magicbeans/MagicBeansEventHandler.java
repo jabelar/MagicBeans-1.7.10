@@ -270,11 +270,11 @@ public class MagicBeansEventHandler
     	{    		
 	    	EntityPlayer thePlayer = (EntityPlayer) event.entityLiving;
 	    	boolean isWearingBootsOfSafeFalling = thePlayer.getCurrentArmor(0) != null && thePlayer.getCurrentArmor(0).getItem() == MagicBeans.bootsOfSafeFalling;
-	    	boolean isWearingLeggingsOfSafeFalling = thePlayer.getCurrentArmor(1) != null && thePlayer.getCurrentArmor(1).getItem() == MagicBeans.leggingsOfSafeFalling;
-	    	boolean isWearingChestPlateOfSafeFalling = thePlayer.getCurrentArmor(2) != null && thePlayer.getCurrentArmor(2).getItem() == MagicBeans.chestplateOfSafeFalling;
-	    	boolean isWearingHelmetOfSafeFalling = thePlayer.getCurrentArmor(3) != null && thePlayer.getCurrentArmor(3).getItem() == MagicBeans.helmetOfSafeFalling;
+	    	// boolean isWearingLeggingsOfSafeFalling = thePlayer.getCurrentArmor(1) != null && thePlayer.getCurrentArmor(1).getItem() == MagicBeans.leggingsOfSafeFalling;
+	    	// boolean isWearingChestPlateOfSafeFalling = thePlayer.getCurrentArmor(2) != null && thePlayer.getCurrentArmor(2).getItem() == MagicBeans.chestplateOfSafeFalling;
+	    	// boolean isWearingHelmetOfSafeFalling = thePlayer.getCurrentArmor(3) != null && thePlayer.getCurrentArmor(3).getItem() == MagicBeans.helmetOfSafeFalling;
 	    	
-			if (isWearingBootsOfSafeFalling || isWearingLeggingsOfSafeFalling || isWearingChestPlateOfSafeFalling || isWearingHelmetOfSafeFalling)
+			if (isWearingBootsOfSafeFalling ) // || isWearingLeggingsOfSafeFalling || isWearingChestPlateOfSafeFalling || isWearingHelmetOfSafeFalling)
 			{
 				// DEBUG
 				System.out.println("LivingFallEvent handled due to having safe falling armor equipped");
