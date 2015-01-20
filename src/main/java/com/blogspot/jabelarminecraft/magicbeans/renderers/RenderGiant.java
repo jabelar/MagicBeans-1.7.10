@@ -20,6 +20,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
@@ -47,6 +48,7 @@ public class RenderGiant extends RenderLiving
   
     protected void preRenderCallbackGiant(EntityGiant entity, float f)
     {
+    	BossStatus.setBossStatus(entity, true);
         // some people do some G11 transformations or blends here, like you can do
         // GL11.glScalef(2F, 2F, 2F); to scale up the entity
         // which is used for Slime entities.  I suggest having the entity cast to
