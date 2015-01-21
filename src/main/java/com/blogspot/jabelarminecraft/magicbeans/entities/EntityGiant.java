@@ -117,6 +117,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 	public void onUpdate()
 	{
 		super.onUpdate();
+		
+		// regen
+		if (ticksExisted%50 == 0)
+		{
+			setHealth(getHealth()+1);
+		}
+		
+		// create particles
 		if (!worldObj.isRemote && rand.nextFloat()<0.1F)
 		{
 			double var4 = rand.nextGaussian() * 0.02D;

@@ -87,6 +87,7 @@ public class MagicBeans
     public static Boolean configGiantIsHostile = true;
     public static int configGoldForBeans = 100;
     public static int configGiantHealth = 10;
+	public static boolean configGiantCanRegen = true;
     public static int configGiantAttackDamage = 4;
     public static double configChanceCowIsMagic = 0.1D;
 	public static int configMaxStalkHeight = 136;
