@@ -66,7 +66,6 @@ public class EntityGoldenEggThrown extends EntityThrowable
         	if (dropItem == 0) // 1 in 12 chance of spawning entity, (chicken egg is 1 in 8)
         	{
                 EntityAnimal entityToSpawn = (EntityAnimal) EntityList.createEntityByName("magicbeans.Golden Goose", worldObj);
-                entityToSpawn.setGrowingAge(-24000);
                 entityToSpawn.setLocationAndAngles(posX, posY, posZ, rotationYaw, 0.0F);
                 worldObj.spawnEntityInWorld(entityToSpawn);
         	}

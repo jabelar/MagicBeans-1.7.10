@@ -48,6 +48,16 @@
       "mob/goose/goose_honk_once_3"
     ]
   },
+ "mob.goose.eat": 
+ {
+    "category": "neutral",
+    "sounds": 
+    [
+      "mob/goose/eat1",
+      "mob/goose/eat2",
+      "mob/goose/eat3"
+    ]
+  },
   "mob.goose.death": 
   {
     "category": "neutral",

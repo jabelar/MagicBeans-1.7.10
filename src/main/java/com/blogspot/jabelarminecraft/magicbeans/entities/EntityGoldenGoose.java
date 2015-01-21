@@ -31,7 +31,6 @@ import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -60,6 +59,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
         super(parWorld);
         initSyncDataCompound();
         setSize(0.6F, 1.4F); // twice size of EntityChicken
+        setGrowingAge(-24000); // start as child
         timeUntilNextEgg = rand.nextInt(MagicBeans.configTimeUntilNextEgg) + MagicBeans.configTimeUntilNextEgg;
         setupAI();
     }
@@ -213,7 +213,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 
         if (usedItem)
         {
-            worldObj.playSoundAtEntity(this, "eating", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+            worldObj.playSoundAtEntity(this, MagicBeans.MODID+":mob.goose.eat", 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
         }
 
         if (usedItem)
@@ -301,9 +301,9 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
     }
 
     @Override
-	public EntityChicken createChild(EntityAgeable par1EntityAgeable)
+	public EntityGoldenGoose createChild(EntityAgeable par1EntityAgeable)
     {
-        return new EntityChicken(worldObj);
+        return new EntityGoldenGoose(worldObj);
     }
 
 	@Override
