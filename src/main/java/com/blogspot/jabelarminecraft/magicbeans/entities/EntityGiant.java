@@ -124,6 +124,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 			setHealth(getHealth()+1);
 		}
 		
+		// occasionally jump
+		if (ticksExisted%400 == 0)
+		{
+			// DEBUG
+			System.out.println("Giant jump attack!");
+			setJumping(true);
+		}
+		
 		// create particles
 		if (!worldObj.isRemote && rand.nextFloat()<0.1F)
 		{
@@ -135,6 +143,17 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		}
 	}
 	
+    /**
+     * Causes this entity to do an upwards motion (jumping).
+     */
+    @Override
+	protected void jump()
+    {
+        motionY = 0.41999998688697815D*1.5;
+        isAirBorne = true;
+        ForgeHooks.onLivingJump(this);
+    }	
+    
 	@Override
 	public boolean interact(EntityPlayer parPlayer)
 	{
@@ -504,22 +523,22 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     @Override
 	protected void damageEntity(DamageSource parDamageSource, float parDamageAmount)
     {
-        if (!this.isEntityInvulnerable())
+        if (!isEntityInvulnerable())
         {
             parDamageAmount = ForgeHooks.onLivingHurt(this, parDamageSource, parDamageAmount);
             if (parDamageAmount <= 0) return;
-            parDamageAmount = this.applyArmorCalculations(parDamageSource, parDamageAmount);
-            parDamageAmount = this.applyPotionDamageCalculations(parDamageSource, parDamageAmount);
+            parDamageAmount = applyArmorCalculations(parDamageSource, parDamageAmount);
+            parDamageAmount = applyPotionDamageCalculations(parDamageSource, parDamageAmount);
             float f1 = parDamageAmount;
-            parDamageAmount = Math.max(parDamageAmount - this.getAbsorptionAmount(), 0.0F);
-            this.setAbsorptionAmount(this.getAbsorptionAmount() - (f1 - parDamageAmount));
+            parDamageAmount = Math.max(parDamageAmount - getAbsorptionAmount(), 0.0F);
+            setAbsorptionAmount(getAbsorptionAmount() - (f1 - parDamageAmount));
 
             if (parDamageAmount != 0.0F)
             {
-                float f2 = this.getHealth();
-                this.setHealth(f2 - parDamageAmount);
-                this.func_110142_aN().func_94547_a(parDamageSource, f2, parDamageAmount);
-                this.setAbsorptionAmount(this.getAbsorptionAmount() - parDamageAmount);
+                float f2 = getHealth();
+                setHealth(f2 - parDamageAmount);
+                func_110142_aN().func_94547_a(parDamageSource, f2, parDamageAmount);
+                setAbsorptionAmount(getAbsorptionAmount() - parDamageAmount);
             }
         }
     }
@@ -534,7 +553,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         {
             int i = 25 - getTotalArmorValue();
             float f1 = parDamageAmount * i;
-            this.damageArmor(parDamageAmount);
+            damageArmor(parDamageAmount);
             parDamageAmount = f1 / 25.0F;
         }
 
