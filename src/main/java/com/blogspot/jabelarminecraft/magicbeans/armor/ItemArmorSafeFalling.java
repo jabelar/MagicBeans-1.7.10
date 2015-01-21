@@ -17,10 +17,15 @@
 package com.blogspot.jabelarminecraft.magicbeans.armor;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author jabelar
@@ -40,9 +45,46 @@ public class ItemArmorSafeFalling extends ItemArmor
 	    setTextureName(MagicBeans.MODID + ":" + parUnlocalizedName);
 	}
 	
+    @Override
+	@SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack parItemStack)
+    {
+        return true;
+    }
+
+    /**
+     * Return an item rarity from EnumRarity
+     */
+    @Override
+	public EnumRarity getRarity(ItemStack parItemStack)
+    {
+        return EnumRarity.epic;
+    }
+	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
 	    return MagicBeans.MODID + ":armor/" + textureName + "_" + (armorType == 2 ? "2" : "1") + ".png";
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack parItemStack)
+	{
+		if (armorType == 3) // boots
+		{
+			return MagicBeansUtilities.stringToRainbow("Boots of Safe Falling", true);
+		}
+		else if (armorType == 2) // leggings
+		{
+			return MagicBeansUtilities.stringToRainbow("Leggings of Safe Falling", true);
+		}
+		else if (armorType == 1) // chestplate
+		{
+			return MagicBeansUtilities.stringToRainbow("Chestplate of Safe Falling", true);
+		}
+		else // helmet
+		{
+			return MagicBeansUtilities.stringToRainbow("Helmet of Safe Falling", true);
+		}
 	}
 }
