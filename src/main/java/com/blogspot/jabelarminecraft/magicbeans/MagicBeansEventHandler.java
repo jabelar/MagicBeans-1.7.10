@@ -109,7 +109,6 @@ import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -266,13 +265,7 @@ public class MagicBeansEventHandler
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(LivingFallEvent event)
-    {
-    	// clear jumping if Giant
-    	if (event.entityLiving instanceof EntityGiant)
-    	{
-    		event.entityLiving.setJumping(false);
-    	}
-    	
+    {    	
     	if (!event.entityLiving.worldObj.isRemote && event.entityLiving instanceof EntityPlayer)
     	{    		
 	    	EntityPlayer thePlayer = (EntityPlayer) event.entityLiving;

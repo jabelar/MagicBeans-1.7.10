@@ -66,9 +66,9 @@ public class ItemGoldenGooseMeat extends ItemFood
     {
         if (!parWorld.isRemote)
         {
-            parPlayer.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 6000, 0)); // absorption
-            parPlayer.addPotionEffect(new PotionEffect(Potion.field_76443_y.id, 6000, 0)); // instant health
-            parPlayer.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 6000, 0)); // strength
+            parPlayer.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, 2400, 0)); // absorption
+            parPlayer.addPotionEffect(new PotionEffect(Potion.heal.id, 2400, 0)); // instant health
+            parPlayer.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 2400, 0)); // strength
         }
     }
     
