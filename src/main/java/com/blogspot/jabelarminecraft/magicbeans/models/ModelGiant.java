@@ -19,6 +19,7 @@ package com.blogspot.jabelarminecraft.magicbeans.models;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
@@ -69,7 +70,7 @@ public class ModelGiant extends ModelBiped
      */
     public void renderGiant(EntityGiant parEntity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        setRotationAngles(par2, par3, par4, par5, par6, par7, parEntity);
+        setRotationAngles(parEntity, par2, par3, par4, par5, par6, par7, parEntity);
 
         // scale the whole thing for big or small entities
         GL11.glPushMatrix();
@@ -81,4 +82,114 @@ public class ModelGiant extends ModelBiped
         // don't forget to pop the matrix for overall scaling
         GL11.glPopMatrix();
     }
+
+    /**
+     * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
+     * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+     * "far" arms and legs can swing at most.
+     */
+    public void setRotationAngles(EntityGiant parGiant, float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_)
+    {
+        bipedHead.rotateAngleY = p_78087_4_ / (180F / (float)Math.PI);
+        bipedHead.rotateAngleX = p_78087_5_ / (180F / (float)Math.PI);
+        bipedHeadwear.rotateAngleY = bipedHead.rotateAngleY;
+        bipedHeadwear.rotateAngleX = bipedHead.rotateAngleX;
+        bipedRightArm.rotateAngleX = MathHelper.cos(p_78087_1_ * 0.6662F + (float)Math.PI) * 2.0F * p_78087_2_ * 0.5F;
+        bipedLeftArm.rotateAngleX = MathHelper.cos(p_78087_1_ * 0.6662F) * 2.0F * p_78087_2_ * 0.5F;
+        bipedRightArm.rotateAngleZ = 0.0F;
+        bipedLeftArm.rotateAngleZ = 0.0F;
+        bipedRightLeg.rotateAngleX = MathHelper.cos(p_78087_1_ * 0.6662F) * 1.4F * p_78087_2_;
+        bipedLeftLeg.rotateAngleX = MathHelper.cos(p_78087_1_ * 0.6662F + (float)Math.PI) * 1.4F * p_78087_2_;
+        bipedRightLeg.rotateAngleY = 0.0F;
+        bipedLeftLeg.rotateAngleY = 0.0F;
+
+        if (isRiding)
+        {
+            bipedRightArm.rotateAngleX += -((float)Math.PI / 5F);
+            bipedLeftArm.rotateAngleX += -((float)Math.PI / 5F);
+            bipedRightLeg.rotateAngleX = -((float)Math.PI * 2F / 5F);
+            bipedLeftLeg.rotateAngleX = -((float)Math.PI * 2F / 5F);
+            bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+            bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
+        }
+
+        if (heldItemLeft != 0)
+        {
+            bipedLeftArm.rotateAngleX = bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * heldItemLeft;
+        }
+
+        if (heldItemRight != 0)
+        {
+            bipedRightArm.rotateAngleX = bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * heldItemRight;
+        }
+
+        bipedRightArm.rotateAngleY = 0.0F;
+        bipedLeftArm.rotateAngleY = 0.0F;
+        float f6;
+        float f7;
+
+        if (onGround > -9990.0F)
+        {
+            f6 = onGround;
+            bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(f6) * (float)Math.PI * 2.0F) * 0.2F;
+            bipedRightArm.rotationPointZ = MathHelper.sin(bipedBody.rotateAngleY) * 5.0F;
+            bipedRightArm.rotationPointX = -MathHelper.cos(bipedBody.rotateAngleY) * 5.0F;
+            bipedLeftArm.rotationPointZ = -MathHelper.sin(bipedBody.rotateAngleY) * 5.0F;
+            bipedLeftArm.rotationPointX = MathHelper.cos(bipedBody.rotateAngleY) * 5.0F;
+            bipedRightArm.rotateAngleY += bipedBody.rotateAngleY;
+            bipedLeftArm.rotateAngleY += bipedBody.rotateAngleY;
+            bipedLeftArm.rotateAngleX += bipedBody.rotateAngleY;
+            f6 = 1.0F - onGround;
+            f6 *= f6;
+            f6 *= f6;
+            f6 = 1.0F - f6;
+            f7 = MathHelper.sin(f6 * (float)Math.PI);
+            float f8 = MathHelper.sin(onGround * (float)Math.PI) * -(bipedHead.rotateAngleX - 0.7F) * 0.75F;
+            bipedRightArm.rotateAngleX = (float)(bipedRightArm.rotateAngleX - (f7 * 1.2D + f8));
+            bipedRightArm.rotateAngleY += bipedBody.rotateAngleY * 2.0F;
+            bipedRightArm.rotateAngleZ = MathHelper.sin(onGround * (float)Math.PI) * -0.4F;
+        }
+        else
+        {
+            bipedBody.rotateAngleX = 0.0F;
+            bipedRightLeg.rotationPointZ = 0.1F;
+            bipedLeftLeg.rotationPointZ = 0.1F;
+            bipedRightLeg.rotationPointY = 12.0F;
+            bipedLeftLeg.rotationPointY = 12.0F;
+            bipedHead.rotationPointY = 0.0F;
+            bipedHeadwear.rotationPointY = 0.0F;
+        }
+
+        bipedRightArm.rotateAngleZ += MathHelper.cos(p_78087_3_ * 0.09F) * 0.05F + 0.05F;
+        bipedLeftArm.rotateAngleZ -= MathHelper.cos(p_78087_3_ * 0.09F) * 0.05F + 0.05F;
+        bipedRightArm.rotateAngleX += MathHelper.sin(p_78087_3_ * 0.067F) * 0.05F;
+        bipedLeftArm.rotateAngleX -= MathHelper.sin(p_78087_3_ * 0.067F) * 0.05F;
+
+        if (aimedBow)
+        {
+            f6 = 0.0F;
+            f7 = 0.0F;
+            bipedRightArm.rotateAngleZ = 0.0F;
+            bipedLeftArm.rotateAngleZ = 0.0F;
+            bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F) + bipedHead.rotateAngleY;
+            bipedLeftArm.rotateAngleY = 0.1F - f6 * 0.6F + bipedHead.rotateAngleY + 0.4F;
+            bipedRightArm.rotateAngleX = -((float)Math.PI / 2F) + bipedHead.rotateAngleX;
+            bipedLeftArm.rotateAngleX = -((float)Math.PI / 2F) + bipedHead.rotateAngleX;
+            bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+            bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+            bipedRightArm.rotateAngleZ += MathHelper.cos(p_78087_3_ * 0.09F) * 0.05F + 0.05F;
+            bipedLeftArm.rotateAngleZ -= MathHelper.cos(p_78087_3_ * 0.09F) * 0.05F + 0.05F;
+            bipedRightArm.rotateAngleX += MathHelper.sin(p_78087_3_ * 0.067F) * 0.05F;
+            bipedLeftArm.rotateAngleX -= MathHelper.sin(p_78087_3_ * 0.067F) * 0.05F;
+        }
+        
+        if (parGiant.getPerformingSpecialAttack())
+        {
+        	// DEBUG
+        	System.out.println("Rendering during special attack");
+        	bipedRightArm.rotateAngleZ = (float) -(Math.PI/ 2);
+        	bipedLeftArm.rotateAngleZ = (float) -(Math.PI/ 2);
+        }
+    }
+
 }

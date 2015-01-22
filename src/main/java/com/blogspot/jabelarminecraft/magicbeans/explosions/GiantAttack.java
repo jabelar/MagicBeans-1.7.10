@@ -27,6 +27,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 
 /**
  * @author jabelar
@@ -110,16 +111,19 @@ public class GiantAttack
                 	// DEBUG
                 	System.out.println("Hit entity");
                 	
+                	// knock back
                     knockbackFactorX /= knockbackMagnitude;
                     knockbackFactorY /= knockbackMagnitude;
                     knockbackFactorZ /= knockbackMagnitude;
                     double protectionFromBlocks = worldObj.getBlockDensity(vec3, theEntity.boundingBox);
-                    double fadeOverDistance = (1.0D - entityDistanceFromAttackOrigin) * protectionFromBlocks;
-                    theEntity.attackEntityFrom(DamageSource.causeMobDamage(theGiant), ((int)(1.0D + parMaxDamage * fadeOverDistance)));
                     theEntity.motionX += knockbackFactorX / 2;
                     theEntity.motionY += knockbackFactorY / 2;
                     theEntity.motionZ += knockbackFactorZ / 2;
-
+                    if (!(theEntity instanceof EntityGoldenGoose)) // don't damage golden goose
+                    {
+	                    double fadeOverDistance = (1.0D - entityDistanceFromAttackOrigin) * protectionFromBlocks;
+	                    theEntity.attackEntityFrom(DamageSource.causeMobDamage(theGiant), ((int)(1.0D + parMaxDamage * fadeOverDistance)));
+                    }
 //                    if (theEntity instanceof EntityPlayer)
 //                    {
 //                        field_77288_k.put(theEntity, Vec3.createVectorHelper(knockbackFactorX * fadeOverDistance, knockbackFactorY * fadeOverDistance, knockbackFactorZ * fadeOverDistance));

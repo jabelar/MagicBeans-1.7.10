@@ -278,6 +278,7 @@ public class MagicBeansEventHandler
     		if (theGiant.getPerformingSpecialAttack())
     		{
     			MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant));
+    	        theGiant.setPerformingSpecialAttack(false);
     		}
     	}
     	
