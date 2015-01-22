@@ -55,7 +55,7 @@ public class GiantAttack
         attackOriginZ = theGiant.posZ;
     }
 
-    public void doGiantAttack()
+    public void doGiantAttack(int parMaxDamage)
     {
     	if (worldObj.isRemote)
     	{

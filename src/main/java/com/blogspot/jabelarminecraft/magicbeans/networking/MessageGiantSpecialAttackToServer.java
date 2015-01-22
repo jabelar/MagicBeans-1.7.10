@@ -77,7 +77,7 @@ public class MessageGiantSpecialAttackToServer implements IMessage
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
             Entity theEntity = MagicBeansUtilities.getEntityByID(entityID, thePlayer.worldObj);
             EntityGiant theGiant = (EntityGiant) theEntity;
-            theGiant.getSpecialAttack().doGiantAttack();
+            theGiant.getSpecialAttack().doGiantAttack(4);
             return null; // no response in this case
         }
     }
