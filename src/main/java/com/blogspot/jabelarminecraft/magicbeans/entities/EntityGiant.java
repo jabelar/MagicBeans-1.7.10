@@ -134,9 +134,9 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		{
 			if (getPerformingSpecialAttack())
 			{
-				getSpecialAttack().doGiantAttack();
-				setPerformingSpecialAttack(false);
-				setJumping(false);
+//				getSpecialAttack().doGiantAttack();
+//				setPerformingSpecialAttack(false);
+//				setJumping(false);
 			}
 		}
 		
@@ -145,7 +145,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		{
 			// DEBUG
 			System.out.println("Giant jump attack!");
-			setJumping(true);
+			// setJumping(true);
+			isJumping = true;
 			setPerformingSpecialAttack(true);
 		}
 		
