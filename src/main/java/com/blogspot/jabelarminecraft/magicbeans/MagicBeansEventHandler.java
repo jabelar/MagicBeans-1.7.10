@@ -275,7 +275,10 @@ public class MagicBeansEventHandler
     		System.out.println("LivingFallEvent for Giant");
     		EntityGiant theGiant = (EntityGiant)event.entityLiving;
     		theGiant.setJumping(false);
-    		MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant));
+    		if (theGiant.getPerformingSpecialAttack())
+    		{
+    			MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant));
+    		}
     	}
     	
     	if (!event.entityLiving.worldObj.isRemote && event.entityLiving instanceof EntityPlayer)

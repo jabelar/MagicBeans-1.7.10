@@ -16,19 +16,17 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.explosions;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 
 /**
  * @author jabelar
@@ -36,16 +34,15 @@ import net.minecraft.world.World;
  */
 public class GiantAttack 
 {
-    private final Random explosionRNG = new Random();
     private final World worldObj;
     public double attackOriginX;
     public double attackOriginY;
     public double attackOriginZ;
-    public Entity theGiant;
+    public EntityGiant theGiant;
     public float attackRange;
-    private final Map field_77288_k = new HashMap();
+//    private final Map field_77288_k = new HashMap();
 
-    public GiantAttack(Entity parEntity, float parAttackRange)
+    public GiantAttack(EntityGiant parEntity, float parAttackRange)
     {
         theGiant = parEntity;
         worldObj = theGiant.worldObj;
@@ -101,7 +98,7 @@ public class GiantAttack
             // DEBUG
             System.out.println("Distance from attack = "+entityDistanceFromAttackOrigin);
             
-           //  if (entityDistanceFromAttackOrigin <= 1.0D)
+           if (entityDistanceFromAttackOrigin <= 1.0D)
             {
                 knockbackFactorX = theEntity.posX - attackOriginX;
                 knockbackFactorY = theEntity.posY + theEntity.getEyeHeight() - attackOriginY;
@@ -118,20 +115,21 @@ public class GiantAttack
                     knockbackFactorZ /= knockbackMagnitude;
                     double protectionFromBlocks = worldObj.getBlockDensity(vec3, theEntity.boundingBox);
                     double fadeOverDistance = (1.0D - entityDistanceFromAttackOrigin) * protectionFromBlocks;
-                    theEntity.attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase) theGiant), ((int)((fadeOverDistance * fadeOverDistance + fadeOverDistance) / 2.0D * 8.0D * attackRange + 1.0D)));
-                    theEntity.motionX += knockbackFactorX;
-                    theEntity.motionY += knockbackFactorY;
-                    theEntity.motionZ += knockbackFactorZ;
+                    theEntity.attackEntityFrom(DamageSource.causeMobDamage(theGiant), ((int)(1.0D + parMaxDamage * fadeOverDistance)));
+                    theEntity.motionX += knockbackFactorX / 2;
+                    theEntity.motionY += knockbackFactorY / 2;
+                    theEntity.motionZ += knockbackFactorZ / 2;
 
-                    if (theEntity instanceof EntityPlayer)
-                    {
-                        field_77288_k.put(theEntity, Vec3.createVectorHelper(knockbackFactorX * fadeOverDistance, knockbackFactorY * fadeOverDistance, knockbackFactorZ * fadeOverDistance));
-                    }
+//                    if (theEntity instanceof EntityPlayer)
+//                    {
+//                        field_77288_k.put(theEntity, Vec3.createVectorHelper(knockbackFactorX * fadeOverDistance, knockbackFactorY * fadeOverDistance, knockbackFactorZ * fadeOverDistance));
+//                    }
                 }
             }
         }
         worldObj.playSoundEffect(attackOriginX, attackOriginY, attackOriginZ, "random.explode", 4.0F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
         worldObj.spawnParticle("largeexplode", attackOriginX, attackOriginY, attackOriginZ, 1.0D, 0.0D, 0.0D);
+        theGiant.setPerformingSpecialAttack(false);
     }
 
     /**
@@ -139,6 +137,6 @@ public class GiantAttack
      */
     public EntityLivingBase getExplosivePlacedBy()
     {
-        return (EntityLivingBase)theGiant;
+        return theGiant;
     }
 }
