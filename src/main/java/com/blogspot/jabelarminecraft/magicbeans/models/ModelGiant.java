@@ -77,7 +77,13 @@ public class ModelGiant extends ModelBiped
         GL11.glTranslatef(0F, 1.5F-1.5F*parEntity.getScaleFactor(), 0F); 
     	GL11.glScalef(parEntity.getScaleFactor(), parEntity.getScaleFactor(), parEntity.getScaleFactor());
 
-    	super.render(parEntity, par2, par3, par4, par5, par6, par7);
+        bipedHead.render(par7);
+        bipedBody.render(par7);
+        bipedRightArm.render(par7);
+        bipedLeftArm.render(par7);
+        bipedRightLeg.render(par7);
+        bipedLeftLeg.render(par7);
+        bipedHeadwear.render(par7);
 
         // don't forget to pop the matrix for overall scaling
         GL11.glPopMatrix();
@@ -187,9 +193,8 @@ public class ModelGiant extends ModelBiped
         {
         	// DEBUG
         	System.out.println("Rendering during special attack");
-        	bipedRightArm.rotateAngleZ = (float) -(Math.PI/ 2);
+        	bipedRightArm.rotateAngleZ = (float) (Math.PI/ 2);
         	bipedLeftArm.rotateAngleZ = (float) -(Math.PI/ 2);
         }
     }
-
 }
