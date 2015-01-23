@@ -110,6 +110,7 @@ import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiantSpecialAttackToServer;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -270,7 +271,15 @@ public class MagicBeansEventHandler
     	// clear jumping if Giant
     	if (event.entityLiving instanceof EntityGiant)
     	{
-    		event.entityLiving.setJumping(false);
+    		// DEBUG
+    		System.out.println("LivingFallEvent for Giant with distance = "+event.distance);
+    		EntityGiant theGiant = (EntityGiant)event.entityLiving;
+    		theGiant.setJumping(false);
+    		if (theGiant.getPerformingSpecialAttack())
+    		{
+    			MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant, Math.round(event.distance*3)));
+    	        theGiant.setPerformingSpecialAttack(false);
+    		}
     	}
     	
     	if (!event.entityLiving.worldObj.isRemote && event.entityLiving instanceof EntityPlayer)

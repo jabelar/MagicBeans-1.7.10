@@ -49,6 +49,7 @@ import net.minecraftforge.common.ForgeHooks;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
+import com.blogspot.jabelarminecraft.magicbeans.explosions.GiantAttack;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
@@ -83,6 +84,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected float attackDamage = 1.0F;
     protected int knockback = 0;
 	protected boolean wasDamageDone = false;
+	protected GiantAttack specialAttack;
+	protected boolean performingSpecialAttack = false;
     
 	/**
 	 * @param parWorld
@@ -94,6 +97,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		initSyncDataCompound();
 		setupAI();
 		setSize(1.0F, 4.5F);
+		specialAttack = new GiantAttack(this, 12);
 	}
 
 	// you don't have to call this as it is called automatically during EntityLiving subclass creation
@@ -124,12 +128,26 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 			setHealth(getHealth()+1);
 		}
 		
+		// process landing as part of special attack
+		// must have this code before the jump initiation code otherwise logic never executes
+		if (onGround)
+		{
+			if (getPerformingSpecialAttack())
+			{
+//				getSpecialAttack().doGiantAttack();
+//				setPerformingSpecialAttack(false);
+//				setJumping(false);
+			}
+		}
+		
 		// occasionally jump
 		if (ticksExisted%400 == 0)
 		{
 			// DEBUG
 			System.out.println("Giant jump attack!");
-			setJumping(true);
+			// setJumping(true);
+			isJumping = true;
+			setPerformingSpecialAttack(true);
 		}
 		
 		// create particles
@@ -143,7 +161,17 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		}
 	}
 	
-    /**
+	public boolean getPerformingSpecialAttack() 
+	{
+		return performingSpecialAttack;
+	}
+
+	public void setPerformingSpecialAttack(boolean b) 
+	{
+		performingSpecialAttack = b;
+	}
+
+	/**
      * Causes this entity to do an upwards motion (jumping).
      */
     @Override
@@ -602,6 +630,11 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 	public float getEyeHeight()
     {
         return height * 0.85F * getScaleFactor();
+    }
+    
+    public GiantAttack getSpecialAttack()
+    {
+    	return specialAttack;
     }
 
     @Override

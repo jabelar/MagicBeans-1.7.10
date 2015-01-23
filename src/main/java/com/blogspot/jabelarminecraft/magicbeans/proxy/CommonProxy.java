@@ -43,6 +43,7 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.items.MagicBeansMonsterPlacer;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiantSpecialAttackToServer;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemLeadToServer;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiveItemMagicBeansToServer;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageSyncEntityToClient;
@@ -159,6 +160,7 @@ public class CommonProxy
         MagicBeans.network.registerMessage(MessageToServer.Handler.class, MessageToServer.class, packetId++, Side.SERVER);
         MagicBeans.network.registerMessage(MessageGiveItemMagicBeansToServer.Handler.class, MessageGiveItemMagicBeansToServer.class, packetId++, Side.SERVER);
         MagicBeans.network.registerMessage(MessageGiveItemLeadToServer.Handler.class, MessageGiveItemLeadToServer.class, packetId++, Side.SERVER);
+        MagicBeans.network.registerMessage(MessageGiantSpecialAttackToServer.Handler.class, MessageGiantSpecialAttackToServer.class, packetId++, Side.SERVER);
         // register messages from server to client
         MagicBeans.network.registerMessage(MessageToClient.Handler.class, MessageToClient.class, packetId++, Side.CLIENT);
         MagicBeans.network.registerMessage(MessageSyncEntityToClient.Handler.class, MessageSyncEntityToClient.class, packetId++, Side.CLIENT);
