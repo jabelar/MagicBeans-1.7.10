@@ -37,15 +37,17 @@ public class MessageGiantSpecialAttackToServer implements IMessage
 {
     
     private static int entityID;
+    private static int maxAttackDamage;
 
     public MessageGiantSpecialAttackToServer() 
     { 
     	// need this constructor
     }
 
-    public MessageGiantSpecialAttackToServer(EntityGiant parGiant) 
+    public MessageGiantSpecialAttackToServer(EntityGiant parGiant, int parMaxAttackDamage) 
     {
         entityID = parGiant.getEntityId();
+        maxAttackDamage = parMaxAttackDamage;
         // DEBUG
         System.out.println("MyMessage constructor");
     }
@@ -54,6 +56,7 @@ public class MessageGiantSpecialAttackToServer implements IMessage
     public void fromBytes(ByteBuf buf) 
     {
     	entityID = ByteBufUtils.readVarInt(buf, 4);
+    	maxAttackDamage = ByteBufUtils.readVarInt(buf, 1);
     	// DEBUG
     	System.out.println("fromBytes = "+entityID);
     }
@@ -62,6 +65,7 @@ public class MessageGiantSpecialAttackToServer implements IMessage
     public void toBytes(ByteBuf buf) 
     {
     	ByteBufUtils.writeVarInt(buf, entityID, 4);
+    	ByteBufUtils.writeVarInt(buf, maxAttackDamage, 1);
         // DEBUG
         System.out.println("toBytes encoded");
     }
@@ -77,7 +81,7 @@ public class MessageGiantSpecialAttackToServer implements IMessage
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
             Entity theEntity = MagicBeansUtilities.getEntityByID(entityID, thePlayer.worldObj);
             EntityGiant theGiant = (EntityGiant) theEntity;
-            theGiant.getSpecialAttack().doGiantAttack(4);
+            theGiant.getSpecialAttack().doGiantAttack(maxAttackDamage);
             return null; // no response in this case
         }
     }

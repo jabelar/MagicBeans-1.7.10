@@ -41,7 +41,6 @@ public class GiantAttack
     public double attackOriginZ;
     public EntityGiant theGiant;
     public float attackRange;
-//    private final Map field_77288_k = new HashMap();
 
     public GiantAttack(EntityGiant parEntity, float parAttackRange)
     {
@@ -108,8 +107,6 @@ public class GiantAttack
 
                 if (knockbackMagnitude != 0.0D)
                 {
-                	// DEBUG
-                	System.out.println("Hit entity");
                 	
                 	// knock back
                     knockbackFactorX /= knockbackMagnitude;
@@ -123,6 +120,8 @@ public class GiantAttack
                     {
 	                    double fadeOverDistance = (1.0D - entityDistanceFromAttackOrigin) * protectionFromBlocks;
 	                    theEntity.attackEntityFrom(DamageSource.causeMobDamage(theGiant), ((int)(1.0D + parMaxDamage * fadeOverDistance)));
+	                	// DEBUG
+	                	System.out.println("Hit entity with damage = "+((int)(1.0D + parMaxDamage * fadeOverDistance)));
                     }
 //                    if (theEntity instanceof EntityPlayer)
 //                    {

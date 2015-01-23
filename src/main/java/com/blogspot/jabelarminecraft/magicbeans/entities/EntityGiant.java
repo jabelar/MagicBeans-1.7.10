@@ -97,7 +97,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		initSyncDataCompound();
 		setupAI();
 		setSize(1.0F, 4.5F);
-		specialAttack = new GiantAttack(this, 8);
+		specialAttack = new GiantAttack(this, 12);
 	}
 
 	// you don't have to call this as it is called automatically during EntityLiving subclass creation
