@@ -69,7 +69,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	public void onUpdate()
 	{
 		super.onUpdate();
-		if (!worldObj.isRemote && rand.nextFloat()<0.1F)
+		if (worldObj.isRemote && rand.nextFloat()<0.1F)
 		{
 			double var4 = rand.nextGaussian() * 0.02D;
 			double var6 = rand.nextGaussian() * 0.02D;
