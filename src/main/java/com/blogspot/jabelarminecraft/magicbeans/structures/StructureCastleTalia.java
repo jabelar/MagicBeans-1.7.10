@@ -149,7 +149,7 @@ public class StructureCastleTalia extends Structure
 	        {
 	            EntityLiving entityToSpawn = (EntityLiving) EntityList
 	                  .createEntityByName(entityToSpawnNameFull, theWorld);
-	            entityToSpawn.setLocationAndAngles(startX+15, startY+2, startZ+13, 
+	            entityToSpawn.setLocationAndAngles(startX+15, startY+9, startZ+15, 
 	                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
 	                  * 360.0F), 0.0F);
 	            theWorld.spawnEntityInWorld(entityToSpawn);

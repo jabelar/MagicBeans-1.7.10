@@ -46,7 +46,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
+import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget2;
 import com.blogspot.jabelarminecraft.magicbeans.explosions.GiantAttack;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
@@ -68,7 +68,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
     protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
     protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
-    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget(this, EntityPlayer.class, 2, true, false);
+    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget2(this, EntityPlayer.class);
 //    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this, 16.0D);
 
     // fields related to being attacked
@@ -108,7 +108,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MagicBeans.configGiantHealth);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); 
 		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.9D); // hard to knock back
-		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
+		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32.0D);
 
 	    // need to register any additional attributes
 		getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
@@ -216,8 +216,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         tasks.addTask(4, aiWander);
         tasks.addTask(5, aiWatchClosest);
         tasks.addTask(6, aiLookIdle);
-        targetTasks.addTask(0, aiHurtByTarget);
-        targetTasks.addTask(1, aiNearestAttackableTarget);
+        targetTasks.addTask(0, aiNearestAttackableTarget);
+        targetTasks.addTask(1, aiHurtByTarget);
 //        targetTasks.addTask(2, aiSeePlayer);
 	}
 
