@@ -132,7 +132,7 @@ public class GiantAttack
         }
         worldObj.playSoundEffect(attackOriginX, attackOriginY, attackOriginZ, "random.explode", 4.0F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
         worldObj.spawnParticle("largeexplode", attackOriginX, attackOriginY, attackOriginZ, 1.0D, 0.0D, 0.0D);
-        theGiant.setIsPerformingSpecialAttack(false);
+//        theGiant.setIsPerformingSpecialAttack(false);
     }
 
     /**

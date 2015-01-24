@@ -109,8 +109,6 @@ import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
-import com.blogspot.jabelarminecraft.magicbeans.networking.MessageGiantSpecialAttackToServer;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -268,19 +266,19 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(LivingFallEvent event)
     {
-    	// clear jumping if Giant
-    	if (event.entityLiving instanceof EntityGiant)
-    	{
-    		// DEBUG
-    		System.out.println("LivingFallEvent for Giant with distance = "+event.distance);
-    		EntityGiant theGiant = (EntityGiant)event.entityLiving;
-    		theGiant.setJumping(false);
-    		if (theGiant.getIsPerformingSpecialAttack())
-    		{
-    			MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant, Math.round(MagicBeans.configGiantAttackDamage*3)));
-    	        theGiant.setIsPerformingSpecialAttack(false);
-    		}
-    	}
+//    	// clear jumping if Giant
+//    	if (event.entityLiving instanceof EntityGiant)
+//    	{
+//    		// DEBUG
+//    		System.out.println("LivingFallEvent for Giant with distance = "+event.distance);
+//    		EntityGiant theGiant = (EntityGiant)event.entityLiving;
+//    		theGiant.setJumping(false);
+//    		if (theGiant.getIsPerformingSpecialAttack())
+//    		{
+//    			MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant, Math.round(MagicBeans.configGiantAttackDamage*3)));
+//    	        theGiant.setIsPerformingSpecialAttack(false);
+//    		}
+//    	}
     	
     	if (!event.entityLiving.worldObj.isRemote && event.entityLiving instanceof EntityPlayer)
     	{    		

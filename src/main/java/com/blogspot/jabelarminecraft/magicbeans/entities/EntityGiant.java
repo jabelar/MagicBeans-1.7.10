@@ -47,6 +47,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget2;
+import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISpecialAttack;
 import com.blogspot.jabelarminecraft.magicbeans.explosions.GiantAttack;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
@@ -68,6 +69,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
     protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
     protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
+    protected EntityAIBase aiSpecialAttack = new EntityGiantAISpecialAttack(this);
     protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget2(this, EntityPlayer.class);
 //    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this, 16.0D);
 
@@ -125,27 +127,29 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 			setHealth(getHealth()+1);
 		}
 				
-		// occasionally jump attack during regular attacking
-		if (getIsAttacking() && ticksExisted%200 == 0) // check every 10 seconds
-		{
-			if (rand.nextInt(10)<8) // 80% chance
-			{
-				if (!isInWater() && !isDead && MagicBeans.configGiantIsHostile)
-				{
-					// DEBUG
-					System.out.println("Giant jump attack!");
-					// setJumping(true);
-					isJumping = true;
-					setIsPerformingSpecialAttack(true);
-				}
-			}
-		}
+//		// occasionally jump attack during regular attacking
+//		if (getIsAttacking() && ticksExisted%200 == 0) // check every 10 seconds
+//		{
+//			if (rand.nextInt(10)<8) // 80% chance
+//			{
+//				if (!isInWater() && !isDead && MagicBeans.configGiantIsHostile)
+//				{
+//					// DEBUG
+//					System.out.println("Giant jump attack!");
+//					// setJumping(true);
+//					isJumping = true;
+//					setIsPerformingSpecialAttack(true);
+//				}
+//			}
+//		}
 		
-		if (getIsPerformingSpecialAttack())
-		{
-			motionX = 0;
-			motionZ = 0;
-		}
+//		if (getIsPerformingSpecialAttack())
+//		{
+//			posX = prevPosX;
+//			posZ = prevPosZ;
+//			motionX = 0;
+//			motionZ = 0;
+//		}
 		
 		// create particles
 		if (worldObj.isRemote && rand.nextFloat()<0.1F)
@@ -204,8 +208,9 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         tasks.addTask(4, aiWander);
         tasks.addTask(5, aiWatchClosest);
         tasks.addTask(6, aiLookIdle);
-        targetTasks.addTask(0, aiNearestAttackableTarget);
-        targetTasks.addTask(1, aiHurtByTarget);
+        targetTasks.addTask(0, aiSpecialAttack);
+        targetTasks.addTask(1, aiNearestAttackableTarget);
+//        targetTasks.addTask(1, aiHurtByTarget);
 //        targetTasks.addTask(2, aiSeePlayer);
 	}
 
@@ -669,7 +674,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		// don't use setters because it might be too early to send sync packet
 		syncDataCompound.setFloat("scaleFactor", 2.25F);
 		syncDataCompound.setBoolean("isAttacking", false);
-		syncDataCompound.setBoolean("isPerformingSpecialAttack", false);
+		syncDataCompound.setInteger("specialAttackTimer", 20);
 	}
     
 	/* (non-Javadoc)
@@ -706,16 +711,16 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         return syncDataCompound.getBoolean("isAttacking");
     }
     
-    public void setIsPerformingSpecialAttack(boolean parIsPerformingSpecialAttack)
+    public void setSpecialAttackTimer(int parSpecialAttackTimer)
     {
-        syncDataCompound.setBoolean("isPerformingSpecialAttack", parIsPerformingSpecialAttack);
+        syncDataCompound.setInteger("specialAttackTimer", parSpecialAttackTimer);
        
         // don't forget to sync client and server
         sendEntitySyncPacket();
     }
 
-    public boolean getIsPerformingSpecialAttack()
+    public int getSpecialAttackTimer()
     {
-        return syncDataCompound.getBoolean("isPerformingSpecialAttack");
+        return syncDataCompound.getInteger("specialAttackTimer");
     }
 }

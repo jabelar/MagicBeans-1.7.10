@@ -189,10 +189,12 @@ public class ModelGiant extends ModelBiped
             bipedLeftArm.rotateAngleX -= MathHelper.sin(p_78087_3_ * 0.067F) * 0.05F;
         }
         
-        if (parGiant.getIsPerformingSpecialAttack())
+        if (parGiant.getSpecialAttackTimer() > 0)
         {
+        	// decrement special attack timer
+        	parGiant.setSpecialAttackTimer(parGiant.getSpecialAttackTimer()-1);
         	// DEBUG
-        	System.out.println("Rendering during special attack");
+        	System.out.println("Rendering during special attack with attack timer = "+parGiant.getSpecialAttackTimer());
         	bipedRightArm.rotateAngleZ = (float) (Math.PI/ 2);
         	bipedLeftArm.rotateAngleZ = (float) -(Math.PI/ 2);
         }

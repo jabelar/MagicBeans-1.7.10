@@ -25,6 +25,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITarget;
+import net.minecraft.entity.player.EntityPlayer;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
@@ -96,6 +97,10 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
         else
         {
             targetEntity = (EntityLivingBase)list.get(0);
+            if (targetEntity instanceof EntityPlayer)
+            {
+            	return !((EntityPlayer)targetEntity).capabilities.isCreativeMode;
+            }
             return true;
         }
     }
