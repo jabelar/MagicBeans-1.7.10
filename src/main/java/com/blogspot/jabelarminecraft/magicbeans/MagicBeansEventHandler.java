@@ -275,10 +275,10 @@ public class MagicBeansEventHandler
     		System.out.println("LivingFallEvent for Giant with distance = "+event.distance);
     		EntityGiant theGiant = (EntityGiant)event.entityLiving;
     		theGiant.setJumping(false);
-    		if (theGiant.getPerformingSpecialAttack())
+    		if (theGiant.getIsPerformingSpecialAttack())
     		{
     			MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant, Math.round(MagicBeans.configGiantAttackDamage*3)));
-    	        theGiant.setPerformingSpecialAttack(false);
+    	        theGiant.setIsPerformingSpecialAttack(false);
     		}
     	}
     	

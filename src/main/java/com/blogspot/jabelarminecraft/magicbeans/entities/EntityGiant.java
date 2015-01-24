@@ -83,7 +83,6 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected int knockback = 0;
 	protected boolean wasDamageDone = false;
 	protected GiantAttack specialAttack;
-	protected boolean performingSpecialAttack = false;
     
 	/**
 	 * @param parWorld
@@ -125,10 +124,9 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		{
 			setHealth(getHealth()+1);
 		}
-		
-		
-		// occasionally jump
-		if (ticksExisted%200 == 0) // check every 10 seconds
+				
+		// occasionally jump attack during regular attacking
+		if (getIsAttacking() && ticksExisted%200 == 0) // check every 10 seconds
 		{
 			if (rand.nextInt(10)<8) // 80% chance
 			{
@@ -138,12 +136,12 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 					System.out.println("Giant jump attack!");
 					// setJumping(true);
 					isJumping = true;
-					setPerformingSpecialAttack(true);
+					setIsPerformingSpecialAttack(true);
 				}
 			}
 		}
 		
-		if (getPerformingSpecialAttack())
+		if (getIsPerformingSpecialAttack())
 		{
 			motionX = 0;
 			motionZ = 0;
@@ -158,16 +156,6 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 			EntityFX particleMysterious = new EntityParticleFXMysterious(worldObj, posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
 			Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
 		}
-	}
-	
-	public boolean getPerformingSpecialAttack() 
-	{
-		return performingSpecialAttack;
-	}
-
-	public void setPerformingSpecialAttack(boolean b) 
-	{
-		performingSpecialAttack = b;
 	}
 
 	/**
@@ -669,17 +657,19 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 	@Override
 	public void sendEntitySyncPacket()
 	{
-		MagicBeansUtilities.sendEntitySyncPacket(this);
+		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#initSyncCompound()
+	/* 
+	 * This is where you initialize any custom fields for the entity to ensure client and server are synced
 	 */
 	@Override
 	public void initSyncDataCompound() 
 	{
 		// don't use setters because it might be too early to send sync packet
-		syncDataCompound.setFloat("scaleFactor", 2.25F);;
+		syncDataCompound.setFloat("scaleFactor", 2.25F);
+		syncDataCompound.setBoolean("isAttacking", false);
+		syncDataCompound.setBoolean("isPerformingSpecialAttack", false);
 	}
     
 	/* (non-Javadoc)
@@ -701,5 +691,31 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     public float getScaleFactor()
     {
         return syncDataCompound.getFloat("scaleFactor");
+    }
+
+    public void setIsAttacking(boolean parIsAttacking)
+    {
+        syncDataCompound.setBoolean("isAttacking", parIsAttacking);
+       
+        // don't forget to sync client and server
+        sendEntitySyncPacket();
+    }
+
+    public boolean getIsAttacking()
+    {
+        return syncDataCompound.getBoolean("isAttacking");
+    }
+    
+    public void setIsPerformingSpecialAttack(boolean parIsPerformingSpecialAttack)
+    {
+        syncDataCompound.setBoolean("isPerformingSpecialAttack", parIsPerformingSpecialAttack);
+       
+        // don't forget to sync client and server
+        sendEntitySyncPacket();
+    }
+
+    public boolean getIsPerformingSpecialAttack()
+    {
+        return syncDataCompound.getBoolean("isPerformingSpecialAttack");
     }
 }

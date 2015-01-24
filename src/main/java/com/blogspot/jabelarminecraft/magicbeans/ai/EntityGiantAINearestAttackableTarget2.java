@@ -27,6 +27,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITarget;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 
 /**
  * @author jabelar
@@ -83,36 +84,19 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
 		{
 			return false;
 		}
-    	
-    	// similar to regular nearest target AI, except chance is always 100%
+        double d0 = getTargetDistance();
+        
+        List list = taskOwner.worldObj.selectEntitiesWithinAABB(targetClass, taskOwner.boundingBox.expand(d0, 4.0D, d0), targetEntitySelector);
+        Collections.sort(list, theNearestAttackableTargetSorter);
 
-//        if (targetChance > 0 && taskOwner.getRNG().nextInt(targetChance) != 0)
-//        {
-//            return false;
-//        }
-//        else
+        if (list.isEmpty())
         {
-            double d0 = getTargetDistance();
-            // DEBUG
-            if (taskOwner == null) {
-            	System.out.println("task owner is null");
-            }
-            if (targetEntitySelector == null) {
-            	System.out.println("entity selector is null");
-            }
-            
-            List list = taskOwner.worldObj.selectEntitiesWithinAABB(targetClass, taskOwner.boundingBox.expand(d0, 4.0D, d0), targetEntitySelector);
-            Collections.sort(list, theNearestAttackableTargetSorter);
-
-            if (list.isEmpty())
-            {
-                return false;
-            }
-            else
-            {
-                targetEntity = (EntityLivingBase)list.get(0);
-                return true;
-            }
+            return false;
+        }
+        else
+        {
+            targetEntity = (EntityLivingBase)list.get(0);
+            return true;
         }
     }
 
@@ -122,7 +106,15 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
     @Override
 	public void startExecuting()
     {
+    	// DEBUG
+    	System.out.println("Start executing attack AI");
+    	
         taskOwner.setAttackTarget(targetEntity);
+        if (taskOwner instanceof EntityGiant)
+        {
+        	EntityGiant theGiant = (EntityGiant)taskOwner;
+            theGiant.setIsAttacking(true);
+        }
         super.startExecuting();
     }
     
@@ -134,6 +126,18 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
 			return false;
 		}
     	
-    	return super.continueExecuting();
+    	boolean result = !targetEntity.isDead; // super.continueExecuting();
+    	if (!result)
+    	{
+        	// DEBUG
+        	System.out.println("Stop executing attack AI");
+
+        	if (taskOwner instanceof EntityGiant)
+            {
+            	EntityGiant theGiant = (EntityGiant)taskOwner;
+                theGiant.setIsAttacking(false);
+            }
+    	}
+    	return result;
     }
 }

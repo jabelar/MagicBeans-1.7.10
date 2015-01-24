@@ -399,6 +399,6 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
 	@Override
 	public void sendEntitySyncPacket()
 	{
-		MagicBeansUtilities.sendEntitySyncPacket(this);
+		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
 	}
 }

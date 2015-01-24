@@ -273,7 +273,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 	@Override
 	public void sendEntitySyncPacket()
 	{
-		MagicBeansUtilities.sendEntitySyncPacket(this);
+		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
 	}
 
 }

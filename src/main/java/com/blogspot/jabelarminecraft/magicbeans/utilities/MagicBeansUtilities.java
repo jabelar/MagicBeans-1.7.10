@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageSyncEntityToClient;
+import com.blogspot.jabelarminecraft.magicbeans.networking.MessageSyncEntityToServer;
 
 /**
  * @author jabelar
@@ -207,7 +208,7 @@ public class MagicBeansUtilities
 	 * Networking packet utilities
 	 */
 	
-    public static void sendEntitySyncPacket(IEntityMagicBeans parEntity) 
+    public static void sendEntitySyncPacketToClient(IEntityMagicBeans parEntity) 
     {
     	Entity theEntity = (Entity)parEntity;
         if (!theEntity.worldObj.isRemote)
@@ -217,4 +218,16 @@ public class MagicBeansUtilities
             MagicBeans.network.sendToAll(new MessageSyncEntityToClient(theEntity.getEntityId(), parEntity.getSyncDataCompound()));           
         }
     }
+
+    public static void sendEntitySyncPacketToServer(IEntityMagicBeans parEntity) 
+    {
+    	Entity theEntity = (Entity)parEntity;
+        if (theEntity.worldObj.isRemote)
+        {
+        	// DEBUG
+        	System.out.println("sendEntitySyncPacket from client");
+            MagicBeans.network.sendToServer(new MessageSyncEntityToServer(theEntity.getEntityId(), parEntity.getSyncDataCompound()));           
+        }
+    }
+
 }

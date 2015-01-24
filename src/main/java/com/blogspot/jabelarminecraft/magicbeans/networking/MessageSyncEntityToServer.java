@@ -33,17 +33,17 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
  * @author jabelar
  *
  */
-public class MessageSyncEntityToClient implements IMessage 
+public class MessageSyncEntityToServer implements IMessage 
 {
     private int entityId ;
     private NBTTagCompound entitySyncDataCompound;
 
-    public MessageSyncEntityToClient() 
+    public MessageSyncEntityToServer() 
     { 
     	// need this constructor
     }
 
-    public MessageSyncEntityToClient(int parEntityId, NBTTagCompound parTagCompound) 
+    public MessageSyncEntityToServer(int parEntityId, NBTTagCompound parTagCompound) 
     {
     	entityId = parEntityId;
         entitySyncDataCompound = parTagCompound;
@@ -69,11 +69,11 @@ public class MessageSyncEntityToClient implements IMessage
         System.out.println("toBytes encoded");
     }
 
-    public static class Handler implements IMessageHandler<MessageSyncEntityToClient, IMessage> 
+    public static class Handler implements IMessageHandler<MessageSyncEntityToServer, IMessage> 
     {
         
         @Override
-        public IMessage onMessage(MessageSyncEntityToClient message, MessageContext ctx) 
+        public IMessage onMessage(MessageSyncEntityToServer message, MessageContext ctx) 
         {
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
         	IEntityMagicBeans theEntity = (IEntityMagicBeans)MagicBeansUtilities.getEntityByID(message.entityId, thePlayer.worldObj);

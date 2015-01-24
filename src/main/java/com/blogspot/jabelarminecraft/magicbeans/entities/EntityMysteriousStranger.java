@@ -282,6 +282,6 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	@Override
 	public void sendEntitySyncPacket()
 	{
-		MagicBeansUtilities.sendEntitySyncPacket(this);
+		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
 	}
 }

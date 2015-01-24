@@ -189,7 +189,7 @@ public class ModelGiant extends ModelBiped
             bipedLeftArm.rotateAngleX -= MathHelper.sin(p_78087_3_ * 0.067F) * 0.05F;
         }
         
-        if (parGiant.getPerformingSpecialAttack())
+        if (parGiant.getIsPerformingSpecialAttack())
         {
         	// DEBUG
         	System.out.println("Rendering during special attack");
