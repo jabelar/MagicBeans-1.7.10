@@ -277,7 +277,7 @@ public class MagicBeansEventHandler
     		theGiant.setJumping(false);
     		if (theGiant.getPerformingSpecialAttack())
     		{
-    			MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant, Math.round(event.distance*3)));
+    			MagicBeans.network.sendToServer(new MessageGiantSpecialAttackToServer(theGiant, Math.round(MagicBeans.configGiantAttackDamage*3)));
     	        theGiant.setPerformingSpecialAttack(false);
     		}
     	}

@@ -29,7 +29,6 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -47,6 +46,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
 import com.blogspot.jabelarminecraft.magicbeans.explosions.GiantAttack;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
@@ -68,7 +68,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
     protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
     protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
-    protected EntityAIBase aiNearestAttackableTarget = new EntityAINearestAttackableTarget(this, EntityPlayer.class, 2, true, false);
+    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget(this, EntityPlayer.class, 2, true, false);
 //    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this, 16.0D);
 
     // fields related to being attacked
@@ -132,7 +132,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		{
 			if (rand.nextInt(10)<8) // 80% chance
 			{
-				if (!isInWater() && !isDead)
+				if (!isInWater() && !isDead && MagicBeans.configGiantIsHostile)
 				{
 					// DEBUG
 					System.out.println("Giant jump attack!");
@@ -141,6 +141,12 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 					setPerformingSpecialAttack(true);
 				}
 			}
+		}
+		
+		if (getPerformingSpecialAttack())
+		{
+			motionX = 0;
+			motionZ = 0;
 		}
 		
 		// create particles

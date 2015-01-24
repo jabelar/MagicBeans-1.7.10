@@ -16,52 +16,20 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.ai;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 
 /**
  * @author jabelar
  *
  */
-public class EntityGiantAINearestAttackableTarget extends EntityAITarget
+public class EntityGiantAINearestAttackableTarget extends EntityAINearestAttackableTarget
 {
-    private final Class targetClass;
-    private final int targetChance;
-    /** Instance of EntityAINearestAttackableTargetSorter. */
-    private final EntityGiantAINearestAttackableTarget.Sorter theNearestAttackableTargetSorter;
-    /**
-     * This filter is applied to the Entity search.  Only matching entities will be targetted.  (null -> no
-     * restrictions)
-     */
-    private final IEntitySelector targetEntitySelector;
-    private EntityLivingBase targetEntity;
-
-    public EntityGiantAINearestAttackableTarget(EntityCreature parCreatureExecutingAI, Class parClassToTarget, int parChanceToTarget, boolean parUseSight, boolean parOnlyTargetIfInReach, final IEntitySelector parEntitySelector)
+    public EntityGiantAINearestAttackableTarget(EntityCreature parCreatureExecutingAI, Class parClassToTarget, int parChanceToTarget, boolean parUseSight, boolean parOnlyTargetIfInReach)
     {
-        super(parCreatureExecutingAI, parUseSight, parOnlyTargetIfInReach);
-        targetClass = parClassToTarget;
-        targetChance = parChanceToTarget;
-        theNearestAttackableTargetSorter = new EntityGiantAINearestAttackableTarget.Sorter(parCreatureExecutingAI);
-        setMutexBits(1);
-        targetEntitySelector = new IEntitySelector()
-        {
-            /**
-             * Return whether the specified entity is applicable to this filter.
-             */
-            @Override
-			public boolean isEntityApplicable(Entity parEntity)
-            {
-                return !(parEntity instanceof EntityLivingBase) ? false : (parEntitySelector != null && !parEntitySelector.isEntityApplicable(parEntity) ? false : EntityGiantAINearestAttackableTarget.this.isSuitableTarget((EntityLivingBase)parEntity, false));
-            }
-        };
+        super(parCreatureExecutingAI, parClassToTarget, parChanceToTarget, parUseSight, parOnlyTargetIfInReach);
     }
 
     /**
@@ -70,62 +38,20 @@ public class EntityGiantAINearestAttackableTarget extends EntityAITarget
     @Override
 	public boolean shouldExecute()
     {
-        if (targetChance > 0 && taskOwner.getRNG().nextInt(targetChance) != 0)
-        {
-            return false;
-        }
-        else
-        {
-            double d0 = getTargetDistance();
-            List list = taskOwner.worldObj.selectEntitiesWithinAABB(targetClass, taskOwner.boundingBox.expand(d0, 4.0D, d0), targetEntitySelector);
-            Collections.sort(list, theNearestAttackableTargetSorter);
-
-            if (list.isEmpty())
-            {
-                return false;
-            }
-            else
-            {
-                targetEntity = (EntityLivingBase)list.get(0);
-                // DEBUG
-                System.out.println("Found target, is player = "+(targetEntity instanceof EntityPlayer));
-                return true;
-            }
-        }
+    	if (!MagicBeans.configGiantIsHostile)
+    	{
+    		return false;
+    	}
+    	return super.shouldExecute();
     }
-
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
+    
     @Override
-	public void startExecuting()
+	public boolean continueExecuting()
     {
-    	// DEBUG
-    	System.out.println("EntityGiantAINearestAttackableTarget startExecuting");
-        taskOwner.setAttackTarget(targetEntity);
-        super.startExecuting();
+    	if (!MagicBeans.configGiantIsHostile)
+    	{
+    		return false;
+    	}
+    	return super.continueExecuting();
     }
-
-    public static class Sorter implements Comparator
-        {
-            private final Entity theEntity;
-
-            public Sorter(Entity parEntity)
-            {
-                theEntity = parEntity;
-            }
-
-            public int compare(Entity parEntity1, Entity parEntity2)
-            {
-                double d0 = theEntity.getDistanceSqToEntity(parEntity1);
-                double d1 = theEntity.getDistanceSqToEntity(parEntity2);
-                return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
-            }
-
-            @Override
-			public int compare(Object parObject1, Object parObject2)
-            {
-                return compare((Entity)parObject1, (Entity)parObject2);
-            }
-        }
 }

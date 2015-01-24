@@ -64,7 +64,7 @@ public class GiantAttack
     	// DEBUG
     	System.out.println("Giant special attack!");
     	
-        double entityDistanceFromAttackOrigin;
+        double rangeFactor;
         double knockbackFactorX;
         double knockbackFactorY;
         double knockbackFactorZ;
@@ -93,12 +93,12 @@ public class GiantAttack
         for (int indX = 0; indX < entityList.size(); ++indX)
         {
             Entity theEntity = (Entity)entityList.get(indX);
-            entityDistanceFromAttackOrigin = theEntity.getDistance(attackOriginX, attackOriginY, attackOriginZ) / attackRange;
+            rangeFactor = theEntity.getDistance(attackOriginX, attackOriginY, attackOriginZ) / attackRange;
 
             // DEBUG
-            System.out.println("Distance from attack = "+entityDistanceFromAttackOrigin);
+            System.out.println("Distance from attack = "+rangeFactor);
             
-           if (entityDistanceFromAttackOrigin <= 1.0D)
+           if (rangeFactor <= 1.0D) // within range
             {
                 knockbackFactorX = theEntity.posX - attackOriginX;
                 knockbackFactorY = theEntity.posY + theEntity.getEyeHeight() - attackOriginY;
@@ -118,7 +118,7 @@ public class GiantAttack
                     theEntity.motionZ += knockbackFactorZ / 2;
                     if (!(theEntity instanceof EntityGoldenGoose)) // don't damage golden goose
                     {
-	                    double fadeOverDistance = (1.0D - entityDistanceFromAttackOrigin) * protectionFromBlocks;
+	                    double fadeOverDistance = (1.0D - rangeFactor) * protectionFromBlocks;
 	                    theEntity.attackEntityFrom(DamageSource.causeMobDamage(theGiant), ((int)(1.0D + parMaxDamage * fadeOverDistance)));
 	                	// DEBUG
 	                	System.out.println("Hit entity with damage = "+((int)(1.0D + parMaxDamage * fadeOverDistance)));
