@@ -18,6 +18,7 @@ package com.blogspot.jabelarminecraft.magicbeans.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
@@ -45,6 +46,10 @@ public class EntityGiantAISeePlayer extends EntityAIBase
 	public boolean shouldExecute()
     {
         thePlayer = worldObject.getClosestPlayerToEntity(theGiant, minPlayerDistance);
+        if (thePlayer == null || ((EntityPlayerMP)thePlayer).theItemInWorldManager.isCreative())
+        {
+        	return false;
+        }
         return thePlayer != null && theGiant.canEntityBeSeen(thePlayer) ? true : false;
    }
 
@@ -54,6 +59,10 @@ public class EntityGiantAISeePlayer extends EntityAIBase
     @Override
 	public boolean continueExecuting()
     {
+        if (thePlayer == null || ((EntityPlayerMP)thePlayer).theItemInWorldManager.isCreative())
+        {
+        	return false;
+        }
         return !thePlayer.isEntityAlive() ? false : (theGiant.getDistanceSqToEntity(thePlayer) <= minPlayerDistance * minPlayerDistance);
     }
 
@@ -65,6 +74,8 @@ public class EntityGiantAISeePlayer extends EntityAIBase
     {
     	// target the player
         theGiant.setAttackTarget(thePlayer);
+        // DEBUG
+        System.out.println("The Giant sees you!");
     }
 
     /**

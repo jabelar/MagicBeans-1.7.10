@@ -18,7 +18,6 @@ package com.blogspot.jabelarminecraft.magicbeans.entities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -30,6 +29,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -47,8 +47,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget;
-import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
 import com.blogspot.jabelarminecraft.magicbeans.explosions.GiantAttack;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
@@ -70,8 +68,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
     protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
     protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
-    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget(this, EntityPlayer.class, 2, true, false, (IEntitySelector)null);
-    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this, 16.0D);
+    protected EntityAIBase aiNearestAttackableTarget = new EntityAINearestAttackableTarget(this, EntityPlayer.class, 2, true, false);
+//    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this, 16.0D);
 
     // fields related to being attacked
     protected Entity entityAttackedBy = null;
@@ -107,14 +105,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		super.applyEntityAttributes(); 
 
 		// standard attributes registered to EntityLivingBase
-		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(MagicBeans.configGiantHealth);
 		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); 
-		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1.0D); // can't knock back
+		getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.9D); // hard to knock back
 		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
 
 	    // need to register any additional attributes
 		getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(MagicBeans.configGiantAttackDamage);
 	}
 	
 	@Override
@@ -128,26 +126,21 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 			setHealth(getHealth()+1);
 		}
 		
-		// process landing as part of special attack
-		// must have this code before the jump initiation code otherwise logic never executes
-		if (onGround)
-		{
-			if (getPerformingSpecialAttack())
-			{
-//				getSpecialAttack().doGiantAttack();
-//				setPerformingSpecialAttack(false);
-//				setJumping(false);
-			}
-		}
 		
 		// occasionally jump
-		if (ticksExisted%400 == 0)
+		if (ticksExisted%200 == 0) // check every 10 seconds
 		{
-			// DEBUG
-			System.out.println("Giant jump attack!");
-			// setJumping(true);
-			isJumping = true;
-			setPerformingSpecialAttack(true);
+			if (rand.nextInt(10)<8) // 80% chance
+			{
+				if (!isInWater() && !isDead)
+				{
+					// DEBUG
+					System.out.println("Giant jump attack!");
+					// setJumping(true);
+					isJumping = true;
+					setPerformingSpecialAttack(true);
+				}
+			}
 		}
 		
 		// create particles
@@ -219,7 +212,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         tasks.addTask(6, aiLookIdle);
         targetTasks.addTask(0, aiHurtByTarget);
         targetTasks.addTask(1, aiNearestAttackableTarget);
-        targetTasks.addTask(2, aiSeePlayer);
+//        targetTasks.addTask(2, aiSeePlayer);
 	}
 
 	/* (non-Javadoc)

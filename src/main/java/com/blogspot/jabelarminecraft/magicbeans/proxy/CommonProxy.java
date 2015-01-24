@@ -204,11 +204,11 @@ public class CommonProxy
     	config.load();
         MagicBeans.configGiantIsHostile = config.get(Configuration.CATEGORY_GENERAL, "GiantIsHostile", true, "A friendly "+MagicBeansUtilities.stringToRainbow("Giant")+EnumChatFormatting.YELLOW+" is no challenge").getBoolean(true);
         System.out.println("Giant is hostile = "+MagicBeans.configGiantIsHostile);
-        MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "GiantHealth", 10, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getInt(10);
+        MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "GiantHealth", 100, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getInt(100);
         System.out.println("Giant health = "+MagicBeans.configGiantHealth);
         MagicBeans.configGiantCanRegen = config.get(Configuration.CATEGORY_GENERAL, "GiantCanRegen", true, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getBoolean(true);
         System.out.println("Giant can regen = "+MagicBeans.configGiantCanRegen);
-        MagicBeans.configGiantAttackDamage = config.get(Configuration.CATEGORY_GENERAL, "GiantAttackDamage", 6, "He's surprisingly resilient").getInt(4);
+        MagicBeans.configGiantAttackDamage = config.get(Configuration.CATEGORY_GENERAL, "GiantAttackDamage", 8, "He's surprisingly resilient").getInt(8);
         System.out.println("Giant Attack Damage = "+MagicBeans.configGiantAttackDamage);
         MagicBeans.configGoldForBeans = config.get(Configuration.CATEGORY_GENERAL, "GoldForBeans", 100, MagicBeansUtilities.stringToRainbow("Magic beans")+EnumChatFormatting.YELLOW+" are priceless!").getInt(100);
         System.out.println("Gold for beans = "+MagicBeans.configGoldForBeans);

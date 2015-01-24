@@ -44,7 +44,7 @@ public class EntityGiantAINearestAttackableTarget extends EntityAITarget
     private final IEntitySelector targetEntitySelector;
     private EntityLivingBase targetEntity;
 
-    public EntityGiantAINearestAttackableTarget(EntityCreature parCreatureExecutingAI, Class parClassToTarget, int parChanceToTarget, boolean parUseSight, boolean parOnlyTargetIfInReach, final IEntitySelector p_i1665_6_)
+    public EntityGiantAINearestAttackableTarget(EntityCreature parCreatureExecutingAI, Class parClassToTarget, int parChanceToTarget, boolean parUseSight, boolean parOnlyTargetIfInReach, final IEntitySelector parEntitySelector)
     {
         super(parCreatureExecutingAI, parUseSight, parOnlyTargetIfInReach);
         targetClass = parClassToTarget;
@@ -59,7 +59,7 @@ public class EntityGiantAINearestAttackableTarget extends EntityAITarget
             @Override
 			public boolean isEntityApplicable(Entity parEntity)
             {
-                return !(parEntity instanceof EntityLivingBase) ? false : (p_i1665_6_ != null && !p_i1665_6_.isEntityApplicable(parEntity) ? false : EntityGiantAINearestAttackableTarget.this.isSuitableTarget((EntityLivingBase)parEntity, false));
+                return !(parEntity instanceof EntityLivingBase) ? false : (parEntitySelector != null && !parEntitySelector.isEntityApplicable(parEntity) ? false : EntityGiantAINearestAttackableTarget.this.isSuitableTarget((EntityLivingBase)parEntity, false));
             }
         };
     }
