@@ -32,6 +32,31 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 public class ModelGiant extends ModelBiped
 {
     public ModelRenderer modelNose;
+    
+    protected int cycleIndex = 0;
+    protected float[][] cycleSpecialAttack = new float[][] {
+    		{  0F,   0F}, // right arm, left arm
+    		{ 15F, -15F},
+    		{ 30F, -30F},
+    		{ 45F, -45F},
+    		{ 60F, -60F},
+    		{ 75F, -75F},
+    		{ 90F, -90F},
+     		{ 105F, -105F},
+    		{ 130F, -130F},
+    		{ 130F, -130F},
+    		{ 130F, -130F},
+    		{ 130F, -130F},
+    		{ 130F, -130F},
+    		{ 130F, -130F},
+    		{ 105F, -105F},
+    		{ 90F, -90F},
+    		{ 75F, -75F},
+    		{ 60F, -60F},
+    		{ 45F, -45F},
+    		{ 30F, -30F},
+    		{ 15F, -15F},
+    };
 
     public ModelGiant()
     {
@@ -193,8 +218,15 @@ public class ModelGiant extends ModelBiped
         {
         	// DEBUG
         	System.out.println("Rendering during special attack with attack timer = "+parGiant.getSpecialAttackTimer());
-        	bipedRightArm.rotateAngleZ = (float) (Math.PI/ 2);
-        	bipedLeftArm.rotateAngleZ = (float) -(Math.PI/ 2);
+        	bipedRightArm.rotateAngleZ = degToRad(cycleSpecialAttack[parGiant.getSpecialAttackTimer()][0]);
+        	bipedLeftArm.rotateAngleZ = degToRad(cycleSpecialAttack[parGiant.getSpecialAttackTimer()][1]);
+        	bipedRightArm.rotateAngleX = -degToRad(cycleSpecialAttack[parGiant.getSpecialAttackTimer()][0])/2.0F;
+        	bipedLeftArm.rotateAngleX = degToRad(cycleSpecialAttack[parGiant.getSpecialAttackTimer()][1])/2.0F;
         }
+    }
+    
+    protected float degToRad(float degrees)
+    {
+        return degrees * (float)Math.PI / 180 ;
     }
 }
