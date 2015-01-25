@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 
 
@@ -97,6 +98,10 @@ public class EntityGiantAISeePlayer extends EntityAIBase
     @Override
 	public void updateTask()
     {
+    	if (theGiant.getSpecialAttackTimer() == 1)
+    	{
+    		theGiant.getSpecialAttack().doGiantAttack(MagicBeans.configGiantAttackDamage*3);
+    	}
     	theGiant.decrementSpecialAttackTimer();
     	
     	if (theGiant.ticksExisted%200 == 0) 
@@ -107,7 +112,6 @@ public class EntityGiantAISeePlayer extends EntityAIBase
 				{
 					// DEBUG
 					System.out.println("Giant jump attack!");
-					// setJumping(true);
 					theGiant.setSpecialAttackTimer(20);
 				}
 			}
