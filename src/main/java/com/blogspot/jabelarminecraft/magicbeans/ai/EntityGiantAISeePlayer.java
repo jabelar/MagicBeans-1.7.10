@@ -16,6 +16,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.ai;
 
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,17 +27,17 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 
 public class EntityGiantAISeePlayer extends EntityAIBase
 {
-    private final EntityGiant theGiant;
-    private EntityPlayer thePlayer;
-    private final World worldObject;
-    private final double minPlayerDistance;
+    protected final EntityGiant theGiant;
+    protected EntityPlayer thePlayer;
+    protected final World worldObject;
+    protected double followDistance;
 
-    public EntityGiantAISeePlayer(EntityGiant parEntityGiant, double parMinPlayerDistance)
+    public EntityGiantAISeePlayer(EntityGiant parEntityGiant)
     {
         theGiant = parEntityGiant;
         worldObject = parEntityGiant.worldObj;
-        minPlayerDistance = parMinPlayerDistance;
         // setMutexBits(2);
+    	followDistance = theGiant.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue();
     }
 
     /**
@@ -44,13 +45,14 @@ public class EntityGiantAISeePlayer extends EntityAIBase
      */
     @Override
 	public boolean shouldExecute()
-    {
-        thePlayer = worldObject.getClosestPlayerToEntity(theGiant, minPlayerDistance);
+    {        
+
+        thePlayer = worldObject.getClosestPlayerToEntity(theGiant, followDistance);
         if (thePlayer == null || ((EntityPlayerMP)thePlayer).theItemInWorldManager.isCreative())
         {
-        	return false;
+          	return false;
         }
-        return thePlayer != null && theGiant.canEntityBeSeen(thePlayer) ? true : false;
+        return theGiant.canEntityBeSeen(thePlayer);
    }
 
     /**
@@ -59,11 +61,12 @@ public class EntityGiantAISeePlayer extends EntityAIBase
     @Override
 	public boolean continueExecuting()
     {
-        if (thePlayer == null || ((EntityPlayerMP)thePlayer).theItemInWorldManager.isCreative())
+        if (thePlayer == null || ((EntityPlayerMP)thePlayer).theItemInWorldManager.isCreative()
+        		|| thePlayer.isDead)
         {
         	return false;
         }
-        return !thePlayer.isEntityAlive() ? false : (theGiant.getDistanceSqToEntity(thePlayer) <= minPlayerDistance * minPlayerDistance);
+        return (theGiant.getDistanceSqToEntity(thePlayer) <= followDistance * followDistance);
     }
 
     /**

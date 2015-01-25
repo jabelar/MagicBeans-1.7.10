@@ -34,8 +34,7 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
  * @author jabelar
  *
  */
-public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
-{
+public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget {
     /** The entity that this task belongs to */
     protected EntityCreature taskOwner;
     /** If true, EntityAI targets must be able to be seen (cannot be blocked by walls) to be suitable targets. */
@@ -50,26 +49,22 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
     protected final IEntitySelector targetEntitySelector;
     protected EntityLivingBase targetEntity;
 
-	public EntityGiantAINearestAttackableTarget2(EntityCreature parCreature, Class parTargetClass)
-	{
+	public EntityGiantAINearestAttackableTarget2(EntityCreature parCreature, Class parTargetClass) {
 		this(parCreature, parTargetClass, (IEntitySelector)null);
 	}
 
-    public EntityGiantAINearestAttackableTarget2(EntityCreature parCreature, Class parTargetClass, final IEntitySelector parEntitySelector)
-    {
+    public EntityGiantAINearestAttackableTarget2(EntityCreature parCreature, Class parTargetClass, final IEntitySelector parEntitySelector) {
         super(parCreature, true, false);
         taskOwner = parCreature;
         targetClass = parTargetClass;
         theNearestAttackableTargetSorter = new EntityAINearestAttackableTarget.Sorter(parCreature);
         setMutexBits(1);
-        targetEntitySelector = new IEntitySelector()
-        {
+        targetEntitySelector = new IEntitySelector() {
             /**
              * Return whether the specified entity is applicable to this filter.
              */
             @Override
-			public boolean isEntityApplicable(Entity parEntity)
-            {
+			public boolean isEntityApplicable(Entity parEntity) {
                 return !(parEntity instanceof EntityLivingBase) ? false : (parEntitySelector != null && !parEntitySelector.isEntityApplicable(parEntity) ? false : EntityGiantAINearestAttackableTarget2.this.isSuitableTarget((EntityLivingBase)parEntity, false));
             }
         };
@@ -79,10 +74,8 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-	public boolean shouldExecute()
-    {    	
-    	if (!MagicBeans.configGiantIsHostile)
-		{
+	public boolean shouldExecute() {    	
+    	if (!MagicBeans.configGiantIsHostile) {
 			return false;
 		}
         double d0 = getTargetDistance();
@@ -90,15 +83,11 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
         List list = taskOwner.worldObj.selectEntitiesWithinAABB(targetClass, taskOwner.boundingBox.expand(d0, 4.0D, d0), targetEntitySelector);
         Collections.sort(list, theNearestAttackableTargetSorter);
 
-        if (list.isEmpty())
-        {
+        if (list.isEmpty()) {
             return false;
-        }
-        else
-        {
+        } else {
             targetEntity = (EntityLivingBase)list.get(0);
-            if (targetEntity instanceof EntityPlayer)
-            {
+            if (targetEntity instanceof EntityPlayer) {
             	return !((EntityPlayer)targetEntity).capabilities.isCreativeMode;
             }
             return true;
@@ -109,14 +98,12 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-	public void startExecuting()
-    {
+	public void startExecuting() {
     	// DEBUG
     	System.out.println("Start executing attack AI");
     	
         taskOwner.setAttackTarget(targetEntity);
-        if (taskOwner instanceof EntityGiant)
-        {
+        if (taskOwner instanceof EntityGiant) {
         	EntityGiant theGiant = (EntityGiant)taskOwner;
             theGiant.setIsAttacking(true);
         }
@@ -124,25 +111,38 @@ public class EntityGiantAINearestAttackableTarget2 extends EntityAITarget
     }
     
     @Override
-	public boolean continueExecuting()
-    {
-    	if (!MagicBeans.configGiantIsHostile)
-		{
+	public boolean continueExecuting() {
+    	if (!MagicBeans.configGiantIsHostile) {
 			return false;
 		}
     	
-    	boolean result = !targetEntity.isDead; // super.continueExecuting();
-    	if (!result)
-    	{
+    	if (targetEntity.isDead) { // dead
         	// DEBUG
         	System.out.println("Stop executing attack AI");
 
-        	if (taskOwner instanceof EntityGiant)
-            {
+        	if (taskOwner instanceof EntityGiant) {
             	EntityGiant theGiant = (EntityGiant)taskOwner;
                 theGiant.setIsAttacking(false);
             }
+        	return false;
+    	} else {
+        	if (taskOwner instanceof EntityGiant)
+            {
+            	EntityGiant theGiant = (EntityGiant)taskOwner;
+            	if (theGiant.ticksExisted%200 == 0) { // every 10 seconds
+        			if (theGiant.worldObj.rand.nextInt(10)<8) { // 80% chance
+        				if (!theGiant.isInWater()) {
+        					// DEBUG
+        					System.out.println("Giant jump attack!");
+        					// setJumping(true);
+        					theGiant.setSpecialAttackTimer(20);
+        					theGiant.setIsAttacking(false);
+        					return false;
+        				}
+        			}
+            	}
+            }
+    		return true;
     	}
-    	return result;
     }
 }

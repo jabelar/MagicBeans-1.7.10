@@ -46,8 +46,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAINearestAttackableTarget2;
-import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISpecialAttack;
+import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
 import com.blogspot.jabelarminecraft.magicbeans.explosions.GiantAttack;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
@@ -69,9 +68,9 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
     protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
     protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
-    protected EntityAIBase aiSpecialAttack = new EntityGiantAISpecialAttack(this);
-    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget2(this, EntityPlayer.class);
-//    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this, 16.0D);
+//    protected EntityAIBase aiSpecialAttack = new EntityGiantAISpecialAttack(this);
+//    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget2(this, EntityPlayer.class);
+   protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this);
 
     // fields related to being attacked
     protected Entity entityAttackedBy = null;
@@ -151,6 +150,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 //			motionZ = 0;
 //		}
 		
+		decrementSpecialAttackTimer();
+		
 		// create particles
 		if (worldObj.isRemote && rand.nextFloat()<0.1F)
 		{
@@ -208,8 +209,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         tasks.addTask(4, aiWander);
         tasks.addTask(5, aiWatchClosest);
         tasks.addTask(6, aiLookIdle);
-        targetTasks.addTask(0, aiSpecialAttack);
-        targetTasks.addTask(1, aiNearestAttackableTarget);
+        targetTasks.addTask(0, aiSeePlayer);
+//        targetTasks.addTask(1, aiNearestAttackableTarget);
 //        targetTasks.addTask(1, aiHurtByTarget);
 //        targetTasks.addTask(2, aiSeePlayer);
 	}
@@ -722,5 +723,17 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     public int getSpecialAttackTimer()
     {
         return syncDataCompound.getInteger("specialAttackTimer");
+    }
+    
+    public void decrementSpecialAttackTimer()
+    {
+    	int timer = getSpecialAttackTimer() - 1;
+    	if (timer < 0)
+    	{
+    		timer = 0;
+    	}
+    	
+    	setSpecialAttackTimer(timer);
+
     }
 }

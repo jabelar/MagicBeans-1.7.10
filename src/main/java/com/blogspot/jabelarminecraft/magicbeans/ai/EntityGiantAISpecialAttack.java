@@ -48,15 +48,17 @@ public class EntityGiantAISpecialAttack extends EntityAITarget
 		{
 			return false;
 		}
-    	
-    	if (taskOwner instanceof EntityGiant)
+    	else // giant is hostile
     	{
-    		return (((EntityGiant)taskOwner).getIsAttacking() && !taskOwner.isDead 
-    				&& !taskOwner.isInWater() && taskOwner.ticksExisted%200 == 0
-    				&& taskOwner.worldObj.rand.nextInt(10)<8);
-    	}
-    	
-    	return false;
+        	if (taskOwner instanceof EntityGiant) 
+        	{
+            	return (((EntityGiant)taskOwner).getSpecialAttackTimer() == 20); // timer just started
+        	}
+        	else // not a giant
+        	{
+        		return false;
+        	}
+    	}    	
     }
 
     /**
@@ -67,7 +69,7 @@ public class EntityGiantAISpecialAttack extends EntityAITarget
     {
     	// DEBUG
     	System.out.println("Start executing special attack AI");
-		((EntityGiant) taskOwner).setSpecialAttackTimer(20);;
+//		((EntityGiant) taskOwner).setSpecialAttackTimer(20);
     }
     
     @Override
@@ -77,19 +79,23 @@ public class EntityGiantAISpecialAttack extends EntityAITarget
 		{
 			return false;
 		}
-    	
-    	EntityGiant theGiant = (EntityGiant)taskOwner;
-    	
-    	// decrement counter
-    	theGiant.setSpecialAttackTimer(theGiant.getSpecialAttackTimer()-1);
-    	if (theGiant.getSpecialAttackTimer() <= 0)
+    	else // giant is hostile
     	{
-    		// DEBUG
-    		System.out.println("Stopping special attack AI");
-    		theGiant.getSpecialAttack().doGiantAttack(Math.round(MagicBeans.configGiantAttackDamage*3));
-    		return false;
-    	}
-    	
-    	return true;
+        	EntityGiant theGiant = (EntityGiant)taskOwner;
+        	
+        	// decrement counter
+//        	theGiant.setSpecialAttackTimer(theGiant.getSpecialAttackTimer()-1);
+        	if (theGiant.getSpecialAttackTimer() <= 0)
+        	{
+        		// DEBUG
+        		System.out.println("Stopping special attack AI");
+        		theGiant.getSpecialAttack().doGiantAttack(Math.round(MagicBeans.configGiantAttackDamage*3));
+        		return false;
+        	}
+        	else // timer still active
+        	{
+        		return true;
+        	}
+    	}    	
     }
 }
