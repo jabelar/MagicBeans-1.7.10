@@ -149,6 +149,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 //			motionX = 0;
 //			motionZ = 0;
 //		}
+
 		
 		// create particles
 		if (worldObj.isRemote && rand.nextFloat()<0.1F)
@@ -165,7 +166,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
      * Causes this entity to do an upwards motion (jumping).
      */
     @Override
-	protected void jump()
+	public void jump()
     {
         motionY = 0.41999998688697815D*1.5;
         isAirBorne = true;
@@ -672,8 +673,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 	{
 		// don't use setters because it might be too early to send sync packet
 		syncDataCompound.setFloat("scaleFactor", 2.25F);
-		syncDataCompound.setBoolean("isAttacking", false);
-		syncDataCompound.setInteger("specialAttackTimer", 20);
+		syncDataCompound.setInteger("specialAttackTimer", 0);
 	}
     
 	/* (non-Javadoc)
@@ -696,24 +696,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     {
         return syncDataCompound.getFloat("scaleFactor");
     }
-
-    public void setIsAttacking(boolean parIsAttacking)
-    {
-        syncDataCompound.setBoolean("isAttacking", parIsAttacking);
-       
-        // don't forget to sync client and server
-        sendEntitySyncPacket();
-    }
-
-    public boolean getIsAttacking()
-    {
-        return syncDataCompound.getBoolean("isAttacking");
-    }
     
     public void setSpecialAttackTimer(int parSpecialAttackTimer)
     {
         syncDataCompound.setInteger("specialAttackTimer", parSpecialAttackTimer);
        
+        // DEBUG
+        System.out.println("Setting special attack timer to "+parSpecialAttackTimer);
+        
         // don't forget to sync client and server
         sendEntitySyncPacket();
     }
@@ -725,6 +715,8 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     
     public void decrementSpecialAttackTimer()
     {
+    	// DEBUG
+    	System.out.println("Decrementing special attack timer");
     	int timer = getSpecialAttackTimer() - 1;
     	if (timer < 0)
     	{

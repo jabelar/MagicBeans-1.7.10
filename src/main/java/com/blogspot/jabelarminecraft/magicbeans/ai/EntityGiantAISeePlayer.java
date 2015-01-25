@@ -67,7 +67,7 @@ public class EntityGiantAISeePlayer extends EntityAIBase
         {
         	return false;
         }
-        return (theGiant.getDistanceSqToEntity(thePlayer) <= followDistance * followDistance);
+        return true; // (theGiant.getDistanceSqToEntity(thePlayer) <= followDistance * followDistance);
     }
 
     /**
@@ -89,6 +89,7 @@ public class EntityGiantAISeePlayer extends EntityAIBase
 	public void resetTask()
     {
         theGiant.setAttackTarget(null);
+        theGiant.setSpecialAttackTimer(0);
         thePlayer = null;
     }
 
@@ -98,11 +99,6 @@ public class EntityGiantAISeePlayer extends EntityAIBase
     @Override
 	public void updateTask()
     {
-    	if (theGiant.getSpecialAttackTimer() == 1)
-    	{
-    		theGiant.getSpecialAttack().doGiantAttack(MagicBeans.configGiantAttackDamage*3);
-    	}
-    	theGiant.decrementSpecialAttackTimer();
     	
     	if (theGiant.ticksExisted%200 == 0) 
     	{ // every 10 seconds
@@ -115,6 +111,18 @@ public class EntityGiantAISeePlayer extends EntityAIBase
 					theGiant.setSpecialAttackTimer(20);
 				}
 			}
+    	}
+		if (theGiant.getSpecialAttackTimer() == 20)
+		{
+			theGiant.jump();
+		}
+    	if (theGiant.getSpecialAttackTimer() == 1)
+    	{
+    		theGiant.getSpecialAttack().doGiantAttack(MagicBeans.configGiantAttackDamage*3);
+    	}
+    	if (theGiant.getSpecialAttackTimer() > 0)
+    	{
+    		theGiant.decrementSpecialAttackTimer();
     	}
 
         theGiant.getLookHelper().setLookPosition(thePlayer.posX, thePlayer.posY + thePlayer.getEyeHeight(), thePlayer.posZ, 10.0F, theGiant.getVerticalFaceSpeed());
