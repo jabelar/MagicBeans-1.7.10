@@ -191,8 +191,6 @@ public class ModelGiant extends ModelBiped
         
         if (parGiant.getSpecialAttackTimer() > 0)
         {
-        	// decrement special attack timer
-        	parGiant.setSpecialAttackTimer(parGiant.getSpecialAttackTimer()-1);
         	// DEBUG
         	System.out.println("Rendering during special attack with attack timer = "+parGiant.getSpecialAttackTimer());
         	bipedRightArm.rotateAngleZ = (float) (Math.PI/ 2);

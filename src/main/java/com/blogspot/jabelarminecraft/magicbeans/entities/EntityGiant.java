@@ -150,8 +150,6 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 //			motionZ = 0;
 //		}
 		
-		decrementSpecialAttackTimer();
-		
 		// create particles
 		if (worldObj.isRemote && rand.nextFloat()<0.1F)
 		{

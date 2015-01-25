@@ -97,6 +97,22 @@ public class EntityGiantAISeePlayer extends EntityAIBase
     @Override
 	public void updateTask()
     {
+    	theGiant.decrementSpecialAttackTimer();
+    	
+    	if (theGiant.ticksExisted%200 == 0) 
+    	{ // every 10 seconds
+			if (theGiant.worldObj.rand.nextInt(10)<8) 
+			{ // 80% chance
+				if (!theGiant.isInWater()) 
+				{
+					// DEBUG
+					System.out.println("Giant jump attack!");
+					// setJumping(true);
+					theGiant.setSpecialAttackTimer(20);
+				}
+			}
+    	}
+
         theGiant.getLookHelper().setLookPosition(thePlayer.posX, thePlayer.posY + thePlayer.getEyeHeight(), thePlayer.posZ, 10.0F, theGiant.getVerticalFaceSpeed());
     }
 
