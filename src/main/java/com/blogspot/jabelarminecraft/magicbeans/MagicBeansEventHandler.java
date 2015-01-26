@@ -20,7 +20,11 @@
 package com.blogspot.jabelarminecraft.magicbeans;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -64,7 +68,6 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingPackSizeEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.AllowDespawn;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.SpecialSpawn;
@@ -316,23 +319,38 @@ public class MagicBeansEventHandler
     }
 
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(LivingSpawnEvent event)
+    public void onEvent(ZombieEvent event)
     {
-    	if (event instanceof AllowDespawn)
-    	{
-    		return ;
-    	}
-    	if (event instanceof CheckSpawn)
-    	{
-    		return ;
-    	}
-
+        
+    }
+    
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(CheckSpawn event)
+    {  	
     	World world = event.world;
-    	if (!world.isRemote && (event.entity instanceof EntityCow) && !(event.entity instanceof EntityCowMagicBeans))
+    	if ((event.entityLiving instanceof EntityCow) && !(event.entityLiving instanceof EntityCowMagicBeans))
     	{
 	    	float chance = world.rand.nextFloat();
 	    	// DEBUG
-	    	System.out.println("spawn replacement rand = "+chance);
+	    	// System.out.println("cow spawn replacement rand = "+chance);
+	    	if (chance < MagicBeans.configChanceCowIsMagic)
+	    	{
+        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+        		entityToSpawn.setLocationAndAngles(event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, 
+                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+                    * 360.0F), 0.0F);
+        		world.spawnEntityInWorld(entityToSpawn);
+        		// DEBUG
+        		System.out.println("Replacing EntityCow with EntityCowMagicBeans");
+        		event.entityLiving.setDead();       
+        		event.setResult(Result.DENY);
+	    	}
+    	}
+    	if (event.entityLiving instanceof EntityPig)
+    	{
+	    	float chance = world.rand.nextFloat();
+	    	// DEBUG
+	    	// System.out.println("pig spawn replacement rand = "+chance);
 	    	if (chance < MagicBeans.configChanceCowIsMagic)
 	    	{
         		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
@@ -341,23 +359,65 @@ public class MagicBeansEventHandler
                     * 360.0F), 0.0F);
         		world.spawnEntityInWorld(entityToSpawn);
         		// DEBUG
-        		System.out.println("Replacing EntityCow with EntityCowMagicBeans");
-        		event.entity.setDead();       
+        		System.out.println("Replacing EntityPig with EntityCowMagicBeans");
+        		event.entityLiving.setDead();       
         		event.setResult(Result.DENY);
 	    	}
     	}
-     }
-
-    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(ZombieEvent event)
-    {
-        
-    }
-    
-    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
-    public void onEvent(CheckSpawn event)
-    {
-        
+    	if (event.entityLiving instanceof EntityChicken)
+    	{
+	    	float chance = world.rand.nextFloat();
+	    	// DEBUG
+	    	// System.out.println("Chicken spawn replacement rand = "+chance);
+	    	if (chance < MagicBeans.configChanceCowIsMagic)
+	    	{
+        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+                    * 360.0F), 0.0F);
+        		world.spawnEntityInWorld(entityToSpawn);
+        		// DEBUG
+        		System.out.println("Replacing EntityChicken with EntityCowMagicBeans");
+        		event.entityLiving.setDead();       
+        		event.setResult(Result.DENY);
+	    	}
+    	}
+    	if (event.entityLiving instanceof EntityHorse);
+    	{
+	    	float chance = world.rand.nextFloat();
+	    	// DEBUG
+	    	// System.out.println("Horse spawn replacement rand = "+chance);
+	    	if (chance < MagicBeans.configChanceCowIsMagic)
+	    	{
+        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+                    * 360.0F), 0.0F);
+        		world.spawnEntityInWorld(entityToSpawn);
+        		// DEBUG
+        		System.out.println("Replacing EntityHorse with EntityCowMagicBeans");
+        		event.entity.setDead();       
+        		event.setResult(Result.DENY);
+	    	}
+    	}        
+    	if (event.entityLiving instanceof EntitySheep);
+    	{
+	    	float chance = world.rand.nextFloat();
+	    	// DEBUG
+	    	// System.out.println("Sheep spawn replacement rand = "+chance);
+	    	if (chance < MagicBeans.configChanceCowIsMagic)
+	    	{
+        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+                    * 360.0F), 0.0F);
+        		world.spawnEntityInWorld(entityToSpawn);
+        		// DEBUG
+        		System.out.println("Replacing EntitySheep with EntityCowMagicBeans");
+        		event.entity.setDead();       
+        		event.setResult(Result.DENY);
+	    	}
+    	}        
     }
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

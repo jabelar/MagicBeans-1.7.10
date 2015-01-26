@@ -84,9 +84,6 @@ public class RenderGiant extends RenderLiving
 
         if (parEntityLivingBase.deathTime > 0)
         {
-        	// DEBUG
-        	System.out.println("RenderGiant rendering death animation with death time = "+parEntityLivingBase.deathTime);
-
             GL11.glRotatef(cycleDeathFall[parEntityLivingBase.deathTime], 0.0F, 0.0F, 1.0F);
         }
     }

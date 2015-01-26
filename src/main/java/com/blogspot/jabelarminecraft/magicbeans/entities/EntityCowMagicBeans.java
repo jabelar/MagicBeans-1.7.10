@@ -189,7 +189,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     	super.readEntityFromNBT(parCompound);
     	syncDataCompound = (NBTTagCompound) parCompound.getTag("syncDataCompound");
         // DEBUG
-        System.out.println("EntityCowMagicBeans readEntityFromNBT");
+        // System.out.println("EntityCowMagicBeans readEntityFromNBT");
     }
     
     @Override
@@ -198,7 +198,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     	super.writeEntityToNBT(parCompound);
     	parCompound.setTag("syncDataCompound", syncDataCompound);
         // DEBUG
-        System.out.println("EntityCowMagicBeans writeEntityToNBT");
+        // System.out.println("EntityCowMagicBeans writeEntityToNBT");
     }
     
 	/* (non-Javadoc)
