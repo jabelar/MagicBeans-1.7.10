@@ -57,6 +57,18 @@ public class EntityGiantAISeePlayer extends EntityAIBase
    }
 
     /**
+     * Execute a one shot task or start executing a continuous task
+     */
+    @Override
+	public void startExecuting()
+    {
+    	// target the player
+        theGiant.setAttackTarget(thePlayer);
+        // DEBUG
+        System.out.println("The Giant sees you!");
+    }
+
+    /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
@@ -67,19 +79,16 @@ public class EntityGiantAISeePlayer extends EntityAIBase
         {
         	return false;
         }
-        return true; // (theGiant.getDistanceSqToEntity(thePlayer) <= followDistance * followDistance);
-    }
-
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
-    @Override
-	public void startExecuting()
-    {
-    	// target the player
-        theGiant.setAttackTarget(thePlayer);
-        // DEBUG
-        System.out.println("The Giant sees you!");
+        
+        if (theGiant.canEntityBeSeen(thePlayer))
+        {
+        	return true;
+        }
+        else
+        {
+        	theGiant.setAttackTarget(null);
+        	return false;
+        }
     }
 
     /**
