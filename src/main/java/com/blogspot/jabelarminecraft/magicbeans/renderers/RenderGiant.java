@@ -23,6 +23,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
 
+import org.lwjgl.opengl.GL11;
+
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 
@@ -33,6 +35,9 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 public class RenderGiant extends RenderLiving
 {
     protected ResourceLocation giantTexture;
+    protected float[] cycleDeathFall = new float[] 
+    		{  0F , -2F , -5F , -10F , -15F, -12F, -10F, -5F , -2F ,  0F ,  2F ,  4F ,  6F,  8F, 
+    		  11F , 15F , 20F , 35F , 55F , 80F , 90F };
 
     public RenderGiant(ModelBase par1ModelBase, float parShadowSize)
     {
@@ -49,6 +54,7 @@ public class RenderGiant extends RenderLiving
     protected void preRenderCallbackGiant(EntityGiant entity, float f)
     {
     	BossStatus.setBossStatus(entity, true);
+    	
         // some people do some G11 transformations or blends here, like you can do
         // GL11.glScalef(2F, 2F, 2F); to scale up the entity
         // which is used for Slime entities.  I suggest having the entity cast to
@@ -70,5 +76,18 @@ public class RenderGiant extends RenderLiving
     protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
         return giantTexture;
+    }
+    @Override
+	protected void rotateCorpse(EntityLivingBase parEntityLivingBase, float parNotUsed, float p_77043_3_, float p_77043_4_)
+    {
+        GL11.glRotatef(180.0F - p_77043_3_, 0.0F, 1.0F, 0.0F);
+
+        if (parEntityLivingBase.deathTime > 0)
+        {
+        	// DEBUG
+        	System.out.println("RenderGiant rendering death animation with death time = "+parEntityLivingBase.deathTime);
+
+            GL11.glRotatef(cycleDeathFall[parEntityLivingBase.deathTime], 0.0F, 0.0F, 1.0F);
+        }
     }
  }

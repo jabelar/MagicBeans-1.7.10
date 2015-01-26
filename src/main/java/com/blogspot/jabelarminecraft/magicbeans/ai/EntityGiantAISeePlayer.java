@@ -88,6 +88,8 @@ public class EntityGiantAISeePlayer extends EntityAIBase
     @Override
 	public void resetTask()
     {
+    	// DEBUG
+    	System.out.println("Resetting task");
         theGiant.setAttackTarget(null);
         theGiant.setSpecialAttackTimer(0);
         thePlayer = null;

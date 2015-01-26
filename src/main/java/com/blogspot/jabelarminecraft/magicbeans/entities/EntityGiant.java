@@ -121,35 +121,10 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		super.onUpdate();
 		
 		// regen
-		if (ticksExisted%50 == 0)
+		if (ticksExisted%50 == 0 && this.isEntityAlive())
 		{
 			setHealth(getHealth()+1);
 		}
-				
-//		// occasionally jump attack during regular attacking
-//		if (getIsAttacking() && ticksExisted%200 == 0) // check every 10 seconds
-//		{
-//			if (rand.nextInt(10)<8) // 80% chance
-//			{
-//				if (!isInWater() && !isDead && MagicBeans.configGiantIsHostile)
-//				{
-//					// DEBUG
-//					System.out.println("Giant jump attack!");
-//					// setJumping(true);
-//					isJumping = true;
-//					setIsPerformingSpecialAttack(true);
-//				}
-//			}
-//		}
-		
-//		if (getIsPerformingSpecialAttack())
-//		{
-//			posX = prevPosX;
-//			posZ = prevPosZ;
-//			motionX = 0;
-//			motionZ = 0;
-//		}
-
 		
 		// create particles
 		if (worldObj.isRemote && rand.nextFloat()<0.1F)
@@ -159,6 +134,12 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 			double var8 = rand.nextGaussian() * 0.02D;
 			EntityFX particleMysterious = new EntityParticleFXMysterious(worldObj, posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
 			Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
+		}
+		
+		// falling on death can damage like special attack
+		if (deathTime == 19) // time this to point in RenderGiant death fall sequence when it hits the ground
+		{
+			getSpecialAttack().doGiantAttack(MagicBeans.configGiantAttackDamage*3);
 		}
 	}
 
@@ -209,9 +190,6 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
         tasks.addTask(5, aiWatchClosest);
         tasks.addTask(6, aiLookIdle);
         targetTasks.addTask(0, aiSeePlayer);
-//        targetTasks.addTask(1, aiNearestAttackableTarget);
-//        targetTasks.addTask(1, aiHurtByTarget);
-//        targetTasks.addTask(2, aiSeePlayer);
 	}
 
 	/* (non-Javadoc)
