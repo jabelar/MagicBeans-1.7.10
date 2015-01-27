@@ -76,7 +76,7 @@ public class MessageGiveItemLeadToServer implements IMessage
 	            thePlayer.inventory.addItemStackToInventory(new ItemStack(Items.lead, 1));
 	            MagicBeansWorldData.get(thePlayer.worldObj).setFamilyCowHasGivenLead(true);
         	}
-        	else if (! thePlayer.inventory.hasItem(Items.lead)) // full but doesn't already have a lead         		
+        	else if (!thePlayer.inventory.hasItem(Items.lead)) // full but doesn't already have a lead         		
         	{
     			thePlayer.addChatMessage(new ChatComponentText("Your inventory is full!  Interact again with the "
     					+MagicBeansUtilities.stringToRainbow("Family Cow")

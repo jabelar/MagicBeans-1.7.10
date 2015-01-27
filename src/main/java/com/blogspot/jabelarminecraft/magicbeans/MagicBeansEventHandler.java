@@ -19,15 +19,9 @@
 
 package com.blogspot.jabelarminecraft.magicbeans;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
@@ -110,10 +104,6 @@ import net.minecraftforge.fluids.FluidEvent.FluidMotionEvent;
 import net.minecraftforge.fluids.FluidEvent.FluidSpilledEvent;
 import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
-
-import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -327,97 +317,119 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(CheckSpawn event)
     {  	
-    	World world = event.world;
-    	if ((event.entityLiving instanceof EntityCow) && !(event.entityLiving instanceof EntityCowMagicBeans))
+//    	if (event.entityLiving instanceof EntityLiving)
+//    	{
+//    		System.out.println("EntityLiving spawning");
+//    	}
+//    	if (event.entityLiving instanceof EntityLivingBase)
+//    	{
+//    		System.out.println("EntityLivingBase spawning");
+//    	}
+//    	if (event.entityLiving instanceof EntityCreature)
+//    	{
+//    		System.out.println("EntityCreature spawning");
+//    	}
+    	if (event.entityLiving instanceof EntityAnimal)
     	{
-	    	float chance = world.rand.nextFloat();
-	    	// DEBUG
-	    	// System.out.println("cow spawn replacement rand = "+chance);
-	    	if (chance < MagicBeans.configChanceCowIsMagic)
-	    	{
-        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-        		entityToSpawn.setLocationAndAngles(event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, 
-                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-                    * 360.0F), 0.0F);
-        		world.spawnEntityInWorld(entityToSpawn);
-        		// DEBUG
-        		System.out.println("Replacing EntityCow with EntityCowMagicBeans");
-        		event.entityLiving.setDead();       
-        		event.setResult(Result.DENY);
-	    	}
+    		System.out.println("EntityAnimal spawning");
     	}
-    	if (event.entityLiving instanceof EntityPig)
+    	if (event.entityLiving instanceof EntitySheep)
     	{
-	    	float chance = world.rand.nextFloat();
-	    	// DEBUG
-	    	// System.out.println("pig spawn replacement rand = "+chance);
-	    	if (chance < MagicBeans.configChanceCowIsMagic)
-	    	{
-        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
-                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-                    * 360.0F), 0.0F);
-        		world.spawnEntityInWorld(entityToSpawn);
-        		// DEBUG
-        		System.out.println("Replacing EntityPig with EntityCowMagicBeans");
-        		event.entityLiving.setDead();       
-        		event.setResult(Result.DENY);
-	    	}
+    		System.out.println("EntitySheep spawning");
     	}
-    	if (event.entityLiving instanceof EntityChicken)
-    	{
-	    	float chance = world.rand.nextFloat();
-	    	// DEBUG
-	    	// System.out.println("Chicken spawn replacement rand = "+chance);
-	    	if (chance < MagicBeans.configChanceCowIsMagic)
-	    	{
-        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
-                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-                    * 360.0F), 0.0F);
-        		world.spawnEntityInWorld(entityToSpawn);
-        		// DEBUG
-        		System.out.println("Replacing EntityChicken with EntityCowMagicBeans");
-        		event.entityLiving.setDead();       
-        		event.setResult(Result.DENY);
-	    	}
-    	}
-    	if (event.entityLiving instanceof EntityHorse);
-    	{
-	    	float chance = world.rand.nextFloat();
-	    	// DEBUG
-	    	// System.out.println("Horse spawn replacement rand = "+chance);
-	    	if (chance < MagicBeans.configChanceCowIsMagic)
-	    	{
-        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
-                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-                    * 360.0F), 0.0F);
-        		world.spawnEntityInWorld(entityToSpawn);
-        		// DEBUG
-        		System.out.println("Replacing EntityHorse with EntityCowMagicBeans");
-        		event.entity.setDead();       
-        		event.setResult(Result.DENY);
-	    	}
-    	}        
-    	if (event.entityLiving instanceof EntitySheep);
-    	{
-	    	float chance = world.rand.nextFloat();
-	    	// DEBUG
-	    	// System.out.println("Sheep spawn replacement rand = "+chance);
-	    	if (chance < MagicBeans.configChanceCowIsMagic)
-	    	{
-        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
-                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-                    * 360.0F), 0.0F);
-        		world.spawnEntityInWorld(entityToSpawn);
-        		// DEBUG
-        		System.out.println("Replacing EntitySheep with EntityCowMagicBeans");
-        		event.entity.setDead();       
-        		event.setResult(Result.DENY);
-	    	}
-    	}        
+
+
+//    	World world = event.world;
+//    	if ((event.entityLiving instanceof EntityCow) && !(event.entityLiving instanceof EntityCowMagicBeans))
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	System.out.println("cow spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.x, event.y, event.z, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntityCow with EntityCowMagicBeans");
+//        		event.entityLiving.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}
+//    	if (event.entityLiving instanceof EntityPig)
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	System.out.println("pig spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntityPig with EntityCowMagicBeans");
+//        		event.entityLiving.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}
+//    	if (event.entityLiving instanceof EntityChicken)
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	System.out.println("Chicken spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntityChicken with EntityCowMagicBeans");
+//        		event.entityLiving.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}
+//    	if (event.entityLiving instanceof EntityHorse)
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	System.out.println("Horse spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntityHorse with EntityCowMagicBeans");
+//        		event.entity.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}        
+//    	if (event.entityLiving instanceof EntitySheep)
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	System.out.println("Sheep spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntitySheep with EntityCowMagicBeans");
+//        		event.entity.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}  
     }
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
