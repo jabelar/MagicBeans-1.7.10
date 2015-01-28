@@ -181,22 +181,34 @@ public class MagicBeansFMLEventHandler
 		{
 	    	if (!world.isRemote)
 	    	{
-    	    	if (world.rand.nextInt(20 * 20) < 1) 
-    	    	{
-    	    		
-    	    		// find spot ahead that is valid spawn location
-    	    		Vec3 playerLookVector = thePlayer.getLookVec();
-    	            double spawnX = thePlayer.posX+20*playerLookVector.xCoord;
-    	            double spawnZ = thePlayer.posZ+20*playerLookVector.zCoord;
-    	            double spawnY = world.getHeightValue((int)spawnX, (int)spawnZ);
+	    	    int blockX = MathHelper.floor_double(thePlayer.posX);
+	    	    int blockY = MathHelper.floor_double(thePlayer.posY - thePlayer.yOffset);
+	    	    int blockZ = MathHelper.floor_double(thePlayer.posZ);
 
-    	    		thePlayer.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("You see your family cow up ahead!")));
-	        
-    	    		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-	        		entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
-	                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-	                    * 360.0F), 0.0F);
-	        		world.spawnEntityInWorld(entityToSpawn);
+	    	    // check that player is in open space
+	    		if (world.canBlockSeeTheSky(blockX, blockY, blockZ))
+	    		{
+	    			if (world.rand.nextInt(20 * 180) < 1) 
+	    			{
+    	    		
+	    	    		// find spot ahead that is valid spawn location
+	    	    		Vec3 playerLookVector = thePlayer.getLookVec();
+	    	            double spawnX = thePlayer.posX+10*playerLookVector.xCoord;
+	    	            double spawnZ = thePlayer.posZ+10*playerLookVector.zCoord;
+	    	            double spawnY = world.getHeightValue((int)spawnX, (int)spawnZ);
+	    	            
+	    	            // check that cow spawn position is in open space
+	    	            if (world.canBlockSeeTheSky(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ)))
+	    	            {
+		    	    		thePlayer.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("There is one of your family cows up ahead!")));
+			        
+		    	    		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+			        		entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
+			                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+			                    * 360.0F), 0.0F);
+			        		world.spawnEntityInWorld(entityToSpawn);
+	    	            }
+	    			}
      	    	}
 	    	}
 		}
