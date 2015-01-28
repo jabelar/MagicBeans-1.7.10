@@ -19,9 +19,15 @@
 
 package com.blogspot.jabelarminecraft.magicbeans;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
+
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent.PostConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -165,6 +171,21 @@ public class MagicBeansFMLEventHandler
 			MagicBeans.haveWarnedVersionOutOfDate = true;
 		}
 		
+    	World world = event.player.worldObj;
+		if (!MagicBeansWorldData.get(world).getHasCastleSpwaned())
+		{
+	    	if (!world.isRemote)
+	    	{
+    	    	if (world.rand.nextInt(1000) < 1) 
+    	    	{
+	        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+	        		entityToSpawn.setLocationAndAngles(event.player.posX, event.player.posY, event.player.posZ, 
+	                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+	                    * 360.0F), 0.0F);
+	        		world.spawnEntityInWorld(entityToSpawn);
+     	    	}
+	    	}
+		}
 	}
 
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
