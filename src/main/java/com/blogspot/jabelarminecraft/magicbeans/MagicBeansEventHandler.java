@@ -19,9 +19,10 @@
 
 package com.blogspot.jabelarminecraft.magicbeans;
 
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
@@ -184,6 +185,101 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(EntityJoinWorldEvent event)
     {
+    	World world = event.world;
+    	if (world.isRemote)
+    	{
+    		return;
+    	}
+//    	if ((event.entity instanceof EntityCow) && !(event.entity instanceof EntityCowMagicBeans))
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	System.out.println("cow spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntityCow with EntityCowMagicBeans");
+//        		event.entity.setDead();       
+//        		// event.setResult(Result.DENY);
+//	    	}
+//    	}
+//    	if (event.entity instanceof EntityPig)
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	// System.out.println("pig spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntityPig with EntityCowMagicBeans");
+//        		event.entity.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}
+//    	if (event.entity instanceof EntityChicken)
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	// System.out.println("Chicken spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntityChicken with EntityCowMagicBeans");
+//        		event.entity.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}
+//    	if (event.entity instanceof EntityHorse)
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	// System.out.println("Horse spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntityHorse with EntityCowMagicBeans");
+//        		event.entity.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}        
+//    	if (event.entity instanceof EntitySheep)
+//    	{
+//	    	float chance = world.rand.nextFloat();
+//	    	// DEBUG
+//	    	// System.out.println("Sheep spawn replacement rand = "+chance);
+//	    	if (chance < MagicBeans.configChanceCowIsMagic)
+//	    	{
+//        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+//        		entityToSpawn.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 
+//                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+//                    * 360.0F), 0.0F);
+//        		world.spawnEntityInWorld(entityToSpawn);
+//        		// DEBUG
+//        		System.out.println("Replacing EntitySheep with EntityCowMagicBeans");
+//        		event.entity.setDead();       
+//        		event.setResult(Result.DENY);
+//	    	}
+//    	}  
 
     }
     
@@ -317,25 +413,22 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(CheckSpawn event)
     {  	
-//    	if (event.entityLiving instanceof EntityLiving)
-//    	{
-//    		System.out.println("EntityLiving spawning");
-//    	}
-//    	if (event.entityLiving instanceof EntityLivingBase)
-//    	{
-//    		System.out.println("EntityLivingBase spawning");
-//    	}
-//    	if (event.entityLiving instanceof EntityCreature)
-//    	{
-//    		System.out.println("EntityCreature spawning");
-//    	}
-    	if (event.entityLiving instanceof EntityAnimal)
+    	String name = event.entityLiving.getClass().getSimpleName();
+    	if (name.equals("EntityCow"))
     	{
-    		System.out.println("EntityAnimal spawning");
+    		System.out.println("Check spawn event for "+event.entityLiving.getClass().getSimpleName());
     	}
-    	if (event.entityLiving instanceof EntitySheep)
+    	if (event.entityLiving instanceof EntityCow)
     	{
-    		System.out.println("EntitySheep spawning");
+    		System.out.println("EntityCow spawning");
+    	}
+    	if (name.equals("EntityZombie"))
+    	{
+    		System.out.println("Check spawn event for "+event.entityLiving.getClass().getSimpleName());
+    	}
+    	if (event.entityLiving instanceof EntityZombie)
+    	{
+    		System.out.println("EntityZombie spawning");
     	}
 
 
