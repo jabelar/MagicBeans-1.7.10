@@ -20,13 +20,16 @@
 package com.blogspot.jabelarminecraft.magicbeans;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent.PostConfigChangedEvent;
@@ -161,25 +164,36 @@ public class MagicBeansFMLEventHandler
 	public void onEvent(PlayerTickEvent event)
 	{
 		
-		if (!MagicBeans.haveWarnedVersionOutOfDate && event.player.worldObj.isRemote && !MagicBeans.versionChecker.isLatestVersion())
+		EntityPlayer thePlayer = event.player;
+		World world = thePlayer.worldObj;
+		
+		if (!MagicBeans.haveWarnedVersionOutOfDate && world.isRemote && !MagicBeans.versionChecker.isLatestVersion())
 		{
 			ClickEvent versionCheckChatClickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, "http://jabelarminecraft.blogspot.com");
 			ChatStyle clickableChatStyle = new ChatStyle().setChatClickEvent(versionCheckChatClickEvent);
 			ChatComponentText versionWarningChatComponent = new ChatComponentText("Your Magic Beans Mod is not latest version!  Click here to update.");
 			versionWarningChatComponent.setChatStyle(clickableChatStyle);
-			event.player.addChatMessage(versionWarningChatComponent);
+			thePlayer.addChatMessage(versionWarningChatComponent);
 			MagicBeans.haveWarnedVersionOutOfDate = true;
 		}
 		
-    	World world = event.player.worldObj;
 		if (!MagicBeansWorldData.get(world).getHasCastleSpwaned())
 		{
 	    	if (!world.isRemote)
 	    	{
-    	    	if (world.rand.nextInt(1000) < 1) 
+    	    	if (world.rand.nextInt(20 * 20) < 1) 
     	    	{
-	        		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-	        		entityToSpawn.setLocationAndAngles(event.player.posX, event.player.posY, event.player.posZ, 
+    	    		
+    	    		// find spot ahead that is valid spawn location
+    	    		Vec3 playerLookVector = thePlayer.getLookVec();
+    	            double spawnX = thePlayer.posX+5*playerLookVector.xCoord;
+    	            double spawnZ = thePlayer.posZ+5*playerLookVector.zCoord;
+    	            double spawnY = world.getHeightValue((int)spawnX, (int)spawnZ);
+
+    	    		thePlayer.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("You see your family cow up ahead!")));
+	        
+    	    		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
+	        		entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
 	                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
 	                    * 360.0F), 0.0F);
 	        		world.spawnEntityInWorld(entityToSpawn);
