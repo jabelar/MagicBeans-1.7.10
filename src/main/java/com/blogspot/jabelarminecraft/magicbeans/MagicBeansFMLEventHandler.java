@@ -186,8 +186,8 @@ public class MagicBeansFMLEventHandler
     	    		
     	    		// find spot ahead that is valid spawn location
     	    		Vec3 playerLookVector = thePlayer.getLookVec();
-    	            double spawnX = thePlayer.posX+5*playerLookVector.xCoord;
-    	            double spawnZ = thePlayer.posZ+5*playerLookVector.zCoord;
+    	            double spawnX = thePlayer.posX+20*playerLookVector.xCoord;
+    	            double spawnZ = thePlayer.posZ+20*playerLookVector.zCoord;
     	            double spawnY = world.getHeightValue((int)spawnX, (int)spawnZ);
 
     	    		thePlayer.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("You see your family cow up ahead!")));
