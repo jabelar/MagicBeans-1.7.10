@@ -119,8 +119,9 @@ public class MagicBeansUtilities
 	    for(Object o: world.getLoadedEntityList())                
 	    {                        
 	        if(((Entity)o).getEntityId() == entityID)                        
-	        {                                
-	            System.out.println("Found the entity");                                
+	        {   
+	        	// DEBUG
+	            // System.out.println("Found the entity");                                
 	            return ((Entity)o);                        
 	        }                
 	    }                

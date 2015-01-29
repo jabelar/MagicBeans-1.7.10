@@ -31,6 +31,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiFamilyCow;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
@@ -80,14 +81,19 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		                double spawnX = playerLeashedTo.posX+5*playerLookVector.xCoord;
 		                double spawnZ = playerLeashedTo.posZ+5*playerLookVector.zCoord;
 		                double spawnY = worldObj.getHeightValue((int)spawnX, (int)spawnZ);
-		                entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
-		                      MathHelper.wrapAngleTo180_float(rand.nextFloat()
-		                      * 360.0F), 0.0F);
-		                worldObj.spawnEntityInWorld(entityToSpawn);
-		                entityToSpawn.playLivingSound();
-		                ((EntityMysteriousStranger)entityToSpawn).setCowSummonedBy(this);
-		                ((EntityMysteriousStranger)entityToSpawn).setPlayerSummonedBy(playerLeashedTo);
-		                setHasSpawnedMysteriousStranger(true);
+		                
+		                // check to ensure there is open area for stranger to spawn, not underground
+		                if (worldObj.canBlockSeeTheSky(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ)))
+		                {
+		                	entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
+			                      MathHelper.wrapAngleTo180_float(rand.nextFloat()
+			                      * 360.0F), 0.0F);
+			                worldObj.spawnEntityInWorld(entityToSpawn);
+			                entityToSpawn.playLivingSound();
+			                ((EntityMysteriousStranger)entityToSpawn).setCowSummonedBy(this);
+			                ((EntityMysteriousStranger)entityToSpawn).setPlayerSummonedBy(playerLeashedTo);
+			                setHasSpawnedMysteriousStranger(true);
+		                }
 		            }
 		            else
 		            {
@@ -136,16 +142,24 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     @Override
 	public boolean interact(EntityPlayer parPlayer)
     {
-    	// Family cow doesn't provide milk (that's why your mother wants you to sell it)
-    	// don't open gui if holding items, e.g. wheat that should incite mating instead
-    	// also don't open gui if already gone through gui to get a lead
-    	if (parPlayer.getCurrentEquippedItem() == null || parPlayer.getCurrentEquippedItem().getItem() == Items.bucket)
+    	// check if have already spawned castle
+    	if (!MagicBeansWorldData.get(worldObj).getHasCastleSpwaned())
     	{
-			collideWithNearbyEntities();
-			if (parPlayer.worldObj.isRemote)
-			{
-				Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow());
-			}
+	    	// Family cow doesn't provide milk (that's why your mother wants you to sell it)
+	    	// don't open gui if holding items, e.g. wheat that should incite mating instead
+	    	// also don't open gui if already gone through gui to get a lead
+	    	if (parPlayer.getCurrentEquippedItem() == null || parPlayer.getCurrentEquippedItem().getItem() == Items.bucket)
+	    	{
+				collideWithNearbyEntities();
+				if (parPlayer.worldObj.isRemote)
+				{
+					Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow());
+				}
+	    	}
+	    	else // act like normal cow
+	    	{
+	    		super.interact(parPlayer);
+	    	}
     	}
     	else // act like normal cow
     	{

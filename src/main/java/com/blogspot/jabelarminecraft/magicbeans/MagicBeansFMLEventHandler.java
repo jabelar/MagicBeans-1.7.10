@@ -215,11 +215,6 @@ public class MagicBeansFMLEventHandler
 				                    * 360.0F), 0.0F);
 				        		world.spawnEntityInWorld(entityToSpawn);
 		    	            }
-	    	            	else
-	    	            	{
-	    	            		// DEBUG
-	    	            		System.out.println("Already a family cow in the area");
-	    	            	}
 	    	            }
 	    			}
      	    	}
