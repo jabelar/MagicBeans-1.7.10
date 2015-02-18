@@ -18,6 +18,7 @@ package com.blogspot.jabelarminecraft.magicbeans.structures;
 
 import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
@@ -134,6 +135,7 @@ public class StructureCastleTalia extends Structure
 	            entityToSpawn.setLocationAndAngles(startX+12, startY+10, startZ+22, 
 	                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
 	                  * 360.0F), 0.0F);
+	            ((EntityAgeable)entityToSpawn).setGrowingAge(0);
 	            theWorld.spawnEntityInWorld(entityToSpawn);
 	            entityToSpawn.playLivingSound();
 	        }
