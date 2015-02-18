@@ -60,6 +60,8 @@ public class MagicBeansFMLEventHandler
 	 * Game input events
 	 */
 
+	private final boolean haveOutputWorldDataDebugMessages = false;
+
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(InputEvent event)
 	{
@@ -170,48 +172,6 @@ public class MagicBeansFMLEventHandler
 			MagicBeans.haveWarnedVersionOutOfDate = true;
 		}
 		
-//		if (!MagicBeansWorldData.get(world).getHasCastleSpwaned())
-//		{
-//	    	if (!world.isRemote)
-//	    	{
-//	    	    int blockX = MathHelper.floor_double(thePlayer.posX);
-//	    	    int blockY = MathHelper.floor_double(thePlayer.posY - thePlayer.yOffset);
-//	    	    int blockZ = MathHelper.floor_double(thePlayer.posZ);
-//
-//	    	    // check that player is in open space
-//	    		if (world.canBlockSeeTheSky(blockX, blockY, blockZ))
-//	    		{
-//	    			if (world.rand.nextInt(20 * 20) < 1) 
-//	    			{
-//    	    		
-//	    	    		// find spot ahead that is valid spawn location
-//	    	    		Vec3 playerLookVector = thePlayer.getLookVec();
-//	    	            double spawnX = thePlayer.posX+10*playerLookVector.xCoord;
-//	    	            double spawnZ = thePlayer.posZ+10*playerLookVector.zCoord;
-//	    	            double spawnY = world.getHeightValue((int)spawnX, (int)spawnZ);
-//	    	            
-//	    	            // check that cow spawn position is in open space
-//	    	            if (world.canBlockSeeTheSky(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ)))
-//	    	            {
-//	    	            	
-//	    	            	// check for other family cows already in area
-//	    	            	if (world.getEntitiesWithinAABB(EntityCowMagicBeans.class, 
-//	    	            			AxisAlignedBB.getBoundingBox(spawnX-20.0D, spawnY-20.0D, spawnZ-20.0D, spawnX+20.0D, spawnY+20.0D, spawnZ+20.0D))
-//	    	            			.size() == 0)
-//		    	            {
-//			    	    		thePlayer.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("There is one of your family cows up ahead!")));
-//				        
-//			    	    		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-//				        		entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
-//				                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-//				                    * 360.0F), 0.0F);
-//				        		world.spawnEntityInWorld(entityToSpawn);
-//		    	            }
-//	    	            }
-//	    			}
-//     	    	}
-//	    	}
-//		}
 	}
 
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
