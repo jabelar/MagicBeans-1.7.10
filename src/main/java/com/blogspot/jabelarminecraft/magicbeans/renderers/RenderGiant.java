@@ -77,6 +77,7 @@ public class RenderGiant extends RenderLiving
     {
         return giantTexture;
     }
+    
     @Override
 	protected void rotateCorpse(EntityLivingBase parEntityLivingBase, float parNotUsed, float p_77043_3_, float p_77043_4_)
     {

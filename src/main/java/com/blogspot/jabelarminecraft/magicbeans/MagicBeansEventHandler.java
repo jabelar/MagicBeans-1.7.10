@@ -516,30 +516,30 @@ public class MagicBeansEventHandler
 		}
 		
     	// DEBUG
-    	System.out.println("Player interact event on server side");
+    	// System.out.println("Player interact event on server side");
     	
     	Entity theEntity = event.target;
 
         if (theEntity instanceof EntityCow && !(theEntity instanceof EntityCowMagicBeans))
         {
         	// DEBUG
-        	System.out.println("Interacting with cow");
+        	// System.out.println("Interacting with cow");
         	ItemStack theItemStack = event.entityPlayer.getCurrentEquippedItem();
         	if (theItemStack != null)
         	{
 	        	if (theItemStack.getItem()==Items.golden_carrot)
 	        	{
 	        		// DEBUG
-	        		System.out.println("While holding a golden carrot");
+	        		// System.out.println("While holding a golden carrot");
 	        		if (!MagicBeansWorldData.get(world).getHasCastleSpwaned())
 	        		{
 	        			// DEBUG
-	        			System.out.println("Haven't spawned castle yet so okay to make a family cow");
+	        			// System.out.println("Haven't spawned castle yet so okay to make a family cow");
 	        			
 	        	    	if (!world.isRemote)
 	        	    	{
 	        	    		// DEBUG
-	        	    		System.out.println("On server so converting to family cow");
+	        	    		// System.out.println("On server so converting to family cow");
 	        	    		
 	        	    		EntityPlayer thePlayer = event.entityPlayer;
 	        	    		

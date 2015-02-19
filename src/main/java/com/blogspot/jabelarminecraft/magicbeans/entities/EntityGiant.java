@@ -583,6 +583,9 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     @Override
 	public Item getDropItem()
     {
+    	// DEBUG
+    	System.out.println("Giant getDropItem() called");
+    	
     	ItemArmor itemToDrop = MagicBeans.bootsOfSafeFalling;
 		return itemToDrop;    	
     }
@@ -590,6 +593,9 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     @Override
 	protected void dropFewItems(boolean parRecentlyHitByPlayer, int parlootingLevel)
     {
+    	// DEBUG
+    	System.out.println("Dropping Giant loot");
+    	
     	dropItem(MagicBeans.bootsOfSafeFalling, 1);
     	// dropItem(MagicBeans.leggingsOfSafeFalling, 1);
     	// dropItem(MagicBeans.chestplateOfSafeFalling, 1);
@@ -600,6 +606,14 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 	public float getEyeHeight()
     {
         return height * 0.85F * getScaleFactor();
+    }
+    
+    @Override
+    public void setDead()
+    {
+    	// DEBUG
+    	System.out.println("Giant has died");
+    	super.setDead();
     }
     
     public GiantAttack getSpecialAttack()
