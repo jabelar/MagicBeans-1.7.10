@@ -346,7 +346,7 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(LivingAttackEvent event)
     {
-    
+
     }
 
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

@@ -605,7 +605,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     @Override
 	public float getEyeHeight()
     {
-        return height * 0.85F * getScaleFactor();
+        return height * 0.85F ;
     }
     
     @Override
