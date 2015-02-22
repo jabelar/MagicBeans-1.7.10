@@ -20,6 +20,7 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -116,17 +117,13 @@ public class GiantAttack
                     theEntity.motionX += knockbackFactorX / 2;
                     theEntity.motionY += knockbackFactorY / 2;
                     theEntity.motionZ += knockbackFactorZ / 2;
-                    if (!(theEntity instanceof EntityGoldenGoose)) // don't damage golden goose
+                    if (!(theEntity instanceof EntityGoldenGoose) && !(theEntity instanceof EntityItem)) // don't damage golden goose or items
                     {
 	                    double fadeOverDistance = (1.0D - rangeFactor) * protectionFromBlocks;
 	                    theEntity.attackEntityFrom(DamageSource.causeMobDamage(theGiant), ((int)(1.0D + parMaxDamage * fadeOverDistance)));
 	                	// DEBUG
 	                	System.out.println("Hit entity with damage = "+((int)(1.0D + parMaxDamage * fadeOverDistance)));
                     }
-//                    if (theEntity instanceof EntityPlayer)
-//                    {
-//                        field_77288_k.put(theEntity, Vec3.createVectorHelper(knockbackFactorX * fadeOverDistance, knockbackFactorY * fadeOverDistance, knockbackFactorZ * fadeOverDistance));
-//                    }
                 }
             }
         }

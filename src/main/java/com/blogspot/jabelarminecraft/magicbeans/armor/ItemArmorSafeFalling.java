@@ -17,6 +17,7 @@
 package com.blogspot.jabelarminecraft.magicbeans.armor;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -40,6 +41,10 @@ public class ItemArmorSafeFalling extends ItemArmor
 	public ItemArmorSafeFalling(String parUnlocalizedName, ArmorMaterial parMaterial, String parTextureName, int parArmorType) 
 	{
 	    super(parMaterial, 0, parArmorType);
+	    
+	    // DEBUG
+	    // System.out.println("Constructor for ItemArmorSafeFalling");
+	    
 	    textureName = parTextureName;
 	    setUnlocalizedName(parUnlocalizedName);
 	    setTextureName(MagicBeans.MODID + ":" + parUnlocalizedName);
@@ -50,6 +55,14 @@ public class ItemArmorSafeFalling extends ItemArmor
     public boolean hasEffect(ItemStack parItemStack)
     {
         return true;
+    }
+    
+    @Override
+    public boolean onEntityItemUpdate(EntityItem parEntityItem)
+    {
+    	// DEBUG
+    	// System.out.println("There is boots of safe falling entity item at "+parEntityItem.posX+", "+parEntityItem.posY+", "+parEntityItem.posZ);
+		return false; // false to allow other EntityItem update code to be processed    	
     }
 
     /**
