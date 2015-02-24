@@ -79,7 +79,7 @@ public class CommandStructureCapture implements ICommand
 	@Override
 	public String getCommandUsage(ICommandSender var1) 
 	{
-		return "capture <int> <int> <int> <int> <int> <int>"; // use "structure <text>"; later when passing name of structure
+		return "capture <int> <int> <int> <int> <int> <int> <text>"; // use "structure <text>"; later when passing name of structure
 	}
 
 	@Override

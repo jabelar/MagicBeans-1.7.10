@@ -45,7 +45,7 @@ public class StructureCastleTalia extends Structure
 
 	public StructureCastleTalia()
 	{
-		super("taliaCastle");
+		super("taliaCastle2");
 	}
 	
 	@Override
