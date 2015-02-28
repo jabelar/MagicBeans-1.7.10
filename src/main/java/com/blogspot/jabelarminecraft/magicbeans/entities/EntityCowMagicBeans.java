@@ -65,8 +65,6 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     		// chance mysterious stranger will appear
     		if (!getHasSpawnedMysteriousStranger() && (rand.nextFloat() < (1.0F / (30 * 20))))
     		{
-        		// DEBUG
-        		System.out.println("A mysterious stranger appears");
         		Entity entityLeashedTo = getLeashedToEntity();
         		if (entityLeashedTo instanceof EntityPlayer)
         		{
@@ -93,6 +91,8 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 			                ((EntityMysteriousStranger)entityToSpawn).setCowSummonedBy(this);
 			                ((EntityMysteriousStranger)entityToSpawn).setPlayerSummonedBy(playerLeashedTo);
 			                setHasSpawnedMysteriousStranger(true);
+			        		// DEBUG
+			        		System.out.println("A mysterious stranger appears with Entity ID = "+entityToSpawn.getEntityId());
 		                }
 		            }
 		            else
