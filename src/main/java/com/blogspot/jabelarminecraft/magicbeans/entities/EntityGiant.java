@@ -68,9 +68,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     protected EntityAIBase aiWatchClosest = new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F);
     protected EntityAIBase aiLookIdle = new EntityAILookIdle(this);
     protected EntityAIBase aiHurtByTarget = new EntityAIHurtByTarget(this, true);
-//    protected EntityAIBase aiSpecialAttack = new EntityGiantAISpecialAttack(this);
-//    protected EntityAIBase aiNearestAttackableTarget = new EntityGiantAINearestAttackableTarget2(this, EntityPlayer.class);
-   protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this);
+    protected EntityAIBase aiSeePlayer = new EntityGiantAISeePlayer(this);
 
     // fields related to being attacked
     protected Entity entityAttackedBy = null;
