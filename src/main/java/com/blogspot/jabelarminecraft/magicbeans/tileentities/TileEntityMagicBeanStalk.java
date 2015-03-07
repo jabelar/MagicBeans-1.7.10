@@ -72,8 +72,8 @@ public class TileEntityMagicBeanStalk extends TileEntity
  			}
 			else // fully grown
 			{
-				MagicBeans.structureCastleTalia.shouldGenerate = true;
-				MagicBeans.structureCastleTalia.generateTick(this, 5, -2, 5);
+				MagicBeans.structureCastle.shouldGenerate = true;
+				MagicBeans.structureCastle.generateTick(this, 5, -2, 5);
 				// MagicBeansWorldData.get(worldObj).setHasCastleSpawned(MagicBeans.structureCastleTalia.finishedPopulatingEntities);
 			}
 		}

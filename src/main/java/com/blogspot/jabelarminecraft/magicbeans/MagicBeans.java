@@ -39,7 +39,7 @@ import com.blogspot.jabelarminecraft.magicbeans.items.ItemGoldenGooseMeat;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.materials.MaterialCloud;
 import com.blogspot.jabelarminecraft.magicbeans.proxy.CommonProxy;
-import com.blogspot.jabelarminecraft.magicbeans.structures.StructureCastleTalia;
+import com.blogspot.jabelarminecraft.magicbeans.structures.StructureCastleJaden;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -118,7 +118,7 @@ public class MagicBeans
     
     // instantiate structures
     // important to do this after blocks in case structure uses custom block
-    public final static StructureCastleTalia structureCastleTalia = new StructureCastleTalia();
+    public final static StructureCastleJaden structureCastle = new StructureCastleJaden();
     
     // instantiate the mod
     @Instance(MODID)
