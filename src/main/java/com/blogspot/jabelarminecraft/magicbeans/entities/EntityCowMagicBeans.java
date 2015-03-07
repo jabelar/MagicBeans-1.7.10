@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -134,6 +135,16 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
                 dropItem(Items.beef, 1);
             }
         }
+    }
+    
+    /**
+     * Returns true if the mob is currently able to mate with the specified mob.
+     */
+    @Override
+	public boolean canMateWith(EntityAnimal parAnimal)
+    {
+    	// want to allow mating with regular cows as well as itself
+    	return (parAnimal instanceof EntityCow && isInLove() && parAnimal.isInLove());
     }
 
     /**
