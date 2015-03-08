@@ -40,6 +40,7 @@ import com.blogspot.jabelarminecraft.magicbeans.items.ItemGoldenGooseMeat;
 import com.blogspot.jabelarminecraft.magicbeans.items.ItemMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.materials.MaterialCloud;
 import com.blogspot.jabelarminecraft.magicbeans.proxy.CommonProxy;
+import com.blogspot.jabelarminecraft.magicbeans.structures.Structure;
 import com.blogspot.jabelarminecraft.magicbeans.structures.StructureCastleJaden;
 
 import cpw.mods.fml.common.Mod;
@@ -119,7 +120,7 @@ public class MagicBeans
     
     // instantiate structures
     // important to do this after blocks in case structure uses custom block
-    public final static StructureCastleJaden structureCastle = new StructureCastleJaden();
+    public final static Structure structureCastle = new StructureCastleJaden();
 
     // instantiate achievements
     public static Achievement achievementStartMagicBeans;

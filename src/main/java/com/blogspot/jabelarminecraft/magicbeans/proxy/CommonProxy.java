@@ -221,7 +221,7 @@ public class CommonProxy
         System.out.println("Chance cow is magic = "+MagicBeans.configChanceCowIsMagic);
         MagicBeans.configMaxStalkHeight = config.get(Configuration.CATEGORY_GENERAL, "MaxStalkHeight", 133, "Cloud level is 133", 40, 150).getInt(133);
         System.out.println("Maximum stalk height = "+MagicBeans.configMaxStalkHeight);
-        MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "TicksPerGrowStage", 20, "Patience is a virtue", 1, 1200).getInt(20);
+        MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "TicksPerGrowStage", 2, "Patience is a virtue", 1, 1200).getInt(2);
         System.out.println("Ticks per grow stage = "+MagicBeans.configTicksPerGrowStage);
         MagicBeans.configTimeUntilNextEgg = config.get(Configuration.CATEGORY_GENERAL, "TimeUntilNextEgg", 600, "Don't be greedy!", 200, 1800).getInt(600);
         System.out.println("Time until next egg = "+MagicBeans.configTimeUntilNextEgg);
