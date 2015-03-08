@@ -87,7 +87,6 @@ public class MagicBeans
     public static File configFile;
     public static Configuration config;
     public static Boolean configGiantIsHostile = true;
-    public static int configGoldForBeans = 100;
     public static int configGiantHealth = 10;
 	public static boolean configGiantCanRegen = true;
     public static int configGiantAttackDamage = 4;
