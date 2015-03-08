@@ -25,8 +25,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
@@ -105,6 +107,9 @@ public class CommonProxy
          
         // register recipes here to allow use of items from other mods
         registerRecipes();
+        
+        // register achievements here to allow use of items and blocks from other mods
+        registerAchievements();
     }
     
     public void fmlLifeCycleEvent(FMLPostInitializationEvent event)
@@ -431,4 +436,14 @@ public class CommonProxy
         FMLCommonHandler.instance().bus().register(new MagicBeansFMLEventHandler());
     }
 
+	/**
+	 * Register achievements
+	 */
+	protected void registerAchievements()
+	{
+		MagicBeans.achievementStartMagicBeans = new Achievement("achievement.startmagicbeans", "startmagicbeans", 0, 0, MagicBeans.magicBeans, (Achievement)null).registerStat().initIndependentStat();
+		MagicBeans.achievementGiantSlayer = new Achievement("achievement.giantslayer", "giantslayer", 2, 1, MagicBeans.bootsOfSafeFalling, MagicBeans.achievementStartMagicBeans).registerStat().setSpecial();
+		
+		AchievementPage.registerAchievementPage(new AchievementPage("Magic Beans Achievements", new Achievement[] {MagicBeans.achievementStartMagicBeans, MagicBeans.achievementGiantSlayer}));
+	}
 }

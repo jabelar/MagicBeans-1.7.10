@@ -26,6 +26,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
@@ -119,6 +120,10 @@ public class MagicBeans
     // instantiate structures
     // important to do this after blocks in case structure uses custom block
     public final static StructureCastleJaden structureCastle = new StructureCastleJaden();
+
+    // instantiate achievements
+    public static Achievement achievementStartMagicBeans;
+    public static Achievement achievementGiantSlayer;
     
     // instantiate the mod
     @Instance(MODID)

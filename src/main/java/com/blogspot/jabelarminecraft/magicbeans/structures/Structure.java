@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
+import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeanStalk;
 
 public class Structure implements IStructure
 {
@@ -181,7 +182,7 @@ public class Structure implements IStructure
 		}
 
 		startX = theTileEntity.xCoord-5; // +parOffsetX;
-		startY = theTileEntity.yCoord; // +parOffsetY;
+		startY = theTileEntity.yCoord-3; // +parOffsetY;
 		startZ = theTileEntity.zCoord-12; // +parOffsetZ;
 
 		// DEBUG
@@ -249,15 +250,15 @@ public class Structure implements IStructure
 					String blockName = blockNameArray[indX][indY][indZ];
 					if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
 					{
-						if (!(blockName.equals("minecraft:dirt")) && !(blockName.equals("minecraft:grass")))
-						{
-							theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-									Block.getBlockFromName(blockName), 0, 2);
-						}
-						else
+						if (blockName.equals("minecraft:dirt") || blockName.equals("minecraft:grass"))
 						{
 							theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
 									MagicBeans.blockCloud, 0, 2);
+						}
+						else if (!(theWorld.getBlock(startX+indX, startY+indY, startZ+indZ) instanceof BlockMagicBeanStalk))
+						{
+							theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
+									Block.getBlockFromName(blockName), 0, 2);
 						}
 					}
 				}

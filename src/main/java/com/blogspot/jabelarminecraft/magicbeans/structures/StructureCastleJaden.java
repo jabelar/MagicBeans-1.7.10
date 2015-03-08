@@ -69,23 +69,25 @@ public class StructureCastleJaden extends Structure
 			TileEntityBrewingStand theTileEntity = (TileEntityBrewingStand) theWorld.getTileEntity(parX, parY, parZ);
 			
 			// got potion damage values from http://minecraft.gamepedia.com/Potion#Data_value_table
-			int chanceOfPotionType = theWorld.rand.nextInt(10);
-			if (chanceOfPotionType <= 3) // randomize potion
+			for (int slot = 0; slot<theTileEntity.getSizeInventory(); slot++)
 			{
-				// fire resistance
-				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.potionitem, 3, 8259));
+				int chanceOfPotionType = theWorld.rand.nextInt(10);
+				if (chanceOfPotionType <= 3) // randomize potion
+				{
+					// fire resistance
+					theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8259));
+				}
+				else if (chanceOfPotionType <= 8) 
+				{
+					// regeneration
+					theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8257));
+				}
+				else
+				{
+					// water breathing
+					theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8269));
+				}
 			}
-			else if (chanceOfPotionType <= 8) 
-			{
-				// regeneration
-				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.potionitem, 3, 8257));
-			}
-			else
-			{
-				// water breathing
-				theTileEntity.setInventorySlotContents(0, new ItemStack(Items.potionitem, 3, 8269));
-			}
-
 		}
 	}
 
@@ -106,8 +108,8 @@ public class StructureCastleJaden extends Structure
 	            ((EntityAgeable)entityToSpawn).setGrowingAge(0);
 	            theWorld.spawnEntityInWorld(entityToSpawn);
 	            entityToSpawn.playLivingSound();
-	            // DEBUG
-	            System.out.println("Populating golden goose at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
+//	            // DEBUG
+//	            System.out.println("Populating golden goose at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
 	        }
 	        else
 	        {
@@ -126,8 +128,8 @@ public class StructureCastleJaden extends Structure
 	                  * 360.0F), 0.0F);
 	            theWorld.spawnEntityInWorld(entityToSpawn);
 	            entityToSpawn.playLivingSound();
-	            // DEBUG
-	            System.out.println("Populating giant at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
+//	            // DEBUG
+//	            System.out.println("Populating giant at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
 	        }
 	        else
 	        {

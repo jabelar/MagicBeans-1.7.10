@@ -477,6 +477,8 @@ public class MagicBeansEventHandler
 				        		world.spawnEntityInWorld(entityToSpawn);
 				        		
 				        		theEntity.setDead();
+				        		
+				        		thePlayer.addStat(MagicBeans.achievementStartMagicBeans, 1);
 	             	    	}
 	        	    	}
 	        		}
