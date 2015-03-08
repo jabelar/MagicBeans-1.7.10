@@ -553,6 +553,4 @@ public class Structure implements IStructure
 	    	}
 	    }		
 	}
-
-
 }

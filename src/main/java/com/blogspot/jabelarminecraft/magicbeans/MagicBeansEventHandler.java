@@ -20,7 +20,6 @@
 package com.blogspot.jabelarminecraft.magicbeans;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
@@ -458,29 +457,23 @@ public class MagicBeansEventHandler
 	        		{
 	        			// DEBUG
 	        			// System.out.println("Haven't spawned castle yet so okay to make a family cow");
-	        			
-	        	    	if (!world.isRemote)
-	        	    	{
-	        	    		// DEBUG
-	        	    		// System.out.println("On server so converting to family cow");
-	        	    		
-	        	    		EntityPlayer thePlayer = event.entityPlayer;
-	        	    		
-	        	    		if (!((EntityCow) theEntity).isChild())
-	        	    		{
-			    	    		thePlayer.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("This cow is now your Family Cow!")));
-				        
-			    	    		EntityLiving entityToSpawn = new EntityCowMagicBeans(world);
-				        		entityToSpawn.setLocationAndAngles(theEntity.posX, theEntity.posY, theEntity.posZ, 
-				                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-				                    * 360.0F), 0.0F);
-				        		world.spawnEntityInWorld(entityToSpawn);
-				        		
-				        		theEntity.setDead();
-				        		
-				        		thePlayer.addStat(MagicBeans.achievementStartMagicBeans, 1);
-	             	    	}
-	        	    	}
+	        				        	    		
+        	    		EntityPlayer thePlayer = event.entityPlayer;
+        	    		
+        	    		if (!((EntityCow) theEntity).isChild())
+        	    		{
+		    	    		thePlayer.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("This cow is now your Family Cow!")));
+			        
+		    	    		EntityCowMagicBeans entityToSpawn = new EntityCowMagicBeans(world);
+			        		entityToSpawn.setLocationAndAngles(theEntity.posX, theEntity.posY, theEntity.posZ, 
+			                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
+			                    * 360.0F), 0.0F);
+			        		world.spawnEntityInWorld(entityToSpawn);
+			        		
+			        		theEntity.setDead();
+			        		
+			        		thePlayer.addStat(MagicBeans.achievementStartMagicBeans, 1);
+             	    	}
 	        		}
         		}      		
         	}

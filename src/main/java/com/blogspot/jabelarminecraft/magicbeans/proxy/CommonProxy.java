@@ -323,11 +323,11 @@ public class CommonProxy
         // or without spawn egg use
         // EntityRegistry.registerModEntity(parEntityClass, parEntityName, ++modEntityID, MagicBeans.instance, 80, 3, false);
 
-        registerModEntity(EntityGoldenGoose.class, "Golden Goose");
-        registerModEntityFastTracking(EntityGoldenEggThrown.class, "Golden Egg");
-        registerModEntityWithEgg(EntityCowMagicBeans.class, "Family Cow", 0x4EF56D, 0xFCFC03);
-        registerModEntityWithEgg(EntityMysteriousStranger.class, "Mysterious Stranger", 0x8C6620, 0xA100B3);
-        registerModEntityWithEgg(EntityGiant.class, "Giant", 0xDB9112, 0x0AC798);
+        registerModEntity(EntityGoldenGoose.class, "golden_goose");
+        registerModEntityFastTracking(EntityGoldenEggThrown.class, "golden_egg");
+        registerModEntityWithEgg(EntityCowMagicBeans.class, "family_cow", 0x4EF56D, 0xFCFC03);
+        registerModEntityWithEgg(EntityMysteriousStranger.class, "mysterious_stranger", 0x8C6620, 0xA100B3);
+        registerModEntityWithEgg(EntityGiant.class, "giant", 0xDB9112, 0x0AC798);
     }
  
     /**
