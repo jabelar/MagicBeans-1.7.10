@@ -323,7 +323,7 @@ public class CommonProxy
         // or without spawn egg use
         // EntityRegistry.registerModEntity(parEntityClass, parEntityName, ++modEntityID, MagicBeans.instance, 80, 3, false);
 
-        registerModEntity(EntityGoldenGoose.class, "golden_goose");
+        registerModEntityWithEgg(EntityGoldenGoose.class, "golden_goose", 0xFCF6A2, 0xF5E400);
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "golden_egg");
         registerModEntityWithEgg(EntityCowMagicBeans.class, "family_cow", 0x4EF56D, 0xFCFC03);
         registerModEntityWithEgg(EntityMysteriousStranger.class, "mysterious_stranger", 0x8C6620, 0xA100B3);
@@ -362,7 +362,7 @@ public class CommonProxy
      public void registerSpawnEgg(String parSpawnName, int parEggColor, int parEggSpotsColor)
      {
        Item itemSpawnEgg = new MagicBeansMonsterPlacer(parSpawnName, parEggColor, parEggSpotsColor).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(MagicBeans.MODID+":spawn_egg");
-       GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
+       GameRegistry.registerItem(itemSpawnEgg, "spawn_egg_"+parSpawnName.toLowerCase());
      }
 
      /**

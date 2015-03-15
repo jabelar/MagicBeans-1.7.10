@@ -35,6 +35,7 @@ import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
@@ -250,7 +251,7 @@ public class MagicBeansMonsterPlacer extends ItemMonsterPlacer
     // unless you specifically check for localization here and convert
     public String getItemStackDisplayName(ItemStack par1ItemStack)
     {
-        return MagicBeansUtilities.stringToRainbow("Spawn "+entityToSpawnName);
+        return MagicBeansUtilities.stringToRainbow("Spawn "+StatCollector.translateToLocal("entity."+MagicBeans.MODID+"."+entityToSpawnName+".name"));
     }  
 
 

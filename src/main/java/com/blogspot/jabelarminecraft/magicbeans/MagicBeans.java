@@ -133,12 +133,6 @@ public class MagicBeans
     // create custom creativetab for mod items
     //public static CreativeTabs tabMagicBeansPlus = new MagicBeansCreativeTab("MagicBeans");
     
-    // instantiate blocks
-    //public final static Block blockTomato = new BlockTomato();
-
-    // instantiate items
-    //public final static Item tomato = new ItemTomato();
-    
     // Says where the client and server 'proxy' code is loaded.
     @SidedProxy(clientSide="com.blogspot.jabelarminecraft.magicbeans.proxy.ClientProxy", serverSide="com.blogspot.jabelarminecraft.magicbeans.proxy.CommonProxy")
     public static CommonProxy proxy;

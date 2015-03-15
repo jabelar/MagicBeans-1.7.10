@@ -59,7 +59,6 @@ public class EntityGoldenGoose extends EntityAnimal implements IEntityMagicBeans
         super(parWorld);
         initSyncDataCompound();
         setSize(0.6F, 1.4F); // twice size of EntityChicken
-        setGrowingAge(-24000); // start as child
         isImmuneToFire = true;
         timeUntilNextEgg = rand.nextInt(MagicBeans.configTimeUntilNextEgg) + MagicBeans.configTimeUntilNextEgg;
         setupAI();
