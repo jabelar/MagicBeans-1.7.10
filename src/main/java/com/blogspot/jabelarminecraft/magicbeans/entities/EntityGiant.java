@@ -93,6 +93,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		initSyncDataCompound();
 		setupAI();
 		setSize(1.0F, 4.5F);
+        isImmuneToFire = true ;
 		specialAttack = new GiantAttack(this, 12);
 	}
 
