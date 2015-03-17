@@ -90,10 +90,10 @@ public class MagicBeans
     public static int configGiantHealth = 10;
 	public static boolean configGiantCanRegen = true;
     public static int configGiantAttackDamage = 4;
-    public static double configChanceCowIsMagic = 0.1D;
 	public static int configMaxStalkHeight = 136;
 	public static int configTicksPerGrowStage = 20;
 	public static int configTimeUntilNextEgg = 900;
+	public static int configCowTextureType = 0;
     
     // instantiate materials
     public final static Material materialCloud = new MaterialCloud();

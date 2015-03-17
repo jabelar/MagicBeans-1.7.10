@@ -19,7 +19,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.items;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -35,22 +34,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemGoldenEgg extends Item
 {
-    public int colorBase;
-    public int colorSpots;
     protected EntityGoldenEggThrown entityEgg;
     protected IIcon theIcon;
 
     public ItemGoldenEgg() 
     {
-		this("Golden Goose", 0xF5E16F, 0xF5F56F);
-	}
-    
-    public ItemGoldenEgg(String parEntityToSpawnName, int parPrimaryColor, int parSecondaryColor)
-    {
-        this.maxStackSize = 16; // same as regular egg
-        this.setCreativeTab(CreativeTabs.tabMaterials);
-        colorBase = parPrimaryColor;
-        colorSpots = parSecondaryColor;
+        maxStackSize = 16; // same as regular egg
+        setCreativeTab(CreativeTabs.tabMaterials);
     }
 
 	/**
@@ -74,13 +64,6 @@ public class ItemGoldenEgg extends Item
 
         return par1ItemStack;
     }
-    
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack par1ItemStack, int parColorType)
-    {
-        return (parColorType == 0) ? colorBase : colorSpots;
-    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -96,24 +79,4 @@ public class ItemGoldenEgg extends Item
     {
     	return MagicBeansUtilities.stringToGolden("Golden Egg", 4);
 	}  
-
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        super.registerIcons(par1IconRegister);
-        this.theIcon = par1IconRegister.registerIcon(this.getIconString() + "_overlay");
-    }
-    
-    /**
-     * Gets an icon index based on an item's damage value and the given render pass
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(int par1, int par2)
-    {
-        return par2 > 0 ? this.theIcon : super.getIconFromDamageForRenderPass(par1, par2);
-    }
-
 }

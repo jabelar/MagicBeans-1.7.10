@@ -215,14 +215,14 @@ public class CommonProxy
         System.out.println("Giant can regen = "+MagicBeans.configGiantCanRegen);
         MagicBeans.configGiantAttackDamage = config.get(Configuration.CATEGORY_GENERAL, "GiantAttackDamage", 8, "He's surprisingly resilient").getInt(8);
         System.out.println("Giant Attack Damage = "+MagicBeans.configGiantAttackDamage);
-        MagicBeans.configChanceCowIsMagic = config.get(Configuration.CATEGORY_GENERAL, "ChanceCowIsMagic", 0.1D, "Chance that a cow spawns as "+MagicBeansUtilities.stringToRainbow("Family Cow"), 0.0D, 1.0D).getDouble(0.1D);
-        System.out.println("Chance cow is magic = "+MagicBeans.configChanceCowIsMagic);
         MagicBeans.configMaxStalkHeight = config.get(Configuration.CATEGORY_GENERAL, "MaxStalkHeight", 133, "Cloud level is 133", 40, 150).getInt(133);
         System.out.println("Maximum stalk height = "+MagicBeans.configMaxStalkHeight);
         MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "TicksPerGrowStage", 2, "Patience is a virtue", 1, 1200).getInt(2);
         System.out.println("Ticks per grow stage = "+MagicBeans.configTicksPerGrowStage);
         MagicBeans.configTimeUntilNextEgg = config.get(Configuration.CATEGORY_GENERAL, "TimeUntilNextEgg", 600, "Don't be greedy!", 200, 1800).getInt(600);
         System.out.println("Time until next egg = "+MagicBeans.configTimeUntilNextEgg);
+        MagicBeans.configCowTextureType = config.get(Configuration.CATEGORY_GENERAL, "CowTextureType", 0, "Green cows why not?", 0, 2).getInt(0);
+        System.out.println("Cow texture type = "+MagicBeans.configCowTextureType);
         
         // save is useful for the first run where config might not exist
         config.save();
