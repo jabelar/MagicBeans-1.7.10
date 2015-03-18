@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -189,12 +190,6 @@ public class Structure implements IStructure
 		System.out.println("Starting structure generation at coordinates = "+startX+", "+startY+", "+startZ);
 		totalVolume = dimX * dimY * dimZ;
 		
-//		// generate the cloud
-//		if (!finishedGeneratingCloud)
-//		{
-//			generateCloudTick();
-//		}
-//		else if (!finishedGeneratingBasic)
 		if (!finishedGeneratingBasic)
 		{
 			// DEBUG
@@ -291,6 +286,10 @@ public class Structure implements IStructure
 				{
 					Block theBlock = Block.getBlockFromName(blockNameArray[indX][indY][indZ]);
 					int theMetadata = blockMetaArray[indX][indY][indZ];
+					if (theBlock == Blocks.lava) // in Jaden's castle there was issue with lava so making them all sources
+					{
+						theMetadata = 0;
+					}
 					theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
 							theBlock, theMetadata, 2);
 					if (theBlock.hasTileEntity(theMetadata))
