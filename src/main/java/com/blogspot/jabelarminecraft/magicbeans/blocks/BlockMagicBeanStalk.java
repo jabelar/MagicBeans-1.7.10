@@ -55,7 +55,7 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     	// Basic block setup
         setBlockName("magicbeanstalk");
         setBlockTextureName("magicbeans:magicbeanstalk_stage_0");
-    	setBlockBounds(0.5F-0.125F, 0.0F, 0.5F-0.125F, 0.5F+0.125F, 1.0F, 0.5F+0.125F);
+    	setBlockBounds(0.5F-0.22F, 0.0F, 0.5F-0.22F, 0.5F+0.22F, 1.0F, 0.5F+0.22F);
     }
     
     // identifies what food (ItemFood or ItemSeedFood type) is harvested from this
