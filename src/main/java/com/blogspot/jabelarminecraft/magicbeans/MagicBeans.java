@@ -86,7 +86,6 @@ public class MagicBeans
     // set up configuration properties (will be read from config file in preInit)
     public static File configFile;
     public static Configuration config;
-    public static Boolean configGiantIsHostile = true;
     public static int configGiantHealth = 10;
 	public static boolean configGiantCanRegen = true;
     public static int configGiantAttackDamage = 4;
