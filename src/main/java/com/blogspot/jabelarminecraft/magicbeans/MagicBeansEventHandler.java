@@ -400,10 +400,6 @@ public class MagicBeansEventHandler
         {
             event.displayname = event.username+" the Beautiful";
         }    
-        else
-        {
-            event.displayname = event.username+" the Ugly";            
-        }
     }
     
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

@@ -46,7 +46,15 @@ public class GuiConfigMagicBeans extends GuiConfig
                 MagicBeans.MODID, 
                 false, 
                 false, 
-                MagicBeansUtilities.stringToRainbow("Play Magic Beans Any Way You Want"));
+                MagicBeansUtilities.stringToGolden("Play Magic Beans Any Way You Want", 13));
+    	titleLine2 = GuiConfig.getAbridgedConfigPath(MagicBeans.config.toString());
+    }
+    
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    {
+    	title = MagicBeansUtilities.stringToGolden("Play Magic Beans Any Way You Want", 13);
+    	super.drawScreen(mouseX, mouseY, partialTicks);
     }
     
     @Override
