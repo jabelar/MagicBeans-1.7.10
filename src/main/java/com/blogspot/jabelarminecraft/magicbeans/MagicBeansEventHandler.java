@@ -112,8 +112,10 @@ import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.gui.GuiConfigMagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
+import cpw.mods.fml.client.GuiIngameModOptions;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -742,7 +744,10 @@ public class MagicBeansEventHandler
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(GuiOpenEvent event)
     {
-        
+        if (event.gui instanceof GuiIngameModOptions)
+        {
+        	event.gui = new GuiConfigMagicBeans(null);        
+        }
     }
 
     @SideOnly(Side.CLIENT)
