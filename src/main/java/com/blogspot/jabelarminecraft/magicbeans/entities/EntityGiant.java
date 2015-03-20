@@ -719,6 +719,5 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
     	}
     	
     	setSpecialAttackTimer(timer);
-
     }
 }
