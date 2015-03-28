@@ -24,11 +24,11 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.common.config.Configuration;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 
-import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.GuiMessageDialog;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -37,17 +37,17 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
-public class GuiConfigMagicBeans extends GuiConfig 
+public class GuiConfig extends cpw.mods.fml.client.config.GuiConfig 
 {
-    public GuiConfigMagicBeans(GuiScreen parent) 
+    public GuiConfig(GuiScreen parent) 
     {
         super(parent,
-                new ConfigElement(MagicBeans.config.getCategory("magicbeans")).getChildElements(),
+                new ConfigElement(MagicBeans.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
                 MagicBeans.MODID, 
                 false, 
                 false, 
                 MagicBeansUtilities.stringToGolden("Play Magic Beans Any Way You Want", 13));
-    	titleLine2 = GuiConfig.getAbridgedConfigPath(MagicBeans.config.toString());
+    	titleLine2 = MagicBeans.configFile.getAbsolutePath();
     }
     
     @Override

@@ -62,7 +62,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
       MagicBeans.MODID, 
       name = MagicBeans.MODNAME, 
       version = MagicBeans.MODVERSION,
-      guiFactory = "com.blogspot.jabelarminecraft."+MagicBeans.MODID+".gui.GuiFactoryMagicBeans")
+      guiFactory = "com.blogspot.jabelarminecraft."+MagicBeans.MODID+".gui.GuiFactory")
 public class MagicBeans
 {
     public static final String MODID = "magicbeans";

@@ -206,19 +206,19 @@ public class CommonProxy
     public void syncConfig()
     {
     	config.load();
-        MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "GiantHealth", 100, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getInt(100);
+        MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "Giant Health", 100, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getInt(100);
         System.out.println("Giant health = "+MagicBeans.configGiantHealth);
-        MagicBeans.configGiantCanRegen = config.get(Configuration.CATEGORY_GENERAL, "GiantCanRegen", true, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getBoolean(true);
+        MagicBeans.configGiantCanRegen = config.get(Configuration.CATEGORY_GENERAL, "Giant Can Regenerate", true, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getBoolean(true);
         System.out.println("Giant can regen = "+MagicBeans.configGiantCanRegen);
-        MagicBeans.configGiantAttackDamage = config.get(Configuration.CATEGORY_GENERAL, "GiantAttackDamage", 8, "He's surprisingly resilient").getInt(8);
+        MagicBeans.configGiantAttackDamage = config.get(Configuration.CATEGORY_GENERAL, "Giant Attack Damage", 8, "He's surprisingly resilient").getInt(8);
         System.out.println("Giant Attack Damage = "+MagicBeans.configGiantAttackDamage);
-        MagicBeans.configMaxStalkHeight = config.get(Configuration.CATEGORY_GENERAL, "MaxStalkHeight", 133, "Cloud level is 133", 40, 150).getInt(133);
+        MagicBeans.configMaxStalkHeight = config.get(Configuration.CATEGORY_GENERAL, "Max Beanstalk Height", 133, "Cloud level is 133", 40, 150).getInt(133);
         System.out.println("Maximum stalk height = "+MagicBeans.configMaxStalkHeight);
-        MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "TicksPerGrowStage", 2, "Patience is a virtue", 1, 1200).getInt(2);
+        MagicBeans.configTicksPerGrowStage = config.get(Configuration.CATEGORY_GENERAL, "Ticks Per Beanstalk Grow Stage", 2, "Patience is a virtue", 1, 1200).getInt(2);
         System.out.println("Ticks per grow stage = "+MagicBeans.configTicksPerGrowStage);
-        MagicBeans.configTimeUntilNextEgg = config.get(Configuration.CATEGORY_GENERAL, "TimeUntilNextEgg", 600, "Don't be greedy!", 200, 1800).getInt(600);
+        MagicBeans.configTimeUntilNextEgg = config.get(Configuration.CATEGORY_GENERAL, "Time Between Golden Egg Laid", 600, "Don't be greedy!", 200, 1800).getInt(600);
         System.out.println("Time until next egg = "+MagicBeans.configTimeUntilNextEgg);
-        MagicBeans.configCowTextureType = config.get(Configuration.CATEGORY_GENERAL, "CowTextureType", 0, "Green cows why not?", 0, 2).getInt(0);
+        MagicBeans.configCowTextureType = config.get(Configuration.CATEGORY_GENERAL, "Cow Texture Type", 0, "Green cows why not?", 0, 2).getInt(0);
         System.out.println("Cow texture type = "+MagicBeans.configCowTextureType);
         
         // save is useful for the first run where config might not exist
