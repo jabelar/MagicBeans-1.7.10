@@ -25,7 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 public class ItemMagicBeans extends ItemSeedFoodMagicBeans 
 {
@@ -42,6 +42,6 @@ public class ItemMagicBeans extends ItemSeedFoodMagicBeans
     @Override
     public String getItemStackDisplayName(ItemStack parItemStack) 
     {
-        return (MagicBeansUtilities.stringToRainbow(StatCollector.translateToLocal(getUnlocalizedNameInefficiently(p_77653_1_) + ".name")).trim());
+        return (Utilities.stringToRainbow(StatCollector.translateToLocal(getUnlocalizedNameInefficiently(p_77653_1_) + ".name")).trim());
     }
 }

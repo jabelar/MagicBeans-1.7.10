@@ -23,8 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityFamilyCow;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -38,7 +38,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 public class MessageGiveItemMagicBeansToServer implements IMessage 
 {
     
-    private EntityCowMagicBeans entityCowMagicBeans;
+    private EntityFamilyCow entityFamilyCow;
     private static int entityID;
 
     public MessageGiveItemMagicBeansToServer() 
@@ -46,9 +46,9 @@ public class MessageGiveItemMagicBeansToServer implements IMessage
     	// need this constructor
     }
 
-    public MessageGiveItemMagicBeansToServer(EntityCowMagicBeans parCowMagicBeans) 
+    public MessageGiveItemMagicBeansToServer(EntityFamilyCow parCowMagicBeans) 
     {
-        entityCowMagicBeans = parCowMagicBeans;
+        entityFamilyCow = parCowMagicBeans;
         // DEBUG
         System.out.println("MessageGiveItemToServer constructor");
     }
@@ -62,7 +62,7 @@ public class MessageGiveItemMagicBeansToServer implements IMessage
     @Override
     public void toBytes(ByteBuf buf) 
     {
-    	entityID = entityCowMagicBeans.getEntityId();
+    	entityID = entityFamilyCow.getEntityId();
     	ByteBufUtils.writeVarInt(buf, entityID, 4);
     }
 
@@ -78,13 +78,13 @@ public class MessageGiveItemMagicBeansToServer implements IMessage
         	if (thePlayer.inventory.getFirstEmptyStack() != -1) // check for room in inventory
         	{
 	            thePlayer.inventory.addItemStackToInventory(new ItemStack(MagicBeans.magicBeans, 1));
-	            Entity theEntity = MagicBeansUtilities.getEntityByID(entityID, thePlayer.worldObj);
+	            Entity theEntity = Utilities.getEntityByID(entityID, thePlayer.worldObj);
 	            theEntity.setDead();       		
         	}
         	else
         	{
     			thePlayer.addChatMessage(new ChatComponentText("Your inventory is full!  Come back for your "
-    					+MagicBeansUtilities.stringToRainbow("Magic Beans")+" later."));
+    					+Utilities.stringToRainbow("Magic Beans")+" later."));
         	}
             return null; // no response in this case
         }

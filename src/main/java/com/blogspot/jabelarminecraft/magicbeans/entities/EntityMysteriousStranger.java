@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 /**
  * @author jabelar
@@ -36,13 +36,13 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
 public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans
 {
     private NBTTagCompound syncDataCompound = new NBTTagCompound();
-    private EntityCowMagicBeans cowSummonedBy = null;
+    private EntityFamilyCow cowSummonedBy = null;
     private EntityPlayer thePlayer = null;
 
 	/**
 	 * @param parWorld
 	 */
-	public EntityMysteriousStranger(World parWorld, EntityCowMagicBeans parCowSummonedBy, EntityPlayer parPlayer) 
+	public EntityMysteriousStranger(World parWorld, EntityFamilyCow parCowSummonedBy, EntityPlayer parPlayer) 
 	{
 		super(parWorld);
 		
@@ -90,7 +90,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 			{
 				if (worldObj.isRemote)
 				{
-					getPlayerSummonedBy().addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("When your family cow died, the mysterious stranger vanished as quickly as he appeared!")));				
+					getPlayerSummonedBy().addChatMessage(new ChatComponentText(Utilities.stringToRainbow("When your family cow died, the mysterious stranger vanished as quickly as he appeared!")));				
 				}
 				else
 				{
@@ -250,16 +250,16 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
         return syncDataCompound.getFloat("scaleFactor");
     }
 	
-	public EntityCowMagicBeans getCowSummonedBy()
+	public EntityFamilyCow getCowSummonedBy()
 	{
 		int cowSummonedById = syncDataCompound.getInteger("cowSummonedById");
 
 		// DEBUG
 		// System.out.println("EntityMysteriousStranger getCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
-		return (EntityCowMagicBeans) MagicBeansUtilities.getEntityByID(cowSummonedById, worldObj);
+		return (EntityFamilyCow) Utilities.getEntityByID(cowSummonedById, worldObj);
 	}
 	
-	public void setCowSummonedBy(EntityCowMagicBeans parCowMagicBeans)
+	public void setCowSummonedBy(EntityFamilyCow parCowMagicBeans)
 	{
 		cowSummonedBy = parCowMagicBeans;
 		int cowSummonedById = parCowMagicBeans.getEntityId();
@@ -279,7 +279,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 
 		// DEBUG
 		// System.out.println("EntityMysteriousStranger getPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
-		return (EntityPlayer) MagicBeansUtilities.getEntityByID(playerSummonedById, worldObj);
+		return (EntityPlayer) Utilities.getEntityByID(playerSummonedById, worldObj);
 	}
 
 	public void setPlayerSummonedBy(EntityPlayer parPlayerSummonedBy) 
@@ -299,6 +299,6 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	@Override
 	public void sendEntitySyncPacket()
 	{
-		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
+		Utilities.sendEntitySyncPacketToClient(this);
 	}
 }

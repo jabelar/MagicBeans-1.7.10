@@ -27,7 +27,7 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 import cpw.mods.fml.client.config.GuiMessageDialog;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -46,14 +46,14 @@ public class GuiConfig extends cpw.mods.fml.client.config.GuiConfig
                 MagicBeans.MODID, 
                 false, 
                 false, 
-                MagicBeansUtilities.stringToGolden("Play Magic Beans Any Way You Want", 13));
+                Utilities.stringToGolden("Play Magic Beans Any Way You Want", 13));
     	titleLine2 = MagicBeans.configFile.getAbsolutePath();
     }
     
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-    	title = MagicBeansUtilities.stringToGolden("Play Magic Beans Any Way You Want", 13);
+    	title = Utilities.stringToGolden("Play Magic Beans Any Way You Want", 13);
     	super.drawScreen(mouseX, mouseY, partialTicks);
     }
     

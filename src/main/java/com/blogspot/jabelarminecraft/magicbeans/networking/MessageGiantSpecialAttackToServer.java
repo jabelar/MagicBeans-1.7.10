@@ -22,7 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -79,7 +79,7 @@ public class MessageGiantSpecialAttackToServer implements IMessage
         	// DEBUG
         	System.out.println("Message received");
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
-            Entity theEntity = MagicBeansUtilities.getEntityByID(entityID, thePlayer.worldObj);
+            Entity theEntity = Utilities.getEntityByID(entityID, thePlayer.worldObj);
             EntityGiant theGiant = (EntityGiant) theEntity;
             theGiant.getSpecialAttack().doGiantAttack(maxAttackDamage);
             return null; // no response in this case

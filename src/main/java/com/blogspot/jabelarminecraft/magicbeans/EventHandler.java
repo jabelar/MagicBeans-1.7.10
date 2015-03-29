@@ -111,9 +111,9 @@ import net.minecraftforge.fluids.FluidEvent.FluidSpilledEvent;
 import net.minecraftforge.fluids.FluidRegistry.FluidRegisterEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
-import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityFamilyCow;
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiConfig;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 import cpw.mods.fml.client.GuiIngameModOptions;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -121,7 +121,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class MagicBeansEventHandler 
+public class EventHandler 
 {
     /*
      * Miscellaneous events
@@ -440,7 +440,7 @@ public class MagicBeansEventHandler
     	
     	Entity theEntity = event.target;
 
-        if (theEntity instanceof EntityCow && !(theEntity instanceof EntityCowMagicBeans))
+        if (theEntity instanceof EntityCow && !(theEntity instanceof EntityFamilyCow))
         {
         	// DEBUG
         	// System.out.println("Interacting with cow");
@@ -460,9 +460,9 @@ public class MagicBeansEventHandler
         	    		
         	    		if (!((EntityCow) theEntity).isChild())
         	    		{
-		    	    		thePlayer.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("This cow is now your Family Cow!")));
+		    	    		thePlayer.addChatMessage(new ChatComponentText(Utilities.stringToRainbow("This cow is now your Family Cow!")));
 			        
-		    	    		EntityCowMagicBeans entityToSpawn = new EntityCowMagicBeans(world);
+		    	    		EntityFamilyCow entityToSpawn = new EntityFamilyCow(world);
 			        		entityToSpawn.setLocationAndAngles(theEntity.posX, theEntity.posY, theEntity.posZ, 
 			                    MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
 			                    * 360.0F), 0.0F);

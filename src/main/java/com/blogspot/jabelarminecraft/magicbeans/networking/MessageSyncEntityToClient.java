@@ -22,7 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -76,7 +76,7 @@ public class MessageSyncEntityToClient implements IMessage
         public IMessage onMessage(MessageSyncEntityToClient message, MessageContext ctx) 
         {
         	EntityPlayer thePlayer = MagicBeans.proxy.getPlayerEntityFromContext(ctx);
-        	IEntityMagicBeans theEntity = (IEntityMagicBeans)MagicBeansUtilities.getEntityByID(message.entityId, thePlayer.worldObj);
+        	IEntityMagicBeans theEntity = (IEntityMagicBeans)Utilities.getEntityByID(message.entityId, thePlayer.worldObj);
         	theEntity.setSyncDataCompound(message.entitySyncDataCompound);
         	// DEBUG
         	System.out.println("MessageSyncEnitityToClient onMessage(), entity ID = "+message.entityId);

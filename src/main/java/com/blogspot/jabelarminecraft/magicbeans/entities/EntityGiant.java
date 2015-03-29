@@ -49,7 +49,7 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
 import com.blogspot.jabelarminecraft.magicbeans.explosions.GiantAttack;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 /**
  * @author jabelar
@@ -657,7 +657,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 	@Override
 	public void sendEntitySyncPacket()
 	{
-		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
+		Utilities.sendEntitySyncPacketToClient(this);
 	}
 
 	/* 

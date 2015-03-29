@@ -24,7 +24,7 @@ import net.minecraft.util.ChatComponentText;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -79,7 +79,7 @@ public class MessageGiveItemLeadToServer implements IMessage
         	else if (!thePlayer.inventory.hasItem(Items.lead)) // full but doesn't already have a lead         		
         	{
     			thePlayer.addChatMessage(new ChatComponentText("Your inventory is full!  Interact again with the "
-    					+MagicBeansUtilities.stringToRainbow("Family Cow")
+    					+Utilities.stringToRainbow("Family Cow")
     					+" later when you have room in your inventory to get a lead."));
         	}
             return null; // no response in this case

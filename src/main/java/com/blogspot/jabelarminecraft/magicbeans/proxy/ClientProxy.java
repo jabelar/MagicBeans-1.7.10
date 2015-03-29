@@ -33,7 +33,7 @@ import org.lwjgl.util.glu.Sphere;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.VersionChecker;
-import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityFamilyCow;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
@@ -141,7 +141,7 @@ public class ClientProxy extends CommonProxy
       
 	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenGoose.class, new RenderGoldenGoose(new ModelGoldenGoose(), 0.5F)); // 0.5F is shadow size 
 	    RenderingRegistry.registerEntityRenderingHandler(EntityGoldenEggThrown.class, new RenderGoldenEggThrown(MagicBeans.itemGoldenEgg)); 
-	    RenderingRegistry.registerEntityRenderingHandler(EntityCowMagicBeans.class, new RenderCowMagicBeans(new ModelCow(), 0.5F)); 
+	    RenderingRegistry.registerEntityRenderingHandler(EntityFamilyCow.class, new RenderCowMagicBeans(new ModelCow(), 0.5F)); 
 	    RenderingRegistry.registerEntityRenderingHandler(EntityMysteriousStranger.class, new RenderMysteriousStranger(new ModelVillager(0.0F), 0.5F));    
     	RenderingRegistry.registerEntityRenderingHandler(EntityGiant.class, new RenderGiant(new ModelGiant(0.0F), 0.5F));    
     }

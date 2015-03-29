@@ -32,13 +32,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeansEventHandler;
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeansFMLEventHandler;
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeansOreGenEventHandler;
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeansTerrainGenEventHandler;
+import com.blogspot.jabelarminecraft.magicbeans.EventHandler;
+import com.blogspot.jabelarminecraft.magicbeans.FMLEventHandler;
+import com.blogspot.jabelarminecraft.magicbeans.OreGenEventHandler;
+import com.blogspot.jabelarminecraft.magicbeans.TerrainGenEventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructure;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructureCapture;
-import com.blogspot.jabelarminecraft.magicbeans.entities.EntityCowMagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityFamilyCow;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
@@ -51,7 +51,7 @@ import com.blogspot.jabelarminecraft.magicbeans.networking.MessageSyncEntityToCl
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 import com.blogspot.jabelarminecraft.magicbeans.villagertrading.VillageTradeHandlerMagicBeans;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
@@ -206,9 +206,9 @@ public class CommonProxy
     public void syncConfig()
     {
     	config.load();
-        MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "Giant Health", 100, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getInt(100);
+        MagicBeans.configGiantHealth = config.get(Configuration.CATEGORY_GENERAL, "Giant Health", 100, "This is a healthy "+Utilities.stringToRainbow("Giant")).getInt(100);
         System.out.println("Giant health = "+MagicBeans.configGiantHealth);
-        MagicBeans.configGiantCanRegen = config.get(Configuration.CATEGORY_GENERAL, "Giant Can Regenerate", true, "This is a healthy "+MagicBeansUtilities.stringToRainbow("Giant")).getBoolean(true);
+        MagicBeans.configGiantCanRegen = config.get(Configuration.CATEGORY_GENERAL, "Giant Can Regenerate", true, "This is a healthy "+Utilities.stringToRainbow("Giant")).getBoolean(true);
         System.out.println("Giant can regen = "+MagicBeans.configGiantCanRegen);
         MagicBeans.configGiantAttackDamage = config.get(Configuration.CATEGORY_GENERAL, "Giant Attack Damage", 8, "He's surprisingly resilient").getInt(8);
         System.out.println("Giant Attack Damage = "+MagicBeans.configGiantAttackDamage);
@@ -322,7 +322,7 @@ public class CommonProxy
 
         registerModEntityWithEgg(EntityGoldenGoose.class, "golden_goose", 0xFCF6A2, 0xF5E400);
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "golden_egg");
-        registerModEntityWithEgg(EntityCowMagicBeans.class, "family_cow", 0x4EF56D, 0xFCFC03);
+        registerModEntityWithEgg(EntityFamilyCow.class, "family_cow", 0x4EF56D, 0xFCFC03);
         registerModEntityWithEgg(EntityMysteriousStranger.class, "mysterious_stranger", 0x8C6620, 0xA100B3);
         registerModEntityWithEgg(EntityGiant.class, "giant", 0xDB9112, 0x0AC798);
     }
@@ -423,12 +423,12 @@ public class CommonProxy
 		// DEBUG
 		System.out.println("Registering event listeners");
 
-		MinecraftForge.EVENT_BUS.register(new MagicBeansEventHandler());
-        MinecraftForge.TERRAIN_GEN_BUS.register(new MagicBeansTerrainGenEventHandler());
-        MinecraftForge.ORE_GEN_BUS.register(new MagicBeansOreGenEventHandler());        
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
+        MinecraftForge.TERRAIN_GEN_BUS.register(new TerrainGenEventHandler());
+        MinecraftForge.ORE_GEN_BUS.register(new OreGenEventHandler());        
 
         // some events, especially tick, is handled on FML bus
-        FMLCommonHandler.instance().bus().register(new MagicBeansFMLEventHandler());
+        FMLCommonHandler.instance().bus().register(new FMLEventHandler());
     }
 
 	/**

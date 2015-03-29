@@ -38,7 +38,7 @@ import net.minecraftforge.event.terraingen.WorldTypeEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class MagicBeansTerrainGenEventHandler 
+public class TerrainGenEventHandler 
 {
 	/*
 	 * Terrain events 

@@ -46,7 +46,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class MagicBeansFMLEventHandler 
+public class FMLEventHandler 
 {
 	
 	/*

@@ -23,7 +23,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -85,19 +85,19 @@ public class ItemArmorSafeFalling extends ItemArmor
 	{
 		if (armorType == 3) // boots
 		{
-			return MagicBeansUtilities.stringToRainbow("Boots of Safe Falling", true);
+			return Utilities.stringToRainbow("Boots of Safe Falling", true);
 		}
 		else if (armorType == 2) // leggings
 		{
-			return MagicBeansUtilities.stringToRainbow("Leggings of Safe Falling", true);
+			return Utilities.stringToRainbow("Leggings of Safe Falling", true);
 		}
 		else if (armorType == 1) // chestplate
 		{
-			return MagicBeansUtilities.stringToRainbow("Chestplate of Safe Falling", true);
+			return Utilities.stringToRainbow("Chestplate of Safe Falling", true);
 		}
 		else // helmet
 		{
-			return MagicBeansUtilities.stringToRainbow("Helmet of Safe Falling", true);
+			return Utilities.stringToRainbow("Helmet of Safe Falling", true);
 		}
 	}
 }

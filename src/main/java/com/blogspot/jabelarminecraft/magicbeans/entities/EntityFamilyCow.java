@@ -42,20 +42,20 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityCowMagicBeansAIMate;
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiFamilyCow;
-import com.blogspot.jabelarminecraft.magicbeans.utilities.MagicBeansUtilities;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 /**
  * @author jabelar
  *
  */
-public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
+public class EntityFamilyCow extends EntityCow implements IEntityMagicBeans
 {
     public NBTTagCompound syncDataCompound = new NBTTagCompound();
     
 	/**
 	 * @param parWorld
 	 */
-	public EntityCowMagicBeans(World parWorld) 
+	public EntityFamilyCow(World parWorld) 
 	{
 		super(parWorld);
 		// DEBUG
@@ -94,7 +94,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
         		{
         			EntityPlayer playerLeashedTo = (EntityPlayer) entityLeashedTo;
         			Vec3 playerLookVector = playerLeashedTo.getLookVec();
-        			playerLeashedTo.addChatMessage(new ChatComponentText(MagicBeansUtilities.stringToRainbow("A mysterious stranger appears!")));
+        			playerLeashedTo.addChatMessage(new ChatComponentText(Utilities.stringToRainbow("A mysterious stranger appears!")));
 		            String entityToSpawnNameFull = MagicBeans.MODID+".Mysterious Stranger";
 		            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
 		            {
@@ -172,7 +172,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
     @Override
 	public EntityCow createChild(EntityAgeable parAgeable)
     {
-        return new EntityCowMagicBeans(worldObj);
+        return new EntityFamilyCow(worldObj);
     }
 
     /**
@@ -318,7 +318,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 	@Override
 	public void sendEntitySyncPacket()
 	{
-		MagicBeansUtilities.sendEntitySyncPacketToClient(this);
+		Utilities.sendEntitySyncPacketToClient(this);
 	}
 
 }
