@@ -20,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIPanic;
@@ -99,8 +98,7 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 		            String entityToSpawnNameFull = MagicBeans.MODID+".Mysterious Stranger";
 		            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
 		            {
-		                EntityLiving entityToSpawn = (EntityLiving) EntityList
-		                      .createEntityByName(entityToSpawnNameFull, worldObj);
+		            	EntityMysteriousStranger entityToSpawn = new EntityMysteriousStranger(worldObj, this, playerLeashedTo);
 		                double spawnX = playerLeashedTo.posX+5*playerLookVector.xCoord;
 		                double spawnZ = playerLeashedTo.posZ+5*playerLookVector.zCoord;
 		                double spawnY = worldObj.getHeightValue((int)spawnX, (int)spawnZ);
@@ -113,8 +111,8 @@ public class EntityCowMagicBeans extends EntityCow implements IEntityMagicBeans
 			                      * 360.0F), 0.0F);
 			                worldObj.spawnEntityInWorld(entityToSpawn);
 			                entityToSpawn.playLivingSound();
-			                ((EntityMysteriousStranger)entityToSpawn).setCowSummonedBy(this);
-			                ((EntityMysteriousStranger)entityToSpawn).setPlayerSummonedBy(playerLeashedTo);
+			                entityToSpawn.setCowSummonedBy(this);
+			                entityToSpawn.setPlayerSummonedBy(playerLeashedTo);
 			                setHasSpawnedMysteriousStranger(true);
 			        		// DEBUG
 			        		System.out.println("A mysterious stranger appears with Entity ID = "+entityToSpawn.getEntityId());
