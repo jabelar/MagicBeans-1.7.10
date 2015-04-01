@@ -31,9 +31,9 @@ import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.EventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.FMLEventHandler;
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.OreGenEventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.TerrainGenEventHandler;
 import com.blogspot.jabelarminecraft.magicbeans.commands.CommandStructure;
@@ -323,7 +323,7 @@ public class CommonProxy
         registerModEntityWithEgg(EntityGoldenGoose.class, "golden_goose", 0xFCF6A2, 0xF5E400);
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "golden_egg");
         registerModEntityWithEgg(EntityFamilyCow.class, "family_cow", 0x4EF56D, 0xFCFC03);
-        registerModEntityWithEgg(EntityMysteriousStranger.class, "mysterious_stranger", 0x8C6620, 0xA100B3);
+        registerModEntity(EntityMysteriousStranger.class, "mysterious_stranger");
         registerModEntityWithEgg(EntityGiant.class, "giant", 0xDB9112, 0x0AC798);
     }
  
