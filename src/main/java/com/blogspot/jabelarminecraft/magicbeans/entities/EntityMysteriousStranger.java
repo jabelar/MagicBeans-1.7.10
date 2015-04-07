@@ -16,6 +16,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.EntityCreature;
@@ -29,11 +30,14 @@ import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+
 /**
  * @author jabelar
  *
  */
-public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans
+public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans, IEntityAdditionalSpawnData
 {
     private NBTTagCompound syncDataCompound = new NBTTagCompound();
     private EntityFamilyCow cowSummonedBy = null;
@@ -44,7 +48,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     	super(parWorld);
     	
     	// DEBUG
-    	System.out.println("Mysterious Stranger simple constructor");
+    	System.out.println("Simple constructor");
     	
     	initSyncDataCompound();
     	setupAI();
@@ -53,6 +57,9 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	public EntityMysteriousStranger(World parWorld, EntityFamilyCow parCowSummonedBy, EntityPlayer parPlayer) 
 	{
 		super(parWorld);
+		
+		// DEBUG
+		System.out.println("Extended constructor");
 		
 		cowSummonedBy = parCowSummonedBy;
 		thePlayer = parPlayer;
@@ -210,11 +217,53 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 	@Override
 	public void initSyncDataCompound() 
 	{
-		// don't use setters because it might be too early to send sync packet
-        syncDataCompound.setFloat("scaleFactor", 1.0F);
-        syncDataCompound.setInteger("cowSummonedById", cowSummonedBy.getEntityId());
-        syncDataCompound.setInteger("playerSummonedById", thePlayer.getEntityId());		
+		if (!worldObj.isRemote) // only init on server, client will use additional spawn data to init
+		{
+			// don't use setters because it might be too early to send sync packet
+	        syncDataCompound.setFloat("scaleFactor", 1.0F);
+	        if (cowSummonedBy == null)
+	        {
+	        	syncDataCompound.setInteger("cowSummonedById", -1);
+	        }
+	        else
+	        {
+	        	syncDataCompound.setInteger("cowSummonedById", cowSummonedBy.getEntityId());
+	        }
+	        if (thePlayer == null)
+	        {
+	        	syncDataCompound.setInteger("playerSummonedById", -1);
+	        }
+	        else
+	        {
+	            syncDataCompound.setInteger("playerSummonedById", thePlayer.getEntityId());		
+	        }
+		}
 	}
+	
+    /**
+     * Called by the server when constructing the spawn packet.
+     * Data should be added to the provided stream.
+     *
+     * @param buffer The packet data stream
+     */
+    @Override
+	public void writeSpawnData(ByteBuf buffer)
+    {
+    	ByteBufUtils.writeTag(buffer, syncDataCompound);
+    }
+
+    /**
+     * Called by the client when it receives a Entity spawn packet.
+     * Data should be read out of the stream in the same way as it was written.
+     *
+     * @param data The packet data stream
+     */
+    @Override
+	public void readSpawnData(ByteBuf additionalData)
+    {
+    	syncDataCompound = ByteBufUtils.readTag(additionalData);
+    }
+
 
 	/* (non-Javadoc)
 	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#getExtProps()

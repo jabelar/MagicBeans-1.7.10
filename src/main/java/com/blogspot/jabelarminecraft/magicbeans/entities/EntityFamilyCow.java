@@ -105,13 +105,13 @@ public class EntityFamilyCow extends EntityCow implements IEntityMagicBeans
 		                      * 360.0F), 0.0F);
 		                worldObj.spawnEntityInWorld(entityToSpawn);
 		                entityToSpawn.playLivingSound();
-		                entityToSpawn.setCowSummonedBy(this);
-		                entityToSpawn.setPlayerSummonedBy(playerLeashedTo);
+		                // entityToSpawn.setCowSummonedBy(this);
+		                // entityToSpawn.setPlayerSummonedBy(playerLeashedTo);
 		                setHasSpawnedMysteriousStranger(true);
 	        			playerLeashedTo.addChatMessage(new ChatComponentText(Utilities.stringToRainbow("A mysterious stranger appears!")));
 		        		// DEBUG
 		        		System.out.println("A mysterious stranger appears with Entity ID = "+entityToSpawn.getEntityId()+" at "
-		        		      +spawnX+", "+spawnY+", "+spawnZ);
+		        		      +entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
 	                }
         		}
     		}
