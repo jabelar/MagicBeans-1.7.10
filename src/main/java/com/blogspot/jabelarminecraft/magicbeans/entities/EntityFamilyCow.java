@@ -19,7 +19,6 @@ package com.blogspot.jabelarminecraft.magicbeans.entities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIPanic;
@@ -38,7 +37,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityCowMagicBeansAIMate;
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiFamilyCow;
@@ -94,35 +92,27 @@ public class EntityFamilyCow extends EntityCow implements IEntityMagicBeans
         		{
         			EntityPlayer playerLeashedTo = (EntityPlayer) entityLeashedTo;
         			Vec3 playerLookVector = playerLeashedTo.getLookVec();
-        			playerLeashedTo.addChatMessage(new ChatComponentText(Utilities.stringToRainbow("A mysterious stranger appears!")));
-		            String entityToSpawnNameFull = MagicBeans.MODID+".Mysterious Stranger";
-		            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
-		            {
-		            	EntityMysteriousStranger entityToSpawn = new EntityMysteriousStranger(worldObj, this, playerLeashedTo);
-		                double spawnX = playerLeashedTo.posX+5*playerLookVector.xCoord;
-		                double spawnZ = playerLeashedTo.posZ+5*playerLookVector.zCoord;
-		                double spawnY = worldObj.getHeightValue((int)spawnX, (int)spawnZ);
-		                
-		                // check to ensure there is open area for stranger to spawn, not underground
-		                if (worldObj.canBlockSeeTheSky(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ)))
-		                {
-		                	entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
-			                      MathHelper.wrapAngleTo180_float(rand.nextFloat()
-			                      * 360.0F), 0.0F);
-			                worldObj.spawnEntityInWorld(entityToSpawn);
-			                entityToSpawn.playLivingSound();
-			                entityToSpawn.setCowSummonedBy(this);
-			                entityToSpawn.setPlayerSummonedBy(playerLeashedTo);
-			                setHasSpawnedMysteriousStranger(true);
-			        		// DEBUG
-			        		System.out.println("A mysterious stranger appears with Entity ID = "+entityToSpawn.getEntityId());
-		                }
-		            }
-		            else
-		            {
-		                //DEBUG
-		                System.out.println("Entity not found "+entityToSpawnNameFull);
-		            }
+	            	EntityMysteriousStranger entityToSpawn = new EntityMysteriousStranger(worldObj, this, playerLeashedTo);
+	                double spawnX = playerLeashedTo.posX+5*playerLookVector.xCoord;
+	                double spawnZ = playerLeashedTo.posZ+5*playerLookVector.zCoord;
+	                double spawnY = worldObj.getHeightValue((int)spawnX, (int)spawnZ);
+	                
+	                // check to ensure there is open area for stranger to spawn, not underground
+	                if (worldObj.canBlockSeeTheSky(MathHelper.floor_double(spawnX), MathHelper.floor_double(spawnY), MathHelper.floor_double(spawnZ)))
+	                {
+	                	entityToSpawn.setLocationAndAngles(spawnX, spawnY, spawnZ, 
+		                      MathHelper.wrapAngleTo180_float(rand.nextFloat()
+		                      * 360.0F), 0.0F);
+		                worldObj.spawnEntityInWorld(entityToSpawn);
+		                entityToSpawn.playLivingSound();
+		                entityToSpawn.setCowSummonedBy(this);
+		                entityToSpawn.setPlayerSummonedBy(playerLeashedTo);
+		                setHasSpawnedMysteriousStranger(true);
+	        			playerLeashedTo.addChatMessage(new ChatComponentText(Utilities.stringToRainbow("A mysterious stranger appears!")));
+		        		// DEBUG
+		        		System.out.println("A mysterious stranger appears with Entity ID = "+entityToSpawn.getEntityId()+" at "
+		        		      +spawnX+", "+spawnY+", "+spawnZ);
+	                }
         		}
     		}
     	}

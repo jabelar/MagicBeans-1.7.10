@@ -19,6 +19,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -323,8 +324,12 @@ public class CommonProxy
         registerModEntityWithEgg(EntityGoldenGoose.class, "golden_goose", 0xFCF6A2, 0xF5E400);
         registerModEntityFastTracking(EntityGoldenEggThrown.class, "golden_egg");
         registerModEntityWithEgg(EntityFamilyCow.class, "family_cow", 0x4EF56D, 0xFCFC03);
-        registerModEntity(EntityMysteriousStranger.class, "mysterious_stranger");
+        registerModEntityWithEgg(EntityMysteriousStranger.class, "mysterious_stranger", 0xDB9112, 0x0AC798);
         registerModEntityWithEgg(EntityGiant.class, "giant", 0xDB9112, 0x0AC798);
+        
+        // DEBUG
+        System.out.println("mysterious_stranger mapped in EntityList = "+(EntityList.stringToClassMapping.containsKey("mysterious_stranger")));
+        System.out.println("giant mapped in EntityList = "+(EntityList.stringToClassMapping.containsKey("giant")));
     }
  
     /**

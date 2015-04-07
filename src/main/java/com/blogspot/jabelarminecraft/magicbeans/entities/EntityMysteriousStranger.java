@@ -39,9 +39,17 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     private EntityFamilyCow cowSummonedBy = null;
     private EntityPlayer thePlayer = null;
 
-	/**
-	 * @param parWorld
-	 */
+    public EntityMysteriousStranger(World parWorld)
+    {
+    	super(parWorld);
+    	
+    	// DEBUG
+    	System.out.println("Mysterious Stranger simple constructor");
+    	
+    	initSyncDataCompound();
+    	setupAI();
+    }
+    
 	public EntityMysteriousStranger(World parWorld, EntityFamilyCow parCowSummonedBy, EntityPlayer parPlayer) 
 	{
 		super(parWorld);
