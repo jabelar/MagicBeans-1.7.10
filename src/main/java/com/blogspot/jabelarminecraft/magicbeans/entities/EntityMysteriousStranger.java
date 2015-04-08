@@ -50,7 +50,6 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     	// DEBUG
     	System.out.println("Simple constructor");
     	
-    	initSyncDataCompound();
     	setupAI();
     }
     
@@ -64,7 +63,6 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		cowSummonedBy = parCowSummonedBy;
 		thePlayer = parPlayer;
 		
-		initSyncDataCompound();
 		setupAI();
 	}
 
@@ -249,6 +247,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
     @Override
 	public void writeSpawnData(ByteBuf buffer)
     {
+    	initSyncDataCompound();
     	ByteBufUtils.writeTag(buffer, syncDataCompound);
     }
 
