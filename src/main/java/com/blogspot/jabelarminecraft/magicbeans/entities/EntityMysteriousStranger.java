@@ -21,6 +21,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
@@ -136,18 +137,14 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#setupAI()
-	 */
 	@Override
 	public void setupAI() 
 	{
 		// no AI needed as this entity just stays in one place
+		clearAITasks();
+		tasks.addTask(1, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 	}
 
-	/* (non-Javadoc)
-	 * @see com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans#clearAITasks()
-	 */
 	@Override
 	public void clearAITasks() 
 	{

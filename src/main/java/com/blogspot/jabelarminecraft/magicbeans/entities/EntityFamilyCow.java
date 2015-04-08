@@ -105,8 +105,6 @@ public class EntityFamilyCow extends EntityCow implements IEntityMagicBeans
 		                      * 360.0F), 0.0F);
 		                worldObj.spawnEntityInWorld(entityToSpawn);
 		                entityToSpawn.playLivingSound();
-		                // entityToSpawn.setCowSummonedBy(this);
-		                // entityToSpawn.setPlayerSummonedBy(playerLeashedTo);
 		                setHasSpawnedMysteriousStranger(true);
 	        			playerLeashedTo.addChatMessage(new ChatComponentText(Utilities.stringToRainbow("A mysterious stranger appears!")));
 		        		// DEBUG
