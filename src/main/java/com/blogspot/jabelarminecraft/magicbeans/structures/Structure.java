@@ -35,7 +35,7 @@ import com.blogspot.jabelarminecraft.magicbeans.ModWorldData;
 
 public class Structure implements IStructure
 {
-    protected String theName;
+    protected String theStructureName;
     
     protected World theWorld;
     protected Entity theEntity;
@@ -66,17 +66,21 @@ public class Structure implements IStructure
     int[][][] blockMetaArray = null;
 
     BufferedReader readIn;
+    
+    StructureSparseArrayElement[] theSparseArray = new StructureSparseArrayElement[64 * 64 * 64];
+    int numSparseElements = 0;
 
     public Structure(String parName)
     {
-        theName = parName;
-        readArrays(theName);
+        theStructureName = parName;
+//        readArrays(theStructureName);
+//        makeSparseArray();
     }
     
     @Override
     public String getName()
     {
-        return theName;
+        return theStructureName;
     }
     
     @Override
@@ -131,6 +135,8 @@ public class Structure implements IStructure
                     {
                         blockNameArray[indX][indY][indZ] = readIn.readLine();
                         blockMetaArray[indX][indY][indZ] = Integer.valueOf(readIn.readLine());
+                        // DEBUG
+                        if (indX + indY + indZ == 0) System.out.println("Block name for index 0, 0, 0 is "+blockNameArray[indX][indY][indZ]);
                     }
                 }
             }
@@ -153,12 +159,46 @@ public class Structure implements IStructure
             e.printStackTrace();
         }
     }
+    
     @Override
-    public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
+    public void makeSparseArray()
     {
         // DEBUG
-        //System.out.println("Structure generateTick, finishedPopulatingEntities ="+finishedPopulatingEntities);
-        
+        System.out.println("Starting to make sparse array");
+        for (int indY=0; indY < dimY; indY++)
+        {
+            for (int indX=0; indX < dimX; indX++)
+            {
+                for (int indZ=0; indZ < dimZ; indZ++) 
+                {
+                    if (!blockNameArray[indX][indY][indZ].equals("minecraft:air"))
+                    {
+                        // DEBUG
+                        if (numSparseElements == 0) System.out.println("For index = "+numSparseElements+" block name is "+blockNameArray[indX][indY][indZ]+" block is "+Block.getBlockFromName(blockNameArray[indX][indY][indZ]));
+                        theSparseArray[numSparseElements] = 
+                                new StructureSparseArrayElement(
+                                      Block.getBlockFromName(blockNameArray[indX][indY][indZ]),
+                                      blockMetaArray[indX][indY][indZ],
+                                      indX,
+                                      indY,
+                                      indZ
+                                      );
+                        numSparseElements++;
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+            }
+        }
+        // DEBUG
+        System.out.println("Finished converting to sparse array, with number of elements = "+numSparseElements);
+    }
+    
+    @Override
+    public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ)
+    {
         // exit if generating not started
         if (!shouldGenerate)
         {
@@ -204,6 +244,70 @@ public class Structure implements IStructure
 //            // DEBUG
 //            System.out.println("Generating special blocks");
             generateSpecialBlocksTick();
+        }
+        else if (!finishedPopulatingItems)
+        {
+//            // DEBUG
+//            System.out.println("Populating items");
+            populateItems();
+        }
+        else if (!finishedPopulatingEntities)
+        {
+//            // DEBUG
+//            System.out.println("Populating Entities");
+            populateEntities();
+        }
+        else
+        {
+            // DEBUG
+            System.out.println("Structure setting MagicBeansWorldData hasCastleBeenSpawned to true");
+            ModWorldData.get(theWorld).setHasCastleSpawned(true);
+        }
+    }
+    
+    @Override
+    public void generateSparse(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
+    {
+        // exit if generating not started
+        if (!shouldGenerate)
+        {
+            return;
+        }
+        
+        theTileEntity = parEntity;
+        theWorld = theTileEntity.getWorldObj();
+
+        if (theWorld.isRemote)
+        {
+            return;
+        }
+
+        // exit if finished
+        if (ModWorldData.get(theWorld).getHasCastleSpawned())
+        {
+            // DEBUG
+            System.out.println("Castle has already spawned");
+            return;
+        }
+
+        // DEBUG
+        System.out.println("Starting to generate with sparse array");
+        
+
+        startX = theTileEntity.xCoord-9; // +parOffsetX;
+        startY = theTileEntity.yCoord-3; // +parOffsetY;
+        startZ = theTileEntity.zCoord-12; // +parOffsetZ;
+
+        totalVolume = dimX * dimY * dimZ;
+        
+        if (!finishedGeneratingBasic)
+        {
+            for (int index = 0; index < numSparseElements; index++)
+            {
+                        theWorld.setBlock(startX+theSparseArray[index].posX, startY+theSparseArray[index].posY, startZ+theSparseArray[index].posZ, 
+                                theSparseArray[index].theBlock, theSparseArray[index].theMetaData, 2);
+            }
+            finishedGeneratingBasic = true;
         }
         else if (!finishedPopulatingItems)
         {

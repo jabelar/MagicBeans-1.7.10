@@ -69,6 +69,11 @@ public interface IStructure
 	 * @param parName
 	 */
 	void readArrays(String parName);
+	
+	/**
+	 * Take the raw arrays and convert to sparse array
+	 */
+	void makeSparseArray();
 
 	/**
 	 * Generate a portion of the structure per tick to minimize lag
@@ -114,4 +119,13 @@ public interface IStructure
 	 * For example you can put things in inventory, etc.
 	 */
 	void customizeTileEntity(Block parBlock, int parMetadata, int parX, int parY, int parZ);
+
+    /**
+     * @param parEntity
+     * @param parOffsetX
+     * @param parOffsetY
+     * @param parOffsetZ
+     */
+    void generateSparse(TileEntity parEntity, int parOffsetX, int parOffsetY,
+            int parOffsetZ);
 }

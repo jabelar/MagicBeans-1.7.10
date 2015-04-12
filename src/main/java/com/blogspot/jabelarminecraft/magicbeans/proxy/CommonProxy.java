@@ -87,6 +87,7 @@ public class CommonProxy
 
         // register stuff
         registerBlocks();
+        readStructures();
         registerItems();
         registerTileEntities();
         registerRecipes();
@@ -100,7 +101,16 @@ public class CommonProxy
 
     }
 
-	public void fmlLifeCycleEvent(FMLInitializationEvent event)
+	/**
+     * 
+     */
+    protected void readStructures()
+    {
+        MagicBeans.structureCastle.readArrays(MagicBeans.structureCastle.getName());
+        MagicBeans.structureCastle.makeSparseArray();
+    }
+
+    public void fmlLifeCycleEvent(FMLInitializationEvent event)
     {
         // register custom event listeners
         registerEventListeners();
