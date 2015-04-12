@@ -23,7 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
+import com.blogspot.jabelarminecraft.magicbeans.ModWorldData;
 
 public class TileEntityMagicBeanStalk extends TileEntity
 {
@@ -49,7 +49,7 @@ public class TileEntityMagicBeanStalk extends TileEntity
 	@Override
 	public void updateEntity()
 	{
-		if (worldObj.isRemote || MagicBeansWorldData.get(worldObj).getHasCastleSpwaned())
+		if (worldObj.isRemote || ModWorldData.get(worldObj).getHasCastleSpawned())
 		{
 			return;
 		}

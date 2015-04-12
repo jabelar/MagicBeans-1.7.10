@@ -36,110 +36,110 @@ import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 public class StructureCastleJaden extends Structure
 {
 
-	public boolean hasSpawnedCastle = false;
+    public boolean hasSpawnedCastle = false;
 
-	public StructureCastleJaden()
-	{
-		super("castleJaden");
-	}
-	
-	@Override
-	public void populateItems() 
-	{
+    public StructureCastleJaden()
+    {
+        super("castleJaden");
+    }
+    
+    @Override
+    public void populateItems() 
+    {
         // DEBUG
         System.out.println("Finished populating items in structure.");
-		finishedPopulatingItems = true;
-	}
+        finishedPopulatingItems = true;
+    }
 
-	@Override
-	public void customizeTileEntity(Block theBlock, int theMetadata, int parX,
-			int parY, int parZ) 
-	{
-		if (theBlock == Blocks.dispenser)
-		{
-			TileEntityDispenser theTileEntity = (TileEntityDispenser) theWorld.getTileEntity(parX, parY, parZ);
-			int inventorySize = theTileEntity.getSizeInventory();
-			for (int i=0; i < inventorySize; i++)
-			{
-				theTileEntity.setInventorySlotContents(i, new ItemStack(Items.arrow, 5));
-			}
-		}
-		if (theBlock == Blocks.brewing_stand)
-		{
-			TileEntityBrewingStand theTileEntity = (TileEntityBrewingStand) theWorld.getTileEntity(parX, parY, parZ);
-			
-			// got potion damage values from http://minecraft.gamepedia.com/Potion#Data_value_table
-			for (int slot = 0; slot<theTileEntity.getSizeInventory(); slot++)
-			{
-				int chanceOfPotionType = theWorld.rand.nextInt(10);
-				if (chanceOfPotionType <= 3) // randomize potion
-				{
-					// fire resistance
-					theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8259));
-				}
-				else if (chanceOfPotionType <= 8) 
-				{
-					// regeneration
-					theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8257));
-				}
-				else
-				{
-					// water breathing
-					theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8269));
-				}
-			}
-		}
-	}
+    @Override
+    public void customizeTileEntity(Block theBlock, int theMetadata, int parX,
+            int parY, int parZ) 
+    {
+        if (theBlock == Blocks.dispenser)
+        {
+            TileEntityDispenser theTileEntity = (TileEntityDispenser) theWorld.getTileEntity(parX, parY, parZ);
+            int inventorySize = theTileEntity.getSizeInventory();
+            for (int i=0; i < inventorySize; i++)
+            {
+                theTileEntity.setInventorySlotContents(i, new ItemStack(Items.arrow, 5));
+            }
+        }
+        if (theBlock == Blocks.brewing_stand)
+        {
+            TileEntityBrewingStand theTileEntity = (TileEntityBrewingStand) theWorld.getTileEntity(parX, parY, parZ);
+            
+            // got potion damage values from http://minecraft.gamepedia.com/Potion#Data_value_table
+            for (int slot = 0; slot<theTileEntity.getSizeInventory(); slot++)
+            {
+                int chanceOfPotionType = theWorld.rand.nextInt(10);
+                if (chanceOfPotionType <= 3) // randomize potion
+                {
+                    // fire resistance
+                    theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8259));
+                }
+                else if (chanceOfPotionType <= 8) 
+                {
+                    // regeneration
+                    theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8257));
+                }
+                else
+                {
+                    // water breathing
+                    theTileEntity.setInventorySlotContents(slot, new ItemStack(Items.potionitem, 1, 8269));
+                }
+            }
+        }
+    }
 
-	@Override
-	public void populateEntities()
-	{
-		if (!theWorld.isRemote)
-		{
-			String entityToSpawnName = "Golden Goose";
-	        String entityToSpawnNameFull = MagicBeans.MODID+"."+entityToSpawnName;
-	        if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
-	        {
-	            EntityLiving entityToSpawn = (EntityLiving) EntityList
-	                  .createEntityByName(entityToSpawnNameFull, theWorld);
-	            entityToSpawn.setLocationAndAngles(startX+19, startY+10, startZ+22, 
-	                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
-	                  * 360.0F), 0.0F);
-	            ((EntityAgeable)entityToSpawn).setGrowingAge(0);
-	            theWorld.spawnEntityInWorld(entityToSpawn);
-	            entityToSpawn.playLivingSound();
-//	            // DEBUG
-//	            System.out.println("Populating golden goose at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
-	        }
-	        else
-	        {
-	            //DEBUG
-	            System.out.println("Entity not found "+entityToSpawnName);
-	        }
+    @Override
+    public void populateEntities()
+    {
+        if (!theWorld.isRemote)
+        {
+            String entityToSpawnName = "golden_goose";
+            String entityToSpawnNameFull = MagicBeans.MODID+"."+entityToSpawnName;
+            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
+            {
+                EntityLiving entityToSpawn = (EntityLiving) EntityList
+                      .createEntityByName(entityToSpawnNameFull, theWorld);
+                entityToSpawn.setLocationAndAngles(startX+24, startY+10, startZ+22, 
+                      MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
+                      * 360.0F), 0.0F);
+                ((EntityAgeable)entityToSpawn).setGrowingAge(0);
+                theWorld.spawnEntityInWorld(entityToSpawn);
+                entityToSpawn.playLivingSound();
+                // DEBUG
+                System.out.println("Populating golden goose at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
+            }
+            else
+            {
+                //DEBUG
+                System.out.println("Entity not found "+entityToSpawnName);
+            }
 
-			entityToSpawnName = "Giant";
-	        entityToSpawnNameFull = MagicBeans.MODID+"."+entityToSpawnName;
-	        if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
-	        {
-	            EntityLiving entityToSpawn = (EntityLiving) EntityList
-	                  .createEntityByName(entityToSpawnNameFull, theWorld);
-	            entityToSpawn.setLocationAndAngles(startX+19, startY+9, startZ+32, 
-	                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
-	                  * 360.0F), 0.0F);
-	            theWorld.spawnEntityInWorld(entityToSpawn);
-	            entityToSpawn.playLivingSound();
-//	            // DEBUG
-//	            System.out.println("Populating giant at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
-	        }
-	        else
-	        {
-	            //DEBUG
-	            System.out.println("Entity not found "+entityToSpawnName);
-	        }
+            entityToSpawnName = "giant";
+            entityToSpawnNameFull = MagicBeans.MODID+"."+entityToSpawnName;
+            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
+            {
+                EntityLiving entityToSpawn = (EntityLiving) EntityList
+                      .createEntityByName(entityToSpawnNameFull, theWorld);
+                entityToSpawn.setLocationAndAngles(startX+24, startY+9, startZ+32, 
+                      MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
+                      * 360.0F), 0.0F);
+                theWorld.spawnEntityInWorld(entityToSpawn);
+                entityToSpawn.playLivingSound();
+                // DEBUG
+                System.out.println("Populating giant at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
+            }
+            else
+            {
+                //DEBUG
+                System.out.println("Entity not found "+entityToSpawnName);
+            }
 
-	        // DEBUG
-	        System.out.println("Finished populating entities in structure.");
-	        finishedPopulatingEntities = true;
-		}
-	}
+            // DEBUG
+            System.out.println("Finished populating entities in structure.");
+            finishedPopulatingEntities = true;
+        }
+    }
 }

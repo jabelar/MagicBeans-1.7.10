@@ -125,8 +125,8 @@ public class FMLEventHandler
 		}
 		
 		// DEBUG
-		System.out.println("MagicBeansWorldData hasCastleSpawned ="+MagicBeansWorldData.get(event.player.worldObj).getHasCastleSpwaned()+
-				", familyCowHasGivenLead ="+MagicBeansWorldData.get(event.player.worldObj).getFamilyCowHasGivenLead());
+		System.out.println("MagicBeansWorldData hasCastleSpawned ="+ModWorldData.get(event.player.worldObj).getHasCastleSpawned()+
+				", familyCowHasGivenLead ="+ModWorldData.get(event.player.worldObj).getFamilyCowHasGivenLead());
 	}
 
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)

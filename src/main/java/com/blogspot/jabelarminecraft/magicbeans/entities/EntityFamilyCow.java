@@ -37,7 +37,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeansWorldData;
+import com.blogspot.jabelarminecraft.magicbeans.ModWorldData;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityCowMagicBeansAIMate;
 import com.blogspot.jabelarminecraft.magicbeans.gui.GuiFamilyCow;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
@@ -170,7 +170,7 @@ public class EntityFamilyCow extends EntityCow implements IEntityMagicBeans
 	public boolean interact(EntityPlayer parPlayer)
     {
     	// check if have already spawned castle
-    	if (!MagicBeansWorldData.get(worldObj).getHasCastleSpwaned())
+    	if (!ModWorldData.get(worldObj).getHasCastleSpawned())
     	{
 	    	// Family cow doesn't provide milk (that's why your mother wants you to sell it)
 	    	// don't open gui if holding items, e.g. wheat that should incite mating instead
