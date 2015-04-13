@@ -31,7 +31,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ModWorldData;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
@@ -181,7 +180,7 @@ public class Structure implements IStructure
                     if (!blockNameArray[indX][indY][indZ].equals("minecraft:air"))
                     {
                         if (blockMetaArray[indX][indY][indZ] == 0 
-                                && !blockNameArray[indX]indY][indZ].equals("minecraft:tripwire"))
+                                && !blockNameArray[indX][indY][indZ].equals("minecraft:tripwire"))
                         {
                             theSparseArrayBasic[numSparseElementsBasic] = 
                                     new StructureSparseArrayElement(
@@ -226,6 +225,7 @@ public class Structure implements IStructure
         System.out.println("Finished making sparse array for meta blocks, with number of elements = "+numSparseElementsMeta);
         System.out.println("Finished making sparse array for special blocks, with number of elements = "+numSparseElementsSpecial);
     }
+    
     @Override
     public void generateSparse(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
     {
