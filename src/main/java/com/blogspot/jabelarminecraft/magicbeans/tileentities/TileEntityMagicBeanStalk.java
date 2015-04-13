@@ -70,7 +70,12 @@ public class TileEntityMagicBeanStalk extends TileEntity
             else // fully grown
             {
                 MagicBeans.structureCastle.shouldGenerate = true;
+                // DEBUG
+                long startTime = System.currentTimeMillis();
                 MagicBeans.structureCastle.generate(this, 5, -2, 5, true);
+                long endTime   = System.currentTimeMillis();
+                long totalTime = endTime - startTime;
+                System.out.println("Time to generate = "+totalTime+" milliseconds");
             }
         }
     }
