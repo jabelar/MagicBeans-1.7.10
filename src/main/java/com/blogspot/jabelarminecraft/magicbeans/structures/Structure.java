@@ -28,10 +28,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ModWorldData;
+import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 public class Structure implements IStructure
 {
@@ -73,8 +75,9 @@ public class Structure implements IStructure
     public Structure(String parName)
     {
         theStructureName = parName;
-//        readArrays(theStructureName);
-//        makeSparseArray();
+        // Remember to put following in the init handling of common proxy *after* the blocks are registered
+        //  readArrays(theStructureName);
+        //  makeSparseArray();
     }
     
     @Override
@@ -304,8 +307,10 @@ public class Structure implements IStructure
         {
             for (int index = 0; index < numSparseElements; index++)
             {
-                        theWorld.setBlock(startX+theSparseArray[index].posX, startY+theSparseArray[index].posY, startZ+theSparseArray[index].posZ, 
-                                theSparseArray[index].theBlock, theSparseArray[index].theMetaData, 2);
+                // DEBUG
+                if (index % 500 == 0) System.out.println("Index = "+index);
+                theWorld.setBlock(startX+theSparseArray[index].posX, startY+theSparseArray[index].posY, startZ+theSparseArray[index].posZ, 
+                        theSparseArray[index].theBlock, theSparseArray[index].theMetaData, 2);
             }
             finishedGeneratingBasic = true;
         }
@@ -326,6 +331,7 @@ public class Structure implements IStructure
             // DEBUG
             System.out.println("Structure setting MagicBeansWorldData hasCastleBeenSpawned to true");
             ModWorldData.get(theWorld).setHasCastleSpawned(true);
+            theWorld.getClosestPlayer(startX, startY, startZ, -1).addChatMessage(new ChatComponentText(Utilities.stringToRainbow("Look up! Something happened at the top of the bean stalk.")));
         }
     }
     
@@ -566,74 +572,75 @@ public class Structure implements IStructure
      * @param parOffsetY
      * @param parOffsetZ
      */
-    public void generate(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ) 
+    public void generate(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ, boolean parSparse) 
     {
-        TileEntity theEntity = parEntity;
-        theWorld = theEntity.getWorldObj();
-
-        // DEBUG
-        System.out.println("Generating castle in the clouds. IsRemote = "+theWorld.isRemote);
-
-        if (theWorld.isRemote)
+        if (parSparse)
         {
-            return;
+            generateSparse(parEntity, parOffsetZ, parOffsetZ, parOffsetZ);
         }
-
-        startX = theEntity.xCoord+parOffsetX;
-        startY = theEntity.yCoord+parOffsetY;
-        startZ = theEntity.zCoord+parOffsetZ;
-        
-        // generate the cloud
-        generateCloud(theWorld, startX, startY, startZ, 75);
-        
-        for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+        else
         {
-            for (int indX = 0; indX < dimX; indX++)
+            TileEntity theEntity = parEntity;
+            theWorld = theEntity.getWorldObj();
+    
+            if (theWorld.isRemote)
             {
-                for (int indZ = 0; indZ < dimZ; indZ++)
+                return;
+            }
+    
+            startX = theEntity.xCoord+parOffsetX;
+            startY = theEntity.yCoord+parOffsetY;
+            startZ = theEntity.zCoord+parOffsetZ;
+                    
+            for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+            {
+                for (int indX = 0; indX < dimX; indX++)
                 {
-                    if (blockMetaArray[indX][indY][indZ]==0)
+                    for (int indZ = 0; indZ < dimZ; indZ++)
+                    {
+                        if (blockMetaArray[indX][indY][indZ]==0)
+                        {
+                            String blockName = blockNameArray[indX][indY][indZ];
+                            if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+                            {
+                                theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
+                                        Block.getBlockFromName(blockName), 0, 2);
+                            }
+                        }                    
+                    }
+                }
+            }
+            // best to place metadata blocks after non-metadata blocks as they need to attach, etc.
+            for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+            {
+                for (int indX = 0; indX < dimX; indX++)
+                {
+                    for (int indZ = 0; indZ < dimZ; indZ++)
+                    {
+                        if (!(blockMetaArray[indX][indY][indZ]==0))
+                        {
+                            theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
+                                    Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
+                        }                    
+                    }
+                }
+            }
+            // some blocks with 0 metadata, like string/tripwire, require other blocks to be placed already, so do them again as last pass.
+            for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
+            {
+                for (int indX = 0; indX < dimX; indX++)
+                {
+                    for (int indZ = 0; indZ < dimZ; indZ++)
                     {
                         String blockName = blockNameArray[indX][indY][indZ];
-                        if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
+                        if (blockName.equals("minecraft:tripwire"))
                         {
                             theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
                                     Block.getBlockFromName(blockName), 0, 2);
-                        }
-                    }                    
+                        }                    
+                    }
                 }
-            }
+            }        
         }
-        // best to place metadata blocks after non-metadata blocks as they need to attach, etc.
-        for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
-        {
-            for (int indX = 0; indX < dimX; indX++)
-            {
-                for (int indZ = 0; indZ < dimZ; indZ++)
-                {
-                    if (!(blockMetaArray[indX][indY][indZ]==0))
-                    {
-                        theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-                                Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
-                    }                    
-                }
-            }
-        }
-        // some blocks with 0 metadata, like string/tripwire, require other blocks to be placed already, so do them again as last pass.
-        for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
-        {
-            for (int indX = 0; indX < dimX; indX++)
-            {
-                for (int indZ = 0; indZ < dimZ; indZ++)
-                {
-                    String blockName = blockNameArray[indX][indY][indZ];
-                    if (blockName.equals("minecraft:tripwire"))
-                    {
-                        theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-                                Block.getBlockFromName(blockName), 0, 2);
-                    }                    
-                }
-            }
-        }        
     }
 }

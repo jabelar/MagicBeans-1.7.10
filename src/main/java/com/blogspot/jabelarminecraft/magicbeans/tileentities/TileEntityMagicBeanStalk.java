@@ -13,8 +13,8 @@
 
     For a copy of the GNU General Public License see <http://www.gnu.org/licenses/>.
 
-	If you're interested in licensing the code under different terms you can
-	contact the author at julian_abelar@hotmail.com 
+    If you're interested in licensing the code under different terms you can
+    contact the author at julian_abelar@hotmail.com 
 */
 
 package com.blogspot.jabelarminecraft.magicbeans.tileentities;
@@ -27,56 +27,51 @@ import com.blogspot.jabelarminecraft.magicbeans.ModWorldData;
 
 public class TileEntityMagicBeanStalk extends TileEntity
 {
-//	public boolean hasSpawnedCastle = false;
-	protected int ticksExisted = 0 ;	
+    protected int ticksExisted = 0 ;    
 
     @Override
-	public void readFromNBT(NBTTagCompound parTagCompound)
+    public void readFromNBT(NBTTagCompound parTagCompound)
     {
-    	super.readFromNBT(parTagCompound);
+        super.readFromNBT(parTagCompound);
         ticksExisted = parTagCompound.getInteger("ticksExisted");
-//        hasSpawnedCastle = parTagCompound.getBoolean("hasSpawnedCastle");
     }
 
     @Override
-	public void writeToNBT(NBTTagCompound parTagCompound)
+    public void writeToNBT(NBTTagCompound parTagCompound)
     {
-    	super.writeToNBT(parTagCompound);
+        super.writeToNBT(parTagCompound);
         parTagCompound.setInteger("ticksExisted", ticksExisted);
-//        parTagCompound.setBoolean("hasSpawnedCastle", hasSpawnedCastle);
     }
-    	
-	@Override
-	public void updateEntity()
-	{
-		if (worldObj.isRemote || ModWorldData.get(worldObj).getHasCastleSpawned())
-		{
-			return;
-		}
-		
-		++ticksExisted;
-		markDirty();
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Math.min(7,  ticksExisted / MagicBeans.configTicksPerGrowStage), 2);
-		if (ticksExisted >= MagicBeans.configTicksPerGrowStage * 9) 
-		{
-			// check if higher than clouds
-			if (yCoord < MagicBeans.configMaxStalkHeight)
-			{
-	    		// check if can build next growing position
-	    	    if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord))
-	    	    {
-	    	    	// DEBUG
-	    	    	// System.out.println("Beanstalk still growing, hasSpawnedCastle = "+hasSpawnedCastle);
-	    	        worldObj.setBlock(xCoord, yCoord + 1, zCoord, MagicBeans.blockMagicBeanStalk);	    	        
-	    	    }   		
- 			}
-			else // fully grown
-			{
-				MagicBeans.structureCastle.shouldGenerate = true;
-//				MagicBeans.structureCastle.generateTick(this, 5, -2, 5);
-				MagicBeans.structureCastle.generateSparse(this, 5, -2, 5);
-				// MagicBeansWorldData.get(worldObj).setHasCastleSpawned(MagicBeans.structureCastleTalia.finishedPopulatingEntities);
-			}
-		}
-	}
+        
+    @Override
+    public void updateEntity()
+    {
+        if (worldObj.isRemote || ModWorldData.get(worldObj).getHasCastleSpawned())
+        {
+            return;
+        }
+        
+        ++ticksExisted;
+        markDirty();
+        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Math.min(7,  ticksExisted / MagicBeans.configTicksPerGrowStage), 2);
+        if (ticksExisted >= MagicBeans.configTicksPerGrowStage * 9) 
+        {
+            // check if higher than clouds
+            if (yCoord < MagicBeans.configMaxStalkHeight)
+            {
+                // check if can build next growing position
+                if(worldObj.isAirBlock(xCoord, yCoord + 1, zCoord))
+                {
+                    // DEBUG
+                    // System.out.println("Beanstalk still growing, hasSpawnedCastle = "+hasSpawnedCastle);
+                    worldObj.setBlock(xCoord, yCoord + 1, zCoord, MagicBeans.blockMagicBeanStalk);                    
+                }           
+             }
+            else // fully grown
+            {
+                MagicBeans.structureCastle.shouldGenerate = true;
+                MagicBeans.structureCastle.generate(this, 5, -2, 5, true);
+            }
+        }
+    }
 }
