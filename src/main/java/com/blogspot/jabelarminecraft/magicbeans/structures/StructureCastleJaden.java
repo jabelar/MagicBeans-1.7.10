@@ -57,6 +57,9 @@ public class StructureCastleJaden extends Structure
     {
         if (theBlock == Blocks.dispenser)
         {
+            // DEBUG
+            if (theWorld == null) System.out.println("The world is null");
+            if (theWorld.getTileEntity(parX, parY, parZ) == null) System.out.println("The tile entity is null");
             TileEntityDispenser theTileEntity = (TileEntityDispenser) theWorld.getTileEntity(parX, parY, parZ);
             int inventorySize = theTileEntity.getSizeInventory();
             for (int i=0; i < inventorySize; i++)
