@@ -16,8 +16,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -48,7 +46,6 @@ import net.minecraftforge.common.ForgeHooks;
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityGiantAISeePlayer;
 import com.blogspot.jabelarminecraft.magicbeans.explosions.GiantAttack;
-import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 /**
@@ -126,14 +123,7 @@ public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IB
 		}
 		
 		// create particles
-		if (worldObj.isRemote && rand.nextFloat()<0.1F)
-		{
-			double var4 = rand.nextGaussian() * 0.02D;
-			double var6 = rand.nextGaussian() * 0.02D;
-			double var8 = rand.nextGaussian() * 0.02D;
-			EntityFX particleMysterious = new EntityParticleFXMysterious(worldObj, posX + rand.nextFloat() * width * 2.0F - width, posY + 0.5D + rand.nextFloat() * height, posZ + rand.nextFloat() * width * 2.0F - width, var4, var6, var8);
-			Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
-		}
+		MagicBeans.proxy.generateMysteriousParticles(this);
 		
 		// falling on death can damage like special attack
 		if (deathTime == 19) // time this to point in RenderGiant death fall sequence when it hits the ground

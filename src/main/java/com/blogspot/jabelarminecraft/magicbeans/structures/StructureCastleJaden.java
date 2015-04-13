@@ -18,7 +18,6 @@ package com.blogspot.jabelarminecraft.magicbeans.structures;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -27,7 +26,8 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.MathHelper;
 
-import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
+import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 
 /**
  * @author jabelar
@@ -96,46 +96,26 @@ public class StructureCastleJaden extends Structure
     {
         if (!theWorld.isRemote)
         {
-            String entityToSpawnName = "golden_goose";
-            String entityToSpawnNameFull = MagicBeans.MODID+"."+entityToSpawnName;
-            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
-            {
-                EntityLiving entityToSpawn = (EntityLiving) EntityList
-                      .createEntityByName(entityToSpawnNameFull, theWorld);
-                entityToSpawn.setLocationAndAngles(startX+24, startY+10, startZ+22, 
-                      MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
-                      * 360.0F), 0.0F);
-                ((EntityAgeable)entityToSpawn).setGrowingAge(0);
-                theWorld.spawnEntityInWorld(entityToSpawn);
-                entityToSpawn.playLivingSound();
-                // DEBUG
-                System.out.println("Populating golden goose at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
-            }
-            else
-            {
-                //DEBUG
-                System.out.println("Entity not found "+entityToSpawnName);
-            }
+            EntityLiving entityToSpawn = null;
+            
+            entityToSpawn = new EntityGoldenGoose(theWorld);
+            entityToSpawn.setLocationAndAngles(startX+24, startY+10, startZ+22, 
+                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
+                  * 360.0F), 0.0F);
+            ((EntityAgeable)entityToSpawn).setGrowingAge(0);
+            theWorld.spawnEntityInWorld(entityToSpawn);
+            entityToSpawn.playLivingSound();
+            // DEBUG
+            System.out.println("Populating golden goose at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
 
-            entityToSpawnName = "giant";
-            entityToSpawnNameFull = MagicBeans.MODID+"."+entityToSpawnName;
-            if (EntityList.stringToClassMapping.containsKey(entityToSpawnNameFull))
-            {
-                EntityLiving entityToSpawn = (EntityLiving) EntityList
-                      .createEntityByName(entityToSpawnNameFull, theWorld);
-                entityToSpawn.setLocationAndAngles(startX+24, startY+9, startZ+32, 
-                      MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
-                      * 360.0F), 0.0F);
-                theWorld.spawnEntityInWorld(entityToSpawn);
-                entityToSpawn.playLivingSound();
-                // DEBUG
-                System.out.println("Populating giant at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
-            }
-            else
-            {
-                //DEBUG
-                System.out.println("Entity not found "+entityToSpawnName);
-            }
+            entityToSpawn = new EntityGiant(theWorld);
+            entityToSpawn.setLocationAndAngles(startX+24, startY+9, startZ+32, 
+                  MathHelper.wrapAngleTo180_float(theWorld.rand.nextFloat()
+                  * 360.0F), 0.0F);
+            theWorld.spawnEntityInWorld(entityToSpawn);
+            entityToSpawn.playLivingSound();
+            // DEBUG
+            System.out.println("Populating giant at "+entityToSpawn.posX+", "+entityToSpawn.posY+", "+entityToSpawn.posZ);
 
             // DEBUG
             System.out.println("Finished populating entities in structure.");

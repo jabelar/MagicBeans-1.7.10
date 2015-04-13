@@ -19,6 +19,7 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
@@ -455,5 +456,10 @@ public class CommonProxy
 		MagicBeans.achievementGiantSlayer = new Achievement("achievement.giantslayer", "giantslayer", 2, 1, MagicBeans.bootsOfSafeFalling, MagicBeans.achievementStartMagicBeans).registerStat().setSpecial();
 		
 		AchievementPage.registerAchievementPage(new AchievementPage("Magic Beans Achievements", new Achievement[] {MagicBeans.achievementStartMagicBeans, MagicBeans.achievementGiantSlayer}));
+	}
+
+	public void generateMysteriousParticles(Entity theEntity)
+	{
+	    
 	}
 }
