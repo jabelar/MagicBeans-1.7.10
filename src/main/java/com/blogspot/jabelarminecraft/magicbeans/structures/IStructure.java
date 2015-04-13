@@ -73,7 +73,7 @@ public interface IStructure
 	/**
 	 * Take the raw arrays and convert to sparse array
 	 */
-	void makeSparseArray();
+	void makeSparseArrays();
 
 	/**
 	 * Generate a portion of the structure per tick to minimize lag

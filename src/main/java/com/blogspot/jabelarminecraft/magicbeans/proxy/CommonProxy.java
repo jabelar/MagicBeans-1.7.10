@@ -104,7 +104,7 @@ public class CommonProxy
     protected void readStructures()
     {
         MagicBeans.structureCastle.readArrays(MagicBeans.structureCastle.getName());
-        MagicBeans.structureCastle.makeSparseArray();
+        MagicBeans.structureCastle.makeSparseArrays();
     }
 
     public void fmlLifeCycleEvent(FMLInitializationEvent event)
