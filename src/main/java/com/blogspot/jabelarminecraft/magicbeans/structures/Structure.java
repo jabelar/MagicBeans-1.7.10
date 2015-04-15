@@ -265,6 +265,7 @@ public class Structure implements IStructure
         
         	// DEBUG
         	System.out.println("Starting to generate basic blocks");
+            long startTime = System.currentTimeMillis();
             for (int index = 0; index < numSparseElementsBasic; index++)
             {
                 Block theBlock = theSparseArrayBasic[index].theBlock;
@@ -341,6 +342,10 @@ public class Structure implements IStructure
 //                           );
 //               }
             }
+            long endTime   = System.currentTimeMillis();
+            long totalTime = endTime - startTime;
+            System.out.println("Time to loop 11k blocks = "+totalTime+" milliseconds");
+
 //            // DEBUG
 //            System.out.println("Populating items");
             populateItems();

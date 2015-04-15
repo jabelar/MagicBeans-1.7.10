@@ -64,18 +64,13 @@ public class TileEntityMagicBeanStalk extends TileEntity
                 {
                     // DEBUG
                     // System.out.println("Beanstalk still growing, hasSpawnedCastle = "+hasSpawnedCastle);
-                    worldObj.setBlock(xCoord, yCoord + 1, zCoord, MagicBeans.blockMagicBeanStalk);                    
+                    worldObj.setBlock(xCoord, yCoord + 1, zCoord, MagicBeans.blockMagicBeanStalk);     
                 }           
              }
             else // fully grown
             {
                 MagicBeans.structureCastle.shouldGenerate = true;
-                // DEBUG
-                long startTime = System.currentTimeMillis();
                 MagicBeans.structureCastle.generate(this, 5, -2, 5, true);
-                long endTime   = System.currentTimeMillis();
-                long totalTime = endTime - startTime;
-                System.out.println("Time to generate = "+totalTime+" milliseconds");
             }
         }
     }
