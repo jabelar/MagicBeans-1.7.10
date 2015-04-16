@@ -43,6 +43,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -180,11 +181,18 @@ public class FMLEventHandler
 		
 	}
 
-	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
-	public void onEvent(ServerTickEvent event)
-	{
-		
-	}
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(ServerTickEvent event)
+    {
+        
+    }
+
+    @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+    public void onEvent(WorldTickEvent event)
+    {
+        // Note this event is only posted on server side!
+        
+    }
 
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
 	public void onEvent(OnConfigChangedEvent eventArgs) 
