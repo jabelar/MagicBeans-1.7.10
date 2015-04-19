@@ -263,20 +263,6 @@ public class Structure implements IStructure
 
         totalVolume = dimX * dimY * dimZ;
         
-        // Raise the height map for involved chunks to avoid lag due to light opacity calculations
-//        for (int indX = startX; indX < startX+dimX; indX += 16)
-//        {
-//             for (int indZ = startZ; indZ < startZ+dimX; indZ += 16)
-//            {
-//                Chunk theChunk = theWorld.getChunkFromBlockCoords(indX, indZ);
-//                for (int index = 0; index < theChunk.heightMap.length; index++)
-//                {
-//                    theChunk.heightMap[index]= startY + dimY;
-//                }
-//            }
-//        }
-        
-        theWorld.provider.hasNoSky = true;
         	// DEBUG
         	System.out.println("Starting to generate basic blocks");
             long startTime = System.currentTimeMillis();
@@ -359,7 +345,6 @@ public class Structure implements IStructure
             long endTime   = System.currentTimeMillis();
             long totalTime = endTime - startTime;
             System.out.println("Time to loop 11k blocks = "+totalTime+" milliseconds");
-            theWorld.provider.hasNoSky = false;
 
 //            // DEBUG
 //            System.out.println("Populating items");
