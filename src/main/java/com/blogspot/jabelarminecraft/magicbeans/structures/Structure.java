@@ -277,16 +277,16 @@ public class Structure implements IStructure
                         0, 
                         2
                         );
-//                if (theBlock.hasTileEntity(0))
-//                {
-//                    customizeTileEntity(
-//                            theBlock, 
-//                            0, 
-//                            startX+theSparseArrayMeta[index].posX, 
-//                            startY+theSparseArrayMeta[index].posY, 
-//                            startZ+theSparseArrayMeta[index].posZ
-//                            );
-//                }
+                if (theBlock.hasTileEntity(0))
+                {
+                    customizeTileEntity(
+                            theBlock, 
+                            0, 
+                            startX+theSparseArrayMeta[index].posX, 
+                            startY+theSparseArrayMeta[index].posY, 
+                            startZ+theSparseArrayMeta[index].posZ
+                            );
+                }
             }
 
             // DEBUG
@@ -304,16 +304,16 @@ public class Structure implements IStructure
                         theMetaData, 
                         2
                         );
-//               if (theBlock.hasTileEntity(theMetaData))
-//               {
-//                   customizeTileEntity(
-//                           theBlock, 
-//                           theMetaData, 
-//                           startX+theSparseArrayMeta[index].posX, 
-//                           startY+theSparseArrayMeta[index].posY, 
-//                           startZ+theSparseArrayMeta[index].posZ
-//                           );
-//               }
+               if (theBlock.hasTileEntity(theMetaData))
+               {
+                   customizeTileEntity(
+                           theBlock, 
+                           theMetaData, 
+                           startX+theSparseArrayMeta[index].posX, 
+                           startY+theSparseArrayMeta[index].posY, 
+                           startZ+theSparseArrayMeta[index].posZ
+                           );
+               }
             }
 
             // DEBUG
@@ -331,27 +331,27 @@ public class Structure implements IStructure
                        theMetaData, 
                        2
                        );
-//               if (theBlock.hasTileEntity(theMetaData))
-//               {
-//                   customizeTileEntity(
-//                           theBlock, 
-//                           theMetaData, 
-//                           startX+theSparseArraySpecial[index].posX, 
-//                           startY+theSparseArraySpecial[index].posY, 
-//                           startZ+theSparseArraySpecial[index].posZ
-//                           );
-//               }
+               if (theBlock.hasTileEntity(theMetaData))
+               {
+                   customizeTileEntity(
+                           theBlock, 
+                           theMetaData, 
+                           startX+theSparseArraySpecial[index].posX, 
+                           startY+theSparseArraySpecial[index].posY, 
+                           startZ+theSparseArraySpecial[index].posZ
+                           );
+               }
             }
             long endTime   = System.currentTimeMillis();
             long totalTime = endTime - startTime;
             System.out.println("Time to loop 11k blocks = "+totalTime+" milliseconds");
 
-//            // DEBUG
-//            System.out.println("Populating items");
+            // DEBUG
+            System.out.println("Populating items");
             populateItems();
 
-//            // DEBUG
-//            System.out.println("Populating Entities");
+            // DEBUG
+            System.out.println("Populating Entities");
             populateEntities();
 
             // DEBUG
@@ -634,67 +634,7 @@ public class Structure implements IStructure
         }
         else
         {
-            TileEntity theEntity = parEntity;
-            theWorld = theEntity.getWorldObj();
-    
-            if (theWorld.isRemote)
-            {
-                return;
-            }
-    
-            startX = theEntity.xCoord+parOffsetX;
-            startY = theEntity.yCoord+parOffsetY;
-            startZ = theEntity.zCoord+parOffsetZ;
-                    
-            for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
-            {
-                for (int indX = 0; indX < dimX; indX++)
-                {
-                    for (int indZ = 0; indZ < dimZ; indZ++)
-                    {
-                        if (blockMetaArray[indX][indY][indZ]==0)
-                        {
-                            String blockName = blockNameArray[indX][indY][indZ];
-                            if (!(blockName.equals("minecraft:tripwire"))) // tripwire/string needs to be placed after other blocks
-                            {
-                                theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-                                        Block.getBlockFromName(blockName), 0, 2);
-                            }
-                        }                    
-                    }
-                }
-            }
-            // best to place metadata blocks after non-metadata blocks as they need to attach, etc.
-            for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
-            {
-                for (int indX = 0; indX < dimX; indX++)
-                {
-                    for (int indZ = 0; indZ < dimZ; indZ++)
-                    {
-                        if (!(blockMetaArray[indX][indY][indZ]==0))
-                        {
-                            theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-                                    Block.getBlockFromName(blockNameArray[indX][indY][indZ]), blockMetaArray[indX][indY][indZ], 2);
-                        }                    
-                    }
-                }
-            }
-            // some blocks with 0 metadata, like string/tripwire, require other blocks to be placed already, so do them again as last pass.
-            for (int indY = 0; indY < dimY; indY++) // Y first to organize in vertical layers
-            {
-                for (int indX = 0; indX < dimX; indX++)
-                {
-                    for (int indZ = 0; indZ < dimZ; indZ++)
-                    {
-                        String blockName = blockNameArray[indX][indY][indZ];
-                        if (blockName.equals("minecraft:tripwire"))
-                        {
-                            theWorld.setBlock(startX+indX, startY+indY, startZ+indZ, 
-                                    Block.getBlockFromName(blockName), 0, 2);
-                        }                    
-                    }
-                }
-            }        
+            generate(theEntity, parOffsetZ, parOffsetZ, parOffsetZ);
         }
     }
 }
