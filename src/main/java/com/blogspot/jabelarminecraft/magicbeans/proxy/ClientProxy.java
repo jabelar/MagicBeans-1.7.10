@@ -40,6 +40,8 @@ import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGiant;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenEggThrown;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.entities.EntityMysteriousStranger;
+import com.blogspot.jabelarminecraft.magicbeans.gui.GuiFamilyCow;
+import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.models.ModelGiant;
 import com.blogspot.jabelarminecraft.magicbeans.models.ModelGoldenGoose;
 import com.blogspot.jabelarminecraft.magicbeans.particles.EntityParticleFXMysterious;
@@ -219,5 +221,17 @@ public class ClientProxy extends CommonProxy
                 theEntity.posZ + theEntity.worldObj.rand.nextFloat() * theEntity.width * 2.0F - theEntity.width, 
                 var4, var6, var8);
         Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);        
+    }
+    
+    @Override
+    public void openCowGui()
+    {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow());
+    }
+    
+    @Override
+    public void openMysteriousStrangerGui(EntityMysteriousStranger parStranger)
+    {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger(parStranger));
     }
 }

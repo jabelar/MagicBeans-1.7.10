@@ -20,7 +20,6 @@
 package com.blogspot.jabelarminecraft.magicbeans.proxy;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,7 +53,6 @@ import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToClient;
 import com.blogspot.jabelarminecraft.magicbeans.networking.MessageToServer;
 import com.blogspot.jabelarminecraft.magicbeans.tileentities.TileEntityMagicBeanStalk;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
-import com.blogspot.jabelarminecraft.magicbeans.villagertrading.VillageTradeHandlerMagicBeans;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
 
@@ -71,7 +69,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy 
@@ -449,5 +446,15 @@ public class CommonProxy
     public void generateMysteriousParticles(Entity theEntity)
     {
         
+    }
+    
+    public void openCowGui()
+    {
+        
+    }
+    
+    public void openMysteriousStrangerGui(EntityMysteriousStranger parStranger)
+    {
+
     }
 }

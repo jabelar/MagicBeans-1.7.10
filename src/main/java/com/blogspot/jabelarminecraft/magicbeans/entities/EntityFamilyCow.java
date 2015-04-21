@@ -16,7 +16,6 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.ai.EntityAIFollowParent;
@@ -37,9 +36,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.ModWorldData;
 import com.blogspot.jabelarminecraft.magicbeans.ai.EntityCowMagicBeansAIMate;
-import com.blogspot.jabelarminecraft.magicbeans.gui.GuiFamilyCow;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 /**
@@ -178,10 +177,7 @@ public class EntityFamilyCow extends EntityCow implements IEntityMagicBeans
 	    	if (parPlayer.getCurrentEquippedItem() == null || parPlayer.getCurrentEquippedItem().getItem() == Items.bucket)
 	    	{
 				collideWithNearbyEntities();
-				if (parPlayer.worldObj.isRemote)
-				{
-					Minecraft.getMinecraft().displayGuiScreen(new GuiFamilyCow());
-				}
+				MagicBeans.proxy.openCowGui();
 	    	}
 	    	else // act like normal cow
 	    	{

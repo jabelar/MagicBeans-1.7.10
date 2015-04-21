@@ -17,7 +17,6 @@
 package com.blogspot.jabelarminecraft.magicbeans.entities;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -27,7 +26,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
-import com.blogspot.jabelarminecraft.magicbeans.gui.GuiMysteriousStranger;
 import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -128,7 +126,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 		if (parPlayer.worldObj.isRemote)
 		{
 			playSound("mob.villager.haggle", 1.0F, 1.0F);
-			Minecraft.getMinecraft().displayGuiScreen(new GuiMysteriousStranger(this));
+			MagicBeans.proxy.openMysteriousStrangerGui(this);
 		}
 		return false;
 		
@@ -306,7 +304,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 
 		// DEBUG
 		// System.out.println("EntityMysteriousStranger getCowSummonedBy = "+cowSummonedById+", on world.isRemote = "+worldObj.isRemote);
-		return (EntityFamilyCow) Utilities.getEntityByID(cowSummonedById, worldObj);
+		return (EntityFamilyCow) worldObj.getEntityByID(cowSummonedById);
 	}
 	
 	public void setCowSummonedBy(EntityFamilyCow parCowMagicBeans)
@@ -329,7 +327,7 @@ public class EntityMysteriousStranger extends EntityCreature implements IEntityM
 
 		// DEBUG
 		// System.out.println("EntityMysteriousStranger getPlayerSummonedBy = "+playerSummonedById+", on world.isRemote = "+worldObj.isRemote);
-		return (EntityPlayer) Utilities.getEntityByID(playerSummonedById, worldObj);
+		return (EntityPlayer) worldObj.getEntityByID(playerSummonedById);
 	}
 
 	public void setPlayerSummonedBy(EntityPlayer parPlayerSummonedBy) 
