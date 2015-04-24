@@ -141,8 +141,6 @@ public class Structure implements IStructure
                     {
                         blockNameArray[indX][indY][indZ] = readIn.readLine();
                         blockMetaArray[indX][indY][indZ] = Integer.valueOf(readIn.readLine());
-                        // DEBUG
-                        if (indX + indY + indZ == 0) System.out.println("Block name for index 0, 0, 0 is "+blockNameArray[indX][indY][indZ]);
                     }
                 }
             }
@@ -363,6 +361,9 @@ public class Structure implements IStructure
     @Override
     public void generateTick(TileEntity parEntity, int parOffsetX, int parOffsetY, int parOffsetZ)
     {
+        // DEBUG
+        //System.out.println("Structure generateTick, finishedPopulatingEntities ="+finishedPopulatingEntities);
+        
         // exit if generating not started
         if (!shouldGenerate)
         {
