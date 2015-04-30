@@ -16,10 +16,12 @@
 
 package com.blogspot.jabelarminecraft.magicbeans.utilities;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
@@ -230,5 +232,66 @@ public class Utilities
             MagicBeans.network.sendToServer(new MessageSyncEntityToServer(theEntity.getEntityId(), parEntity.getSyncDataCompound()));           
         }
     }
+    
+    /**
+     * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 1 will
+     * cause a block update. Flag 2 will send the change to clients (you almost always want this). Flag 4 prevents the
+     * block from being re-rendered, if this is a client world. Flags can be added together.
+     */
+    public static boolean setBlockFast(World parWorld, int parX, int parY, int parZ, Block parBlock, int parMetaData, int parFlag)
+    {
+        // Make sure position is within valid range
+        if (parX >= -30000000 && parZ >= -30000000 && parX < 30000000 && parZ < 30000000)
+        {
+            if (parY < 0)
+            {
+                return false;
+            }
+            else if (parY >= 256)
+            {
+                return false;
+            }
+            else
+            {
+                Chunk chunk = parWorld.getChunkFromChunkCoords(parX >> 4, parZ >> 4);
+                Block block1 = null;
+                net.minecraftforge.common.util.BlockSnapshot blockSnapshot = null;
 
+                if ((parFlag & 1) != 0)
+                {
+                    block1 = chunk.getBlock(parX & 15, parY, parZ & 15);
+                }
+
+                if (parWorld.captureBlockSnapshots && !parWorld.isRemote)
+                {
+                    blockSnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(parWorld, parX, parY, parZ, parFlag);
+                    parWorld.capturedBlockSnapshots.add(blockSnapshot);
+                }
+
+                boolean flag = chunk.func_150807_a(parX & 15, parY, parZ & 15, parBlock, parMetaData);
+
+                if (!flag && blockSnapshot != null)
+                {
+                    parWorld.capturedBlockSnapshots.remove(blockSnapshot);
+                    blockSnapshot = null;
+                }
+
+                parWorld.theProfiler.startSection("checkLight");
+                parWorld.func_147451_t(parX, parY, parZ);
+                parWorld.theProfiler.endSection();
+
+                if (flag && blockSnapshot == null) // Don't notify clients or update physics while capturing blockstates
+                {
+                    // Modularize client and physic updates
+                    parWorld.markAndNotifyBlock(parX, parY, parZ, chunk, block1, parBlock, parFlag);
+                }
+
+                return flag;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
