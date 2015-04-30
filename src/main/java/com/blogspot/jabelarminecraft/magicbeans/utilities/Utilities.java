@@ -19,9 +19,13 @@ package com.blogspot.jabelarminecraft.magicbeans.utilities;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import net.minecraftforge.common.util.BlockSnapshot;
 
 import com.blogspot.jabelarminecraft.magicbeans.MagicBeans;
 import com.blogspot.jabelarminecraft.magicbeans.entities.IEntityMagicBeans;
@@ -235,8 +239,8 @@ public class Utilities
     
     /**
      * Sets the block ID and metadata at a given location. Args: X, Y, Z, new block ID, new metadata, flags. Flag 1 will
-     * cause a block update. Flag 2 will send the change to clients (you almost always want this). Flag 4 prevents the
-     * block from being re-rendered, if this is a client world. Flags can be added together.
+     * cause a block update. Flag 2 will send the change to clients (you almost always want parChunk). Flag 4 prevents the
+     * block from being re-rendered, if parChunk is a client world. Flags can be added together.
      */
     public static boolean setBlockFast(World parWorld, int parX, int parY, int parZ, Block parBlock, int parMetaData, int parFlag)
     {
@@ -254,44 +258,167 @@ public class Utilities
             else
             {
                 Chunk chunk = parWorld.getChunkFromChunkCoords(parX >> 4, parZ >> 4);
-                Block block1 = null;
-                net.minecraftforge.common.util.BlockSnapshot blockSnapshot = null;
+                Block existingBlock = null;
+                BlockSnapshot blockSnapshot = null;
 
                 if ((parFlag & 1) != 0)
                 {
-                    block1 = chunk.getBlock(parX & 15, parY, parZ & 15);
+                    existingBlock = chunk.getBlock(parX & 15, parY, parZ & 15);
                 }
 
                 if (parWorld.captureBlockSnapshots && !parWorld.isRemote)
                 {
-                    blockSnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(parWorld, parX, parY, parZ, parFlag);
+                    blockSnapshot = BlockSnapshot.getBlockSnapshot(parWorld, parX, parY, parZ, parFlag);
                     parWorld.capturedBlockSnapshots.add(blockSnapshot);
                 }
 
-                boolean flag = chunk.func_150807_a(parX & 15, parY, parZ & 15, parBlock, parMetaData);
+                boolean setBlockSuceeded = setBlockInChunkFast(chunk, parX & 15, parY, parZ & 15, parBlock, parMetaData);
 
-                if (!flag && blockSnapshot != null)
+                if (!setBlockSuceeded && blockSnapshot != null)
                 {
                     parWorld.capturedBlockSnapshots.remove(blockSnapshot);
                     blockSnapshot = null;
                 }
 
-                parWorld.theProfiler.startSection("checkLight");
-                parWorld.func_147451_t(parX, parY, parZ);
-                parWorld.theProfiler.endSection();
+//                parWorld.theProfiler.startSection("checkLight");
+//                parWorld.func_147451_t(parX, parY, parZ);
+//                parWorld.theProfiler.endSection();
 
-                if (flag && blockSnapshot == null) // Don't notify clients or update physics while capturing blockstates
+                if (setBlockSuceeded && blockSnapshot == null) // Don't notify clients or update physics while capturing blockstates
                 {
                     // Modularize client and physic updates
-                    parWorld.markAndNotifyBlock(parX, parY, parZ, chunk, block1, parBlock, parFlag);
+                    parWorld.markAndNotifyBlock(parX, parY, parZ, chunk, existingBlock, parBlock, parFlag);
                 }
 
-                return flag;
+                return setBlockSuceeded;
             }
         }
         else
         {
             return false;
+        }
+    }
+
+    public static boolean setBlockInChunkFast(Chunk parChunk, int parX, int parY, int parZ, Block parBlock, int parMetaData)
+    {
+        int mapKey = parZ << 4 | parX;
+
+        if (parY >= parChunk.precipitationHeightMap[mapKey] - 1)
+        {
+            parChunk.precipitationHeightMap[mapKey] = -999;
+        }
+
+        int currentHeight = parChunk.heightMap[mapKey];
+        Block existingBlock = parChunk.getBlock(parX, parY, parZ);
+        int existingMetaData = parChunk.getBlockMetadata(parX, parY, parZ);
+
+        if (existingBlock == parBlock && existingMetaData == parMetaData)
+        {
+            return false;
+        }
+        else
+        {
+            ExtendedBlockStorage extendedblockstorage = parChunk.getBlockStorageArray()[parY >> 4];
+            boolean flag = false;
+
+            if (extendedblockstorage == null)
+            {
+                if (parBlock == Blocks.air)
+                {
+                    return false;
+                }
+
+                extendedblockstorage = parChunk.getBlockStorageArray()[parY >> 4] = new ExtendedBlockStorage(parY >> 4 << 4, !parChunk.worldObj.provider.hasNoSky);
+                flag = parY >= currentHeight;
+            }
+
+            int worldPosX = parChunk.xPosition * 16 + parX;
+            int worldPosZ = parChunk.zPosition * 16 + parZ;
+
+//            int existingLightOpacity = existingBlock.getLightOpacity(parChunk.worldObj, worldPosX, parY, worldPosZ);
+
+            if (!parChunk.worldObj.isRemote)
+            {
+                existingBlock.onBlockPreDestroy(parChunk.worldObj, worldPosX, parY, worldPosZ, existingMetaData);
+            }
+
+            extendedblockstorage.func_150818_a(parX, parY & 15, parZ, parBlock);
+            extendedblockstorage.setExtBlockMetadata(parX, parY & 15, parZ, parMetaData); // This line duplicates the one below, so breakBlock fires with valid worldstate
+
+            if (!parChunk.worldObj.isRemote)
+            {
+                existingBlock.breakBlock(parChunk.worldObj, worldPosX, parY, worldPosZ, existingBlock, existingMetaData);
+                // After breakBlock a phantom TE might have been created with incorrect meta. This attempts to kill that phantom TE so the normal one can be create properly later
+                TileEntity te = parChunk.getTileEntityUnsafe(parX & 0x0F, parY, parZ & 0x0F);
+                if (te != null && te.shouldRefresh(existingBlock, parChunk.getBlock(parX & 0x0F, parY, parZ & 0x0F), existingMetaData, parChunk.getBlockMetadata(parX & 0x0F, parY, parZ & 0x0F), parChunk.worldObj, worldPosX, parY, worldPosZ))
+                {
+                    parChunk.removeTileEntity(parX & 0x0F, parY, parZ & 0x0F);
+                }
+            }
+            else if (existingBlock.hasTileEntity(existingMetaData))
+            {
+                TileEntity te = parChunk.getTileEntityUnsafe(parX & 0x0F, parY, parZ & 0x0F);
+                if (te != null && te.shouldRefresh(existingBlock, parBlock, existingMetaData, parMetaData, parChunk.worldObj, worldPosX, parY, worldPosZ))
+                {
+                    parChunk.worldObj.removeTileEntity(worldPosX, parY, worldPosZ);
+                }
+            }
+
+            if (extendedblockstorage.getBlockByExtId(parX, parY & 15, parZ) != parBlock)
+            {
+                return false;
+            }
+            else
+            {
+                extendedblockstorage.setExtBlockMetadata(parX, parY & 15, parZ, parMetaData);
+
+//                if (flag)
+//                {
+//                    parChunk.generateSkylightMap();
+//                }
+//                else
+//                {
+//                    int newLightOpacity = parBlock.getLightOpacity(parChunk.worldObj, worldPosX, parY, worldPosZ);
+//
+//                    if (newLightOpacity > 0)
+//                    {
+//                        if (parY >= currentHeight)
+//                        {
+//                            parChunk.relightBlock(parX, parY + 1, parZ);
+//                        }
+//                    }
+//                    else if (parY == currentHeight - 1)
+//                    {
+//                        parChunk.relightBlock(parX, parY, parZ);
+//                    }
+//
+//                    if (newLightOpacity != existingLightOpacity && (newLightOpacity < existingLightOpacity || parChunk.getSavedLightValue(EnumSkyBlock.Sky, parX, parY, parZ) > 0 || parChunk.getSavedLightValue(EnumSkyBlock.Block, parX, parY, parZ) > 0))
+//                    {
+//                        parChunk.propagateSkylightOcclusion(parX, parZ);
+//                    }
+//                }
+
+                TileEntity tileentity;
+
+                if (!parChunk.worldObj.isRemote)
+                {
+                    parBlock.onBlockAdded(parChunk.worldObj, worldPosX, parY, worldPosZ);
+                }
+
+                if (parBlock.hasTileEntity(parMetaData))
+                {
+                    tileentity = parChunk.func_150806_e(parX, parY, parZ);
+
+                    if (tileentity != null)
+                    {
+                        tileentity.updateContainingBlockInfo();
+                        tileentity.blockMetadata = parMetaData;
+                    }
+                }
+
+                parChunk.isModified = true;
+                return true;
+            }
         }
     }
 }
