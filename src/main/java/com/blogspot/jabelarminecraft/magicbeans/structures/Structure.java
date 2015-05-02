@@ -267,23 +267,29 @@ public class Structure implements IStructure
             for (int index = 0; index < numSparseElementsBasic; index++)
             {
                 Block theBlock = theSparseArrayBasic[index].theBlock;
-//                theWorld.setBlock(
-//                        startX+theSparseArrayBasic[index].posX, 
-//                        startY+theSparseArrayBasic[index].posY, 
-//                        startZ+theSparseArrayBasic[index].posZ, 
-//                        theBlock, 
-//                        0, 
-//                        2
-//                        );
-                Utilities.setBlockFast(
-                        theWorld,
-                        startX+theSparseArrayBasic[index].posX, 
-                        startY+theSparseArrayBasic[index].posY, 
-                        startZ+theSparseArrayBasic[index].posZ, 
-                        theBlock, 
-                        0, 
-                        2
-                        );
+                if (index % 100 == 0)
+                {
+                    theWorld.setBlock(
+                            startX+theSparseArrayBasic[index].posX, 
+                            startY+theSparseArrayBasic[index].posY, 
+                            startZ+theSparseArrayBasic[index].posZ, 
+                            theBlock, 
+                            0, 
+                            2
+                            );
+                }
+                else
+                {
+                    Utilities.setBlockFast(
+                            theWorld,
+                            startX+theSparseArrayBasic[index].posX, 
+                            startY+theSparseArrayBasic[index].posY, 
+                            startZ+theSparseArrayBasic[index].posZ, 
+                            theBlock, 
+                            0, 
+                            2
+                            );
+                }
                 if (theBlock.hasTileEntity(0))
                 {
                     customizeTileEntity(
@@ -303,33 +309,39 @@ public class Structure implements IStructure
                 Block theBlock = theSparseArrayMeta[index].theBlock;
                 if (theBlock == null) System.out.println("Block is unexpectedly null at meta block index = "+index);
                 int theMetaData = theSparseArrayMeta[index].theMetaData;
-//                theWorld.setBlock(
-//                        startX+theSparseArrayMeta[index].posX, 
-//                        startY+theSparseArrayMeta[index].posY, 
-//                        startZ+theSparseArrayMeta[index].posZ, 
-//                        theBlock, 
-//                        theMetaData, 
-//                        2
-//                        );
-                Utilities.setBlockFast(
-                        theWorld,
-                        startX+theSparseArrayMeta[index].posX, 
-                        startY+theSparseArrayMeta[index].posY, 
-                        startZ+theSparseArrayMeta[index].posZ, 
-                        theBlock, 
-                        theMetaData, 
-                        2
-                        );
-               if (theBlock.hasTileEntity(theMetaData))
-               {
-                   customizeTileEntity(
+                if (index % 100 == 0)
+                {
+                    theWorld.setBlock(
+                            startX+theSparseArrayMeta[index].posX, 
+                            startY+theSparseArrayMeta[index].posY, 
+                            startZ+theSparseArrayMeta[index].posZ, 
+                            theBlock, 
+                            theMetaData, 
+                            2
+                            );
+                }
+                else
+                {
+                    Utilities.setBlockFast(
+                            theWorld,
+                            startX+theSparseArrayMeta[index].posX, 
+                            startY+theSparseArrayMeta[index].posY, 
+                            startZ+theSparseArrayMeta[index].posZ, 
+                            theBlock, 
+                            theMetaData, 
+                            2
+                            );
+                }
+                if (theBlock.hasTileEntity(theMetaData))
+                {
+                    customizeTileEntity(
                            theBlock, 
                            theMetaData, 
                            startX+theSparseArrayMeta[index].posX, 
                            startY+theSparseArrayMeta[index].posY, 
                            startZ+theSparseArrayMeta[index].posZ
                            );
-               }
+                }
             }
 
             // DEBUG
@@ -339,33 +351,39 @@ public class Structure implements IStructure
                 Block theBlock = theSparseArraySpecial[index].theBlock;
                 if (theBlock == null) System.out.println("Block is unexpectedly null at special block index = "+index);
                 int theMetaData = theSparseArrayMeta[index].theMetaData;
-//                theWorld.setBlock(
-//                       startX+theSparseArraySpecial[index].posX, 
-//                       startY+theSparseArraySpecial[index].posY, 
-//                       startZ+theSparseArraySpecial[index].posZ, 
-//                       theBlock, 
-//                       theMetaData, 
-//                       2
-//                       );
-                Utilities.setBlockFast(
-                        theWorld,
-                        startX+theSparseArraySpecial[index].posX, 
-                        startY+theSparseArraySpecial[index].posY, 
-                        startZ+theSparseArraySpecial[index].posZ, 
-                        theBlock, 
-                        theMetaData, 
-                        2
-                        );
-               if (theBlock.hasTileEntity(theMetaData))
-               {
-                   customizeTileEntity(
-                           theBlock, 
-                           theMetaData, 
+                if (index % 100 == 0)
+                {
+                    theWorld.setBlock(
                            startX+theSparseArraySpecial[index].posX, 
                            startY+theSparseArraySpecial[index].posY, 
-                           startZ+theSparseArraySpecial[index].posZ
+                           startZ+theSparseArraySpecial[index].posZ, 
+                           theBlock, 
+                           theMetaData, 
+                           2
                            );
-               }
+                }
+                else
+                {
+                    Utilities.setBlockFast(
+                            theWorld,
+                            startX+theSparseArraySpecial[index].posX, 
+                            startY+theSparseArraySpecial[index].posY, 
+                            startZ+theSparseArraySpecial[index].posZ, 
+                            theBlock, 
+                            theMetaData, 
+                            2
+                            );
+                }
+                if (theBlock.hasTileEntity(theMetaData))
+                {
+                    customizeTileEntity(
+                            theBlock, 
+                            theMetaData, 
+                            startX+theSparseArraySpecial[index].posX, 
+                            startY+theSparseArraySpecial[index].posY, 
+                            startZ+theSparseArraySpecial[index].posZ
+                            );
+                }
             }
             long endTime   = System.currentTimeMillis();
             long totalTime = endTime - startTime;
