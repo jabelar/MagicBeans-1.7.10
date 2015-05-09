@@ -52,9 +52,9 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
  * @author jabelar
  *
  */
-public class EntityGiant extends EntityCreature implements IEntityMagicBeans, IBossDisplayData
+public class EntityGiant extends EntityCreature implements IModEntity, IBossDisplayData
 {
-    private NBTTagCompound syncDataCompound = new NBTTagCompound();
+    protected NBTTagCompound syncDataCompound = new NBTTagCompound();
 
     // good to have instances of AI so task list can be modified, including in sub-classes
     protected EntityAIBase aiSwimming = new EntityAISwimming(this);

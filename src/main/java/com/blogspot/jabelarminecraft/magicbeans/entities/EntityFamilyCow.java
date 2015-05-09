@@ -45,7 +45,7 @@ import com.blogspot.jabelarminecraft.magicbeans.utilities.Utilities;
  * @author jabelar
  *
  */
-public class EntityFamilyCow extends EntityCow implements IEntityMagicBeans
+public class EntityFamilyCow extends EntityCow implements IModEntity
 {
     public NBTTagCompound syncDataCompound = new NBTTagCompound();
     

@@ -35,7 +35,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
  * @author jabelar
  *
  */
-public class EntityMysteriousStranger extends EntityCreature implements IEntityMagicBeans, IEntityAdditionalSpawnData
+public class EntityMysteriousStranger extends EntityCreature implements IModEntity, IEntityAdditionalSpawnData
 {
     private NBTTagCompound syncDataCompound = new NBTTagCompound();
     private EntityFamilyCow cowSummonedBy = null;
