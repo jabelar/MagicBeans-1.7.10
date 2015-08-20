@@ -53,8 +53,8 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     	System.out.println("BlockMagicBeanStalk constructor()");
 
     	// Basic block setup
-        setBlockName("magicbeanstalk");
-        setBlockTextureName("magicbeans:magicbeanstalk_stage_0");
+        setUnlocalizedName("magicbeanstalk");
+        setTextureName("magicbeans:magicbeanstalk_stage_0");
     	setBlockBounds(0.5F-0.125F, 0.0F, 0.5F-0.125F, 0.5F+0.125F, 1.0F, 0.5F+0.125F);
     }
     
@@ -76,7 +76,7 @@ public class BlockMagicBeanStalk extends BlockCropMagicBeans implements ITileEnt
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconReg)
+    public void registerIcons(IIconRegister iconReg)
     {
     	// DEBUG
     	System.out.println("Registering icons for Magic Bean Stalk");

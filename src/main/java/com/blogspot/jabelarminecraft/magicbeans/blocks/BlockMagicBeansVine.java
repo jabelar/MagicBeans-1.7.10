@@ -28,8 +28,8 @@ public class BlockMagicBeansVine extends BlockVine
 	{
 		super();
     	// Basic block setup
-        setBlockName("magicbeansvine");
-        setBlockTextureName("magicbeans:vine");
+        setUnlocalizedName("magicbeansvine");
+        setTextureName("magicbeans:vine");
 
 	}
 

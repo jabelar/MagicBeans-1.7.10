@@ -185,7 +185,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IModEntity
 
             if (getGrowingAge() >= 0)
             {
-                func_146082_f(parPlayer); // mating item
+                setInLove(parPlayer); // mating item
             }
         }
         else if (theItem == Items.golden_apple)
@@ -195,7 +195,7 @@ public class EntityGoldenGoose extends EntityAnimal implements IModEntity
 
             if (getGrowingAge() >= 0)
             {
-                func_146082_f(parPlayer); // mating item
+                setInLove(parPlayer); // mating item
             }
         }
 
@@ -278,11 +278,11 @@ public class EntityGoldenGoose extends EntityAnimal implements IModEntity
         return "magicbeans:mob.goose.death";
     }
 
-    @Override
-	protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_)
-    {
-        playSound("mob.chicken.step", 0.15F, 1.0F);
-    }
+//    @Override
+//	protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_)
+//    {
+//        playSound("mob.chicken.step", 0.15F, 1.0F);
+//    }
 
     @Override
 	protected Item getDropItem()

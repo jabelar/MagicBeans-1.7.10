@@ -119,7 +119,7 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
 
     @Override
     // checks if finished growing (a grow stage of 7 is final stage)
-    public boolean func_149851_a(World parWorld, int parX, int parY, int parZ, 
+    public boolean canFertilize(World parWorld, int parX, int parY, int parZ, 
           boolean p_149851_5_)
     {
         return parWorld.getBlockMetadata(parX, parY, parZ) != 7;
@@ -132,7 +132,7 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
      */
     @Override
     // basically an canBoneMealSpeedGrowth() method
-    public boolean func_149852_a(World p_149852_1_, Random parRand, int parX, 
+    public boolean shouldFertilize(World p_149852_1_, Random parRand, int parX, 
           int parY, int parZ)
     {
         return true;
@@ -144,7 +144,7 @@ public class BlockCropMagicBeans extends BlockBush implements IGrowable
      * java.util.Random, int, int, int)
      */
     @Override
-    public void func_149853_b(World parWorld, Random parRand, int parX, int parY, int parZ)
+    public void fertilize(World parWorld, Random parRand, int parX, int parY, int parZ)
     {
         incrementGrowStage(parWorld, parX, parY, parZ);
     }

@@ -159,11 +159,11 @@ public class EntityCowMagicBeansAIMate extends EntityAIBase
 
             if (entityplayer != null)
             {
-                entityplayer.triggerAchievement(StatList.field_151186_x);
+                entityplayer.triggerAchievement(StatList.animalsBredStat);
 
                 if (theAnimal instanceof EntityCow)
                 {
-                    entityplayer.triggerAchievement(AchievementList.field_150962_H);
+                    entityplayer.triggerAchievement(AchievementList.breedCow);
                 }
             }
 

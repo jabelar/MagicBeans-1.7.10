@@ -531,7 +531,7 @@ public class EntityGiant extends EntityCreature implements IModEntity, IBossDisp
             {
                 float f2 = getHealth();
                 setHealth(f2 - parDamageAmount);
-                func_110142_aN().func_94547_a(parDamageSource, f2, parDamageAmount);
+                getCombatTracker().func_94547_a(parDamageSource, f2, parDamageAmount);
                 setAbsorptionAmount(getAbsorptionAmount() - parDamageAmount);
             }
         }

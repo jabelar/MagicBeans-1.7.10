@@ -64,7 +64,7 @@ public class StructureCastleTalia extends Structure
 		{
 			TileEntityChest theTileEntity = (TileEntityChest) theWorld.getTileEntity(parX, parY, parZ);
 			// populate regular dungeon chest items
-            WeightedRandomChestContent.generateChestContents(theTileEntity.getWorldObj().rand, ChestGenHooks.getItems(DUNGEON_CHEST, theTileEntity.getWorldObj().rand), theTileEntity, ChestGenHooks.getCount(DUNGEON_CHEST, theTileEntity.getWorldObj().rand));
+            WeightedRandomChestContent.generateChestContents(theTileEntity.getWorld().rand, ChestGenHooks.getItems(DUNGEON_CHEST, theTileEntity.getWorld().rand), theTileEntity, ChestGenHooks.getCount(DUNGEON_CHEST, theTileEntity.getWorld().rand));
 
 		}
 		if (theBlock == Blocks.furnace)

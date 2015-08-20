@@ -69,23 +69,23 @@ public class MaterialCloud extends Material
         return true;
     }
 
-    /**
-     * Will prevent grass from growing on dirt underneath and kill any grass below it if it returns true
-     */
-    @Override
-	public boolean getCanBlockGrass()
-    {
-        return true;
-    }
+//    /**
+//     * Will prevent grass from growing on dirt underneath and kill any grass below it if it returns true
+//     */
+//    @Override
+//	public boolean getCanBlockGrass()
+//    {
+//        return true;
+//    }
 
-    /**
-     * Returns if this material is considered solid or not
-     */
-    @Override
-	public boolean blocksMovement()
-    {
-        return true;
-    }
+//    /**
+//     * Returns if this material is considered solid or not
+//     */
+//    @Override
+//	public boolean blocksMovement()
+//    {
+//        return true;
+//    }
 
     /**
      * Marks the material as translucent

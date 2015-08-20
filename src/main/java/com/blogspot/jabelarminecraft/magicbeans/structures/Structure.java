@@ -237,7 +237,7 @@ public class Structure implements IStructure
         }
         
         theTileEntity = parEntity;
-        theWorld = theTileEntity.getWorldObj();
+        theWorld = theTileEntity.getWorld();
 
         if (theWorld.isRemote)
         {
@@ -416,7 +416,7 @@ public class Structure implements IStructure
         }
         
         theTileEntity = parEntity;
-        theWorld = theTileEntity.getWorldObj();
+        theWorld = theTileEntity.getWorld();
 
         if (theWorld.isRemote)
         {

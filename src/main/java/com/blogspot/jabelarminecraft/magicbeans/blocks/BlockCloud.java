@@ -46,16 +46,15 @@ public class BlockCloud extends Block
         // DEBUG
         System.out.println("BlockCloud constructor");
         // override default values of Block, where appropriate
-        setBlockName("magicbeanscloud");
-        setBlockTextureName("magicbeans:cloud");
+        setUnlocalizedName("magicbeanscloud");
+        setTextureName("magicbeans:cloud");
         setCreativeTab(CreativeTabs.tabBlock);
         stepSound = soundTypeSnow;
         blockParticleGravity = 1.0F;
         slipperiness = 0.6F;
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        opaque = isOpaqueCube();
+        translucent = isOpaqueCube();
         lightOpacity = 20; // cast a light shadow
-        canBlockGrass = !getMaterial().getCanBlockGrass();
         setBlockUnbreakable();
         setTickRandomly(false);
         setLightLevel(0.5F); // redstone light has light value of 1.0F
@@ -95,7 +94,7 @@ public class BlockCloud extends Block
     }
 
     @Override
-	public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
+	public boolean isPassable(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
     {
         return !blockMaterial.blocksMovement();
     }
