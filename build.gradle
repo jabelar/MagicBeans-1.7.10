@@ -22,8 +22,9 @@ group= "com.blogspot.jabelarminecraft.magicbeans" // http://maven.apache.org/gui
 archivesBaseName = "magicbeans"
 
 minecraft {
-    version = "1.7.10-10.13.3.1408-1.7.10"
+    version = "1.7.10-10.13.4.1492-1.7.10"
     runDir = "../run/assets"
+    mappings = 'stable_12'
 }
 
 dependencies {
