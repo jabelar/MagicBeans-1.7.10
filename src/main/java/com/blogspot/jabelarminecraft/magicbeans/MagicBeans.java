@@ -21,16 +21,6 @@ package com.blogspot.jabelarminecraft.magicbeans;
 
 import java.io.File;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.stats.Achievement;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.util.EnumHelper;
-
 import com.blogspot.jabelarminecraft.magicbeans.armor.ItemArmorSafeFalling;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockCloud;
 import com.blogspot.jabelarminecraft.magicbeans.blocks.BlockMagicBeanStalk;
@@ -42,7 +32,6 @@ import com.blogspot.jabelarminecraft.magicbeans.materials.MaterialCloud;
 import com.blogspot.jabelarminecraft.magicbeans.proxy.CommonProxy;
 import com.blogspot.jabelarminecraft.magicbeans.structures.Structure;
 import com.blogspot.jabelarminecraft.magicbeans.structures.StructureCastleJaden;
-
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -57,12 +46,21 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.stats.Achievement;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.EnumHelper;
 
-@Mod(modid = 
-      MagicBeans.MODID, 
+@Mod( modid = MagicBeans.MODID, 
       name = MagicBeans.MODNAME, 
       version = MagicBeans.MODVERSION,
-      guiFactory = "com.blogspot.jabelarminecraft."+MagicBeans.MODID+".gui.GuiFactory")
+      guiFactory = "com.blogspot.jabelarminecraft."+MagicBeans.MODID+".gui.GuiFactory",
+      acceptedMinecraftVersions = "[1.7.10]")
 public class MagicBeans
 {
     public static final String MODID = "magicbeans";
